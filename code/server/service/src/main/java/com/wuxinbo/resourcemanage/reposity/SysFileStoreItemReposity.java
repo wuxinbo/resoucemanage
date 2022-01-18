@@ -1,11 +1,9 @@
 package com.wuxinbo.resourcemanage.reposity;
 
-import com.wuxinbo.resourcemanage.model.PhotoInfo;
+import com.wuxinbo.resourcemanage.model.SysFileStoreItem;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,Integer> {
-
+public interface SysFileStoreItemReposity extends PagingAndSortingRepository<SysFileStoreItem,Integer> {
 }
