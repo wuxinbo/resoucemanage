@@ -13,6 +13,31 @@ public class SysFileStoreItem extends BaseInfo{
     private String fileName;
     private String fileType;
     private Integer fileSize;
+    /**
+     * 节点Id
+     */
+    private Integer nodeId;
+    /**
+     * 相对路径
+     */
+    private String relativeUrl;
+
+    public Integer getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(Integer nodeId) {
+        this.nodeId = nodeId;
+    }
+
+    public String getRelativeUrl() {
+        return relativeUrl;
+    }
+
+    public void setRelativeUrl(String relativeUrl) {
+        this.relativeUrl = relativeUrl;
+    }
+
     @Id
     @GeneratedValue()
     private Integer mid;

@@ -4,6 +4,7 @@ import com.wuxinbo.resourcemanage.model.PhotoInfo;
 import com.wuxinbo.resourcemanage.model.SysFileStoreNode;
 import com.wuxinbo.resourcemanage.reposity.PhotoInfoReposity;
 import com.wuxinbo.resourcemanage.reposity.SysFileStoreNodeReposity;
+import com.wuxinbo.resourcemanage.service.FileInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,8 @@ class SpringbootDemoApplicationTests {
 	private PhotoInfoReposity photoInfoReposity;
 	@Autowired
 	private SysFileStoreNodeReposity sysFileStoreNodeReposity;
+	@Autowired
+	private FileInfoService fileInfoService;
 	@Test
 	void contextLoads() {
 	}
@@ -39,10 +42,7 @@ class SpringbootDemoApplicationTests {
 	@Test
 	public void ReadFileInfo(){
 		File dir =new File("D:\\seafile\\photo");
-		File[] files = dir.listFiles();
 		SysFileStoreNode localPath = sysFileStoreNodeReposity.findByLocalPath(dir.getPath());
-		for (File file : files) {
-			System.out.println(file.getName());
-		}
+		fileInfoService.scanFile(localPath);
 	}
 }
