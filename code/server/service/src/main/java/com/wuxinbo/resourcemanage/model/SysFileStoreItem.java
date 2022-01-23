@@ -1,8 +1,6 @@
 package com.wuxinbo.resourcemanage.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 文件基本信息
@@ -21,6 +19,18 @@ public class SysFileStoreItem extends BaseInfo{
      * 相对路径
      */
     private String relativeUrl;
+    @OneToOne
+    @JoinColumn(name="nodeId",referencedColumnName = "mid",insertable = false,updatable = false)
+    private SysFileStoreNode sysFileStoreNode;
+
+
+    public SysFileStoreNode getSysFileStoreNode() {
+        return sysFileStoreNode;
+    }
+
+    public void setSysFileStoreNode(SysFileStoreNode sysFileStoreNode) {
+        this.sysFileStoreNode = sysFileStoreNode;
+    }
 
     public Integer getNodeId() {
         return nodeId;
@@ -37,10 +47,6 @@ public class SysFileStoreItem extends BaseInfo{
     public void setRelativeUrl(String relativeUrl) {
         this.relativeUrl = relativeUrl;
     }
-
-    @Id
-    @GeneratedValue()
-    private Integer mid;
 
     public String getFileName() {
         return fileName;
@@ -66,11 +72,4 @@ public class SysFileStoreItem extends BaseInfo{
         this.fileSize = fileSize;
     }
 
-    public Integer getMid() {
-        return mid;
-    }
-
-    public void setMid(Integer mid) {
-        this.mid = mid;
-    }
 }

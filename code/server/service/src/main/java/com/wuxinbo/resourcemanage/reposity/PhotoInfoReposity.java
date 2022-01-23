@@ -7,5 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,Integer> {
-
+    /**
+     * 通过Id去重
+     * @param fileId
+     * @return
+     */
+    PhotoInfo findByFileId(Integer fileId);
 }

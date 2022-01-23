@@ -1,13 +1,10 @@
 package com.wuxinbo.resourcemanage.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
+import javax.persistence.*;
 import java.util.Date;
 
-@Inheritance
+@MappedSuperclass
 public class BaseInfo {
 
 
@@ -21,6 +18,9 @@ public class BaseInfo {
      */
     @Column(name ="update_time")
     protected Date updateTime;
+    @Id
+    @GeneratedValue()
+    private Integer mid;
 
     public Date getCreateTime() {
         return createTime;
@@ -36,5 +36,13 @@ public class BaseInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getMid() {
+        return mid;
+    }
+
+    public void setMid(Integer mid) {
+        this.mid = mid;
     }
 }
