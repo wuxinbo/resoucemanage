@@ -1,4 +1,4 @@
-#include "imageViewer.h"
+﻿#include "imageViewer.h"
 #include <QDebug>
 #include <QImageReader>
 
@@ -7,9 +7,9 @@ ImageViewer::ImageViewer(QWidget *parent,QString filePath)
    , scrollArea(new QScrollArea)
 {
 
-    imageLabel->setBackgroundRole(QPalette::Base);
+//    imageLabel->setBackgroundRole(QPalette::Base);
     this->filePath =filePath;
-    imageLabel->setFixedSize(200,200); //设置宽高
+    imageLabel->setGeometry(0,0,40,40); //设置宽高
     loadFile();
     imageLabel->setScaledContents(true);
 

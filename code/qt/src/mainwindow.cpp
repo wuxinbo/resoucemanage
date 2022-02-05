@@ -1,7 +1,7 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream>
-#include "image/imageViewer.h"
+#include "image/GridImageLayout.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,10 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug("heloo");
     //获取listview控件
     imageLayout =ui->imageLayout;
-    ImageViewer* image =new ImageViewer(nullptr,"D:\\wallerpage\\IMG_0311(20220105-212615).jpg");
-//    bool loadResult =image->loadFile();
-    QLabel *qlabel=image->getImageLable();
-    imageLayout->addWidget(qlabel);
+    QList<QString> filePaths ={"E:\\Seafile\\photo\\2022\\01\\13\\export\\DSC_2147.jpg",
+                               "E:\\Seafile\\photo\\wallerpage\\DSC_1658.jpg",
+                               "E:\\Seafile\\photo\\wallerpage\\IMG_0101.jpg"};
+    GridImageLayout *gridLayout =new GridImageLayout(filePaths);
+    imageLayout->addLayout(gridLayout->getGridLayout());
 }
 
 MainWindow::~MainWindow()

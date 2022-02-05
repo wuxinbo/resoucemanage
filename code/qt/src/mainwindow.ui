@@ -53,7 +53,7 @@
       <x>70</x>
       <y>60</y>
       <width>711</width>
-      <height>80</height>
+      <height>471</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="imageLayout"/>
@@ -65,7 +65,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
