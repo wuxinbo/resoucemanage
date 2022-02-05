@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include "image/GridImageLayout.h"
+#include <QDir>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -13,13 +14,17 @@ MainWindow::MainWindow(QWidget *parent)
     searchButton->setText("查询");
     connect(searchButton,SIGNAL(clicked()),this,SLOT(buttonClick()));
     qDebug("heloo");
-    //获取listview控件
+    //获取图片网格
     imageLayout =ui->imageLayout;
-    QList<QString> filePaths ={"E:\\Seafile\\photo\\2022\\01\\13\\export\\DSC_2147.jpg",
-                               "E:\\Seafile\\photo\\wallerpage\\DSC_1658.jpg",
-                               "E:\\Seafile\\photo\\wallerpage\\IMG_0101.jpg"};
-    GridImageLayout *gridLayout =new GridImageLayout(filePaths);
+    QDir dir("D:\\wallerpage");
+    QFileInfoList files=dir.entryInfoList();
+    for(QFileInfo file:files){
+        qDebug("fileName is:"+file.absoluteFilePath().toUtf8());
+    }
+    GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
+    QScrollArea *scroll = ui->scrollArea;
+    scroll->setLayout(gridLayout);
 }
 
 MainWindow::~MainWindow()

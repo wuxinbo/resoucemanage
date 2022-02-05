@@ -2,15 +2,17 @@
 #define GRIDIMAGELAYOUT_H
 #include <QList>
 #include <QGridLayout>
+#include <QFileInfo>
 #include "imageViewer.h"
 #endif // GRIDIMAGELAYOUT_H
 
-class GridImageLayout{
+class GridImageLayout: public QGridLayout{
 
-
+       Q_OBJECT
 public :
-
-    GridImageLayout(QList<QString> filePaths);
+    //每一行的列数
+    const static int DEFAULT_COLUMN =4;
+    GridImageLayout(QWidget *parent = nullptr,QList<QFileInfo> fileInfos ={});
     /**
       获取初始化之后的布局文件
      * @brief getGridlayout
