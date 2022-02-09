@@ -1,23 +1,31 @@
 ﻿#include "imageViewer.h"
 #include <QDebug>
 #include <QImageReader>
-
-ImageViewer::ImageViewer(QWidget *parent,QString filePath)
-   : imageLabel(new QLabel),
-     QWidget(parent)
+#include "ui_image.h"
+using namespace Ui;
+ImageViewer::ImageViewer(QWidget *parent,QFileInfo fileInfo)
+     :QWidget(parent)
 {
-
-//    imageLabel->setBackgroundRole(QPalette::Base);
-    this->filePath =filePath;
+    ui=new Form();
+    ui->setupUi(this);
+    ui->imageLabel->setBackgroundRole(QPalette::Base);
+    ui->fileName->setText(fileInfo.completeBaseName());
+    this->filePath =fileInfo.absoluteFilePath();
 //    imageLabel->setGeometry(0,0,40,40); //设置宽高
     loadFile();
-    imageLabel->setScaledContents(true);
+    ui->imageLabel->setScaledContents(true);
+    //增加点击事件
+//    connect(ui->imageLabel,SIGNAL(linkActivated(filePath)),this,SLOT(imageClick()));
 
 }
-QLabel* ImageViewer::getImageLable(){
-    return imageLabel ;
+
+QVBoxLayout* ImageViewer::getLayout(){
+    return ui->verticalLayout ;
 }
 
+void ImageViewer::imageClick(){
+    qDebug("imageLCick");
+}
 bool ImageViewer::loadFile()
 {
     QImageReader reader(filePath);
@@ -31,13 +39,13 @@ bool ImageViewer::loadFile()
 
 
 ImageViewer::~ImageViewer(){
-    delete imageLabel;
+    delete ui;
 }
 void ImageViewer::setImage(const QImage &newImage)
 {
     image = newImage;
 
-    imageLabel->setPixmap(QPixmap::fromImage(image));
+    ui->imageLabel->setPixmap(QPixmap::fromImage(image));
 
 //    scaleFactor = 1.0;
 

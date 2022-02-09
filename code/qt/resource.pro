@@ -20,6 +20,7 @@ HEADERS += \
     src/mainwindow.h
 
 FORMS += \
+    src/image.ui \
     src/mainwindow.ui
 
 TRANSLATIONS += \

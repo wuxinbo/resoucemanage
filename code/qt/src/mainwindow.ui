@@ -50,9 +50,9 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>-10</x>
       <y>60</y>
-      <width>1251</width>
+      <width>1931</width>
       <height>471</height>
      </rect>
     </property>
@@ -63,6 +63,9 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
      </property>
+     <item>
+      <widget class="QWidget" name="widget" native="true"/>
+     </item>
     </layout>
    </widget>
    <widget class="QScrollArea" name="scrollArea">
@@ -70,31 +73,24 @@
      <rect>
       <x>0</x>
       <y>60</y>
-      <width>991</width>
-      <height>331</height>
+      <width>1020</width>
+      <height>1080</height>
      </rect>
     </property>
     <property name="widgetResizable">
      <bool>true</bool>
     </property>
     <widget class="QWidget" name="scrollAreaWidgetContents">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>989</width>
-       <height>329</height>
+       <width>1018</width>
+       <height>1078</height>
       </rect>
      </property>
     </widget>
    </widget>
-   <zorder>scrollArea</zorder>
-   <zorder>searchButton</zorder>
-   <zorder>input</zorder>
-   <zorder>verticalLayoutWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

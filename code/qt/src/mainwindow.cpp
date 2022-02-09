@@ -23,8 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     }
     GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
-    QScrollArea *scroll = ui->scrollArea;
-    scroll->setLayout(gridLayout);
+    ui->scrollAreaWidgetContents->setLayout(imageLayout);
+//    QScrollArea *scroll = ui->scrollArea;
+//    scroll->setLayout(gridLayout);
 }
 
 MainWindow::~MainWindow()

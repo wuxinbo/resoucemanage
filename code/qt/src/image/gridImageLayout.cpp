@@ -12,12 +12,15 @@ GridImageLayout::GridImageLayout(QWidget *parent,QList<QFileInfo> fileInfos):
            {
     int i=0;
     for(QFileInfo file:fileInfos){
-       ImageViewer *image = new ImageViewer(parent,file.absoluteFilePath());
+       ImageViewer *image = new ImageViewer(parent,file);
        if(file.absoluteFilePath().contains(".jpg")){
            images->push_back(image);
            //计算行数
-           gridLayout->addWidget(image->getImageLable(),i/DEFAULT_COLUMN,i%DEFAULT_COLUMN);
-           gridLayout->addWidget(new QLabel(file.completeBaseName()),i/DEFAULT_COLUMN,i%DEFAULT_COLUMN);
+           gridLayout->addWidget(image,i/DEFAULT_COLUMN,i%DEFAULT_COLUMN);
+//           gridLayout->addWidget(new QLabel("12312412421"),i/DEFAULT_COLUMN,i%DEFAULT_COLUMN);
+            /*if(i==2){
+                break;
+            }*/
            i++;
        }
 
