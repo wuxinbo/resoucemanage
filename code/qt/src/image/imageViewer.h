@@ -1,4 +1,4 @@
-#ifndef IMAGEVIEWER_H
+﻿#ifndef IMAGEVIEWER_H
 #define IMAGEVIEWER_H
 #include <QMainWindow>
 #include <QImage>
@@ -22,6 +22,8 @@ class ImageViewer:public QWidget
     Q_OBJECT
 
 public:
+
+    const static int DEFAULT_HEIGHT=300;
     ImageViewer(QWidget *parent = nullptr,QFileInfo fileInfo={});
     /**
      * 获取图片展示器

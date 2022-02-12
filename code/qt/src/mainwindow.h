@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -21,6 +21,11 @@ public slots:
     void buttonClick();
 private:
     Ui::MainWindow *ui;
+    /**
+     *
+     * @brief 初始化输入框，添加搜索按钮
+     */
+    void initInput();
     //相册布局
     QVBoxLayout *imageLayout;
 };

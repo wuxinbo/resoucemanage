@@ -11,7 +11,8 @@ ImageViewer::ImageViewer(QWidget *parent,QFileInfo fileInfo)
     ui->imageLabel->setBackgroundRole(QPalette::Base);
     ui->fileName->setText(fileInfo.completeBaseName());
     this->filePath =fileInfo.absoluteFilePath();
-//    imageLabel->setGeometry(0,0,40,40); //设置宽高
+    this->setMinimumWidth(500); //设置宽高
+    this->setMinimumHeight(400); //设置最小高
     loadFile();
     ui->imageLabel->setScaledContents(true);
     //增加点击事件
@@ -31,8 +32,13 @@ bool ImageViewer::loadFile()
     QImageReader reader(filePath);
     qDebug("loadFilePath:"+filePath.toUtf8());
     reader.setAutoTransform(true);
-    reader.setScaledSize(QSize(300,300));
+
+    reader.setScaledSize(QSize(300,DEFAULT_HEIGHT));
     const QImage newImage = reader.read();
+    QSize localSize = image.size();
+//    qDebug("size is :"+localSize.width());
+//    reader.setScaledSize(QSize(300,500));
+
     setImage(newImage);
     return true;
 }
