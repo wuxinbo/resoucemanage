@@ -26,6 +26,8 @@ private:
      * @brief 初始化输入框，添加搜索按钮
      */
     void initInput();
+
+    void initImageLayout();
     //相册布局
     QVBoxLayout *imageLayout;
 };

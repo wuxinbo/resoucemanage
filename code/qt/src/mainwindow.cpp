@@ -17,20 +17,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     // 设置窗口最大化
     showMaximized();
-    setWindowFlag(Qt::WindowType::FramelessWindowHint);
+//    setWindowFlag(Qt::WindowType::FramelessWindowHint);
     initInput();
     //设置关闭按钮
     ui->close->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_TitleBarCloseButton));
     ui->min->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_TitleBarMinButton));
     //获取图片网格
     imageLayout =ui->imageLayout;
-    QDir dir("E:\\Seafile\\photo\\wallerpage");
+    QDir dir("D:\\wallerpage");
     QFileInfoList files=dir.entryInfoList();
     for(QFileInfo file:files){
         qDebug("fileName is:"+file.absoluteFilePath().toUtf8());
     }
-    GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addWidget(new QLabel(QString::fromLocal8Bit("2022年1月")));
+    GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
     ui->scrollAreaWidgetContents->setLayout(imageLayout);
 }

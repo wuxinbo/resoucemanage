@@ -17,10 +17,6 @@ GridImageLayout::GridImageLayout(QWidget *parent,QList<QFileInfo> fileInfos):
            images->push_back(image);
            //计算行数
            gridLayout->addWidget(image,i/DEFAULT_COLUMN,i%DEFAULT_COLUMN);
-//           gridLayout->addWidget(new QLabel("12312412421"),i/DEFAULT_COLUMN,i%DEFAULT_COLUMN);
-            /*if(i==2){
-                break;
-            }*/
            i++;
        }
 

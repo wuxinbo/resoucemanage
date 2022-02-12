@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QFileInfo>
+#include <QFutureWatcher>
 #endif // IMAGEVIEWER_H
 
 namespace Ui {
@@ -40,13 +41,22 @@ private slots:
      * @brief imageClick
      */
     void imageClick();
+    /**
+     * @brief 异步加载图片
+     */
+    void loadImage();
 private:
     void setImage(const QImage &newImage);
 
     Ui::Form* ui;
     QImage image;
-//    QLabel *imageLabel;
     QString filePath;
+
+    QFuture<QImage> future;
+    /**
+     * @brief 异步线程监控
+     */
+    QFutureWatcher<QImage> watcher;
     /**
      * 文件名称
      * @brief name
