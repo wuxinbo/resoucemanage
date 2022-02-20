@@ -1,8 +1,12 @@
 package com.wuxinbo.resourcemanage.controller;
 
+import com.wuxinbo.resourcemanage.model.Constant;
 import com.wuxinbo.resourcemanage.model.PhotoInfo;
 import com.wuxinbo.resourcemanage.reposity.PhotoInfoReposity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,5 +47,15 @@ public class PhotoInfoController extends BaseController{
         });
     }
 
+    @RequestMapping("listByPage")
+    Page<PhotoInfo> listByPage(Integer pageSize,Integer currentPage,
+                               HttpServletRequest request,
+                               HttpServletResponse response){
+
+        Pageable page =PageRequest.of(currentPage==null?1:currentPage,
+                pageSize==null? Constant.DEFAULT_PAGESIZE:pageSize);
+        Page<PhotoInfo> all = photoInfoReposity.findAll(page);
+        return all;
+    }
 
 }

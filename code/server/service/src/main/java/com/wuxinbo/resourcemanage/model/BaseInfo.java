@@ -7,7 +7,6 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseInfo {
 
-
     /**
      * 创建时间
      */
