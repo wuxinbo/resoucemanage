@@ -3,6 +3,8 @@ package com.wu.resource;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView;
 
     private Button button;
+    private PopupWindow popupWindow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,11 +27,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         imageView =findViewById(R.id.imageView);
         gridView =findViewById(R.id.imageGridView);
+
+        popupWindow =new PopupWindow(MainActivity.this);
+        popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.share_image_view,null));
 //        gridView.addView(imageView);
         button =findViewById(R.id.share);
         button.setOnClickListener((v)->{
-            PopupWindow popupWindow =new PopupWindow(MainActivity.this);
-
+            popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
 
         });
         Glide.with(this).load("http://192.168.1.112:8080/photo/get?mid=2570").into(imageView);
