@@ -51,9 +51,10 @@ public class MainActivity extends AppCompatActivity {
    private void initPopupWindow(PopupWindow popupWindow){
        popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.share_layout,null));
        popupWindow.setOutsideTouchable(true);
-       popupWindow.setBackgroundDrawable(new BitmapDrawable());
+       popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.share_background,null));
        popupWindow.setEnterTransition(new AutoTransition());
        popupWindow.setExitTransition(new AutoTransition());
+       popupWindow.setElevation(3);
    }
 
 }
