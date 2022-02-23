@@ -20,6 +20,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.View
     static {
         items.add(R.drawable.icon64_appwx_logo);
         items.add(R.drawable.icon_res_download_moments);
+        items.add(R.drawable.icon_res_download_collect);
     }
     class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView ;

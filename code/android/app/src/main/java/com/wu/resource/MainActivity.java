@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.transition.AutoTransition;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +33,11 @@ public class MainActivity extends AppCompatActivity {
         imageView =findViewById(R.id.imageView);
         gridView =findViewById(R.id.imageGridView);
         popupWindow =new PopupWindow(MainActivity.this);
-        popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.share_layout,null));
-//        gridView.addView(imageView);
+        initPopupWindow(popupWindow);
         button =findViewById(R.id.share);
         RecyclerView recyclerView = (RecyclerView) popupWindow.getContentView().findViewById(R.id.shareLayout);
         recyclerView.setAdapter(new ShareListAdapter());
         recyclerView.setLayoutManager(new GridLayoutManager(this,6));
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-
         button.setOnClickListener((v)->{
             popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
 
@@ -48,5 +45,15 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load("http://192.168.1.112:8080/photo/get?mid=2570").into(imageView);
     }
 
+    /**
+     *
+      */
+   private void initPopupWindow(PopupWindow popupWindow){
+       popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.share_layout,null));
+       popupWindow.setOutsideTouchable(true);
+       popupWindow.setBackgroundDrawable(new BitmapDrawable());
+       popupWindow.setEnterTransition(new AutoTransition());
+       popupWindow.setExitTransition(new AutoTransition());
+   }
 
 }
