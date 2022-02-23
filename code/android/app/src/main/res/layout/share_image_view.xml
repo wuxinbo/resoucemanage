@@ -7,9 +7,13 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/icon64_appwx_logo"
-        tools:layout_editor_absoluteX="41dp"
         tools:layout_editor_absoluteY="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

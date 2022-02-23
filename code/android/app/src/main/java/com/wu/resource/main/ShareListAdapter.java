@@ -29,6 +29,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.View
 
             super(itemView);
             imageView =itemView.findViewById(R.id.imageView2);
+            imageView.setBackgroundResource(R.drawable.share_item_selector);
         }
     }
     @NonNull

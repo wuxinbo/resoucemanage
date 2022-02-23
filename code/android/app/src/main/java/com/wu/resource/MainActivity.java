@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this,6));
         button.setOnClickListener((v)->{
             popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
-
         });
         Glide.with(this).load("http://192.168.1.112:8080/photo/get?mid=2570").into(imageView);
     }
