@@ -37,9 +37,12 @@ public class MainActivity extends AppCompatActivity {
         button =findViewById(R.id.share);
         RecyclerView recyclerView = (RecyclerView) popupWindow.getContentView().findViewById(R.id.shareLayout);
         recyclerView.setAdapter(new ShareListAdapter());
-        recyclerView.setLayoutManager(new GridLayoutManager(this,6));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,4));
         button.setOnClickListener((v)->{
-            popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
+            if (!popupWindow.isShowing()) {
+                popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
+
+            }
         });
         Glide.with(this).load("http://192.168.1.112:8080/photo/get?mid=2570").into(imageView);
     }
@@ -51,9 +54,11 @@ public class MainActivity extends AppCompatActivity {
        popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.share_layout,null));
        popupWindow.setOutsideTouchable(true);
        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.share_background,null));
-       popupWindow.setEnterTransition(new AutoTransition());
-       popupWindow.setExitTransition(new AutoTransition());
-       popupWindow.setElevation(3);
+       AutoTransition autoTransition =new AutoTransition();
+       autoTransition.setDuration(500);
+       popupWindow.setEnterTransition(autoTransition);
+       popupWindow.setExitTransition(autoTransition);
+       popupWindow.setElevation(20);
    }
 
 }

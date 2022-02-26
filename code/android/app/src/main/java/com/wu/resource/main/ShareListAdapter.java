@@ -14,11 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.wu.resource.R;
-import com.wu.resource.WxShare;
 import com.wu.resource.databinding.ShareImageViewBinding;
 
 import java.util.ArrayList;
