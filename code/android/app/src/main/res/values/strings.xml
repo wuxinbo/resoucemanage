@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">resource</string>
+    <string name="share_wx_freind">朋友圈</string>
+    <string name="share_wx_collect">收藏</string>
 </resources>
