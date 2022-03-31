@@ -13,7 +13,7 @@ GridImageLayout::GridImageLayout(QWidget *parent,QList<QFileInfo> fileInfos):
     int i=0;
     for(QFileInfo file:fileInfos){
        ImageViewer *image = new ImageViewer(parent,file);
-       if(file.absoluteFilePath().contains(".jpg")){
+       if(file.absoluteFilePath().contains(".jpg")){ //目前只支持jpg图片展示
            images->push_back(image);
            //计算行数
            gridLayout->addWidget(image,i/DEFAULT_COLUMN,i%DEFAULT_COLUMN);

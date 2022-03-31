@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.transition.AutoTransition;
@@ -25,40 +26,32 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView;
 
     private Button button;
-    private PopupWindow popupWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         imageView =findViewById(R.id.imageView);
         gridView =findViewById(R.id.imageGridView);
-        popupWindow =new PopupWindow(MainActivity.this);
-        initPopupWindow(popupWindow);
-        button =findViewById(R.id.share);
-        RecyclerView recyclerView = (RecyclerView) popupWindow.getContentView().findViewById(R.id.shareLayout);
-        recyclerView.setAdapter(new ShareListAdapter());
-        recyclerView.setLayoutManager(new GridLayoutManager(this,4));
-        button.setOnClickListener((v)->{
-            if (!popupWindow.isShowing()) {
-                popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
 
-            }
-        });
+        button =findViewById(R.id.share);
+
+//        button.setOnClickListener((v)->{
+//            if (!popupWindow.isShowing()) {
+//                popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
+//
+//            }
+//        });
         Glide.with(this).load("http://192.168.1.112:8080/photo/get?mid=2570").into(imageView);
+        imageView.setOnClickListener((v)->{
+            Intent intent =new Intent();
+            intent.putExtra("url","http://192.168.1.112:8080/photo/get?mid=2570");
+            intent.setClass(MainActivity.this,ResourceDetailActivity.class);
+            startActivity(intent);
+        });
     }
 
-    /**
-     *
-      */
-   private void initPopupWindow(PopupWindow popupWindow){
-       popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.share_layout,null));
-       popupWindow.setOutsideTouchable(true);
-       popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.share_background,null));
-       AutoTransition autoTransition =new AutoTransition();
-       autoTransition.setDuration(500);
-       popupWindow.setEnterTransition(autoTransition);
-       popupWindow.setExitTransition(autoTransition);
-       popupWindow.setElevation(20);
-   }
+
 
 }

@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QIcon>
 #include <QPixmap>
+#include <QScreen>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -17,14 +18,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     // 设置窗口最大化
     showMaximized();
-//    setWindowFlag(Qt::WindowType::FramelessWindowHint);
+    setWindowFlag(Qt::WindowType::FramelessWindowHint);
+    //获取屏幕大小
+    QScreen *screen=QGuiApplication::primaryScreen();
+    QSize size =screen->size();
     initInput();
     //设置关闭按钮
-    ui->close->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_TitleBarCloseButton));
-    ui->min->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_TitleBarMinButton));
+    ui->close->setIcon(QIcon(QPixmap(":/images/close.png")));
+    ui->min->setIcon(QIcon(QPixmap(":/images/min.png")));
     //获取图片网格
     imageLayout =ui->imageLayout;
     QDir dir("D:\\wallerpage");
+    //获取目录内容
     QFileInfoList files=dir.entryInfoList();
     for(QFileInfo file:files){
         qDebug("fileName is:"+file.absoluteFilePath().toUtf8());

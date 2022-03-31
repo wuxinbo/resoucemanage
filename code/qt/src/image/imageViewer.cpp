@@ -41,8 +41,9 @@ bool ImageViewer::loadFile()
 
         return newImage;
     });
-    watcher.setFuture(future);
+    //当线程执行完成之后，才开始显示在窗口中
     connect(&watcher,&QFutureWatcher<QImage>::finished,this,&ImageViewer::loadImage);
+    watcher.setFuture(future);
     return true;
 }
 
