@@ -17,15 +17,15 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // 设置窗口最大化
-    showMaximized();
-    setWindowFlag(Qt::WindowType::FramelessWindowHint);
+    //showMaximized();
+    //setWindowFlag(Qt::WindowType::FramelessWindowHint);
     //获取屏幕大小
     QScreen *screen=QGuiApplication::primaryScreen();
     QSize size =screen->size();
     initInput();
     //设置关闭按钮
-    ui->close->setIcon(QIcon(QPixmap(":/images/close.png")));
-    ui->min->setIcon(QIcon(QPixmap(":/images/min.png")));
+    //ui->close->setIcon(QIcon(QPixmap(":/images/close.png")));
+    //ui->min->setIcon(QIcon(QPixmap(":/images/min.png")));
     //获取图片网格
     imageLayout =ui->imageLayout;
     QDir dir("D:\\wallerpage");
@@ -43,6 +43,12 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::initInput(){
     QAction *searchAction =new QAction(QIcon(QPixmap(":/images/search.png")),"");
     ui->input->addAction(searchAction);
+
+}
+void MainWindow::resizeEvent(QResizeEvent *event){
+    qDebug("resize");
+    QString size ="resize "+QString::number(event->size().width());
+    qDebug(size.toUtf8());
 
 }
 MainWindow::~MainWindow()

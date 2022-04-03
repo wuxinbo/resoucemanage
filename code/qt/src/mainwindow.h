@@ -28,6 +28,8 @@ private:
     void initInput();
 
     void initImageLayout();
+
+    void resizeEvent(QResizeEvent *event)override;
     //相册布局
     QVBoxLayout *imageLayout;
 };

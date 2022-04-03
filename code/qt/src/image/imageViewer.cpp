@@ -13,8 +13,8 @@ ImageViewer::ImageViewer(QWidget *parent,QFileInfo fileInfo)
     ui->imageLabel->setBackgroundRole(QPalette::Base);
     ui->fileName->setText(fileInfo.completeBaseName());
     this->filePath =fileInfo.absoluteFilePath();
-    this->setMinimumWidth(500); //设置宽高
-    this->setMinimumHeight(400); //设置最小高
+    this->setMinimumWidth(300); //设置宽高
+    this->setMinimumHeight(200); //设置最小高
     ui->imageLabel->setScaledContents(true);
     loadFile();
 
