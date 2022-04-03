@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>340</height>
+    <width>578</width>
+    <height>391</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -48,46 +48,8 @@
      <height>16777215</height>
     </size>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0">
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="font">
-       <font>
-        <family>Microsoft YaHei</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">#scrollArea{boder:none}</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="lineWidth">
-       <number>0</number>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>515</width>
-         <height>222</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>222</height>
-        </size>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <widget class="QWidget" name="title" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
@@ -111,7 +73,7 @@ border-radius:5px;
 }</string>
          </property>
          <property name="plainText">
-          <string> </string>
+          <string/>
          </property>
          <property name="placeholderText">
           <string>请输入关键词..</string>
@@ -200,33 +162,7 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
       </layout>
      </widget>
     </item>
-    <item row="3" column="0">
-     <layout class="QVBoxLayout" name="imageLayout">
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <item alignment="Qt::AlignHCenter">
-       <widget class="QWidget" name="widget" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>600</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="0">
+    <item>
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -241,6 +177,43 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
        </size>
       </property>
      </spacer>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#scrollArea{boder:none}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>560</width>
+         <height>291</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>222</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>

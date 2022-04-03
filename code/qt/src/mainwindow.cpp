@@ -19,25 +19,24 @@ MainWindow::MainWindow(QWidget *parent)
     // 设置窗口最大化
     //showMaximized();
     //setWindowFlag(Qt::WindowType::FramelessWindowHint);
-    //获取屏幕大小
-    QScreen *screen=QGuiApplication::primaryScreen();
-    QSize size =screen->size();
     initInput();
     //设置关闭按钮
     //ui->close->setIcon(QIcon(QPixmap(":/images/close.png")));
     //ui->min->setIcon(QIcon(QPixmap(":/images/min.png")));
     //获取图片网格
-    imageLayout =ui->imageLayout;
+    //imageLayout =ui->imageLayout;
+    imageLayout =new QVBoxLayout(this);
     QDir dir("D:\\wallerpage");
     //获取目录内容
     QFileInfoList files=dir.entryInfoList();
     for(QFileInfo file:files){
         qDebug("fileName is:"+file.absoluteFilePath().toUtf8());
     }
-    imageLayout->addWidget(new QLabel(QString::fromLocal8Bit("2022年1月")));
+    imageLayout->addWidget(new QLabel(QString::fromUtf8("2022年1月")));
     GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
     ui->scrollAreaWidgetContents->setLayout(imageLayout);
+
 }
 
 void MainWindow::initInput(){
