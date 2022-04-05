@@ -4,22 +4,26 @@
 #include <QGridLayout>
 #include <QFileInfo>
 #include "imageViewer.h"
-#endif // GRIDIMAGELAYOUT_H
-
 class GridImageLayout: public QGridLayout{
 
        Q_OBJECT
 public :
     //每一行的列数
     const static int DEFAULT_COLUMN =4;
+    /**
+     *
+     * @brief 默认不按照列进行合并
+     */
+    const static int DEFAULT_COLUMN_SPAN =1;
     GridImageLayout(QWidget *parent = nullptr,QList<QFileInfo> fileInfos ={});
     /**
-      获取初始化之后的布局文件
-     * @brief getGridlayout
+
+     * @brief 获取初始化之后的布局文件
      * @return 九宫格布局
      */
 
     QGridLayout* getGridLayout();
+
     ~GridImageLayout();
 private:
     //多张图片
@@ -27,3 +31,4 @@ private:
 
     QGridLayout* gridLayout ;
 };
+#endif // GRIDIMAGELAYOUT_H

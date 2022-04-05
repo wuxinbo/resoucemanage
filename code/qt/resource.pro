@@ -11,12 +11,14 @@ CONFIG += c++11
 SOURCES += \
     src/image/gridImageLayout.cpp \
     src/image/imageViewer.cpp \
+    src/image/imageloadevent.cpp \
     src/main.cpp \
     src/mainwindow.cpp
 
 HEADERS += \
     src/image/GridImageLayout.h \
     src/image/imageViewer.h \
+    src/image/imageloadevent.h \
     src/mainwindow.h
 
 FORMS += \

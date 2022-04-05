@@ -11,6 +11,7 @@
 #include <QIcon>
 #include <QPixmap>
 #include <QScreen>
+#include <memory>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -20,19 +21,17 @@ MainWindow::MainWindow(QWidget *parent)
     //showMaximized();
     //setWindowFlag(Qt::WindowType::FramelessWindowHint);
     initInput();
-    //设置关闭按钮
-    //ui->close->setIcon(QIcon(QPixmap(":/images/close.png")));
-    //ui->min->setIcon(QIcon(QPixmap(":/images/min.png")));
     //获取图片网格
-    //imageLayout =ui->imageLayout;
     imageLayout =new QVBoxLayout(this);
+
     QDir dir("D:\\wallerpage");
     //获取目录内容
     QFileInfoList files=dir.entryInfoList();
     for(QFileInfo file:files){
         qDebug("fileName is:"+file.absoluteFilePath().toUtf8());
     }
-    imageLayout->addWidget(new QLabel(QString::fromUtf8("2022年1月")));
+    std::shared_ptr<QLabel> title(new QLabel(QStringLiteral("2022年1月")));
+    imageLayout->addWidget(title.get());
     GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
     ui->scrollAreaWidgetContents->setLayout(imageLayout);
@@ -45,10 +44,11 @@ void MainWindow::initInput(){
 
 }
 void MainWindow::resizeEvent(QResizeEvent *event){
-    qDebug("resize");
-    QString size ="resize "+QString::number(event->size().width());
-    qDebug(size.toUtf8());
-
+    QSize newSize =event->size();
+    QString size ="resize "+QString::number(newSize.width());
+    //qDebug(size);
+    ui->scrollAreaWidgetContents->resize(newSize);
+    //ui->scrollArea->resize(newSize);
 }
 MainWindow::~MainWindow()
 {

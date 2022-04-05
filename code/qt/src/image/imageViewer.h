@@ -8,8 +8,6 @@
 #include <QVBoxLayout>
 #include <QFileInfo>
 #include <QFutureWatcher>
-#endif // IMAGEVIEWER_H
-
 namespace Ui {
     class Form;
 }
@@ -25,7 +23,8 @@ class ImageViewer:public QWidget
 public:
 
     const static int DEFAULT_HEIGHT=300;
-    ImageViewer(QWidget *parent = nullptr,QFileInfo fileInfo={});
+    ImageViewer(QWidget *parent = nullptr,
+                QFileInfo fileInfo={});
     /**
      * 获取图片展示器
     * @brief getImageLable
@@ -33,6 +32,11 @@ public:
     */
     QVBoxLayout* getLayout();
     bool loadFile();
+    /**
+     * @brief getQImage
+     * @return
+     */
+    QImage getQImage();
     ~ ImageViewer();
 
 private slots:
@@ -57,10 +61,16 @@ private:
      * @brief 异步线程监控
      */
     QFutureWatcher<QImage> watcher;
-    /**
-     * 文件名称
-     * @brief name
-     */
-//    QLabel *name;
 
+    int ratio;
+    /**
+      图片下方提示信息
+     * @brief info
+     */
+    QString info;
+    /**
+     * @brief gridLayout
+     */
+    //GridImageLayout *gridLayout;
 };
+#endif // IMAGEVIEWER_H
