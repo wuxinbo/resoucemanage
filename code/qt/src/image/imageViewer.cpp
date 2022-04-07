@@ -9,7 +9,6 @@ ImageViewer::ImageViewer(QWidget *parent,QFileInfo fileInfo)
      :QWidget(parent)
 {
     ui=new Form();
-//    this->gridLayout =gridLayout;
     ui->setupUi(this);
     //ui->imageLabel->setBackgroundRole(QPalette::Base);
     ui->fileName->setText(fileInfo.completeBaseName());

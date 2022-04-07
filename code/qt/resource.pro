@@ -22,6 +22,7 @@ HEADERS += \
     src/mainwindow.h
 
 FORMS += \
+    detail.ui \
     src/image.ui \
     src/mainwindow.ui
 
