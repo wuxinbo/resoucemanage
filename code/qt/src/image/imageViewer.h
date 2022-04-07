@@ -19,9 +19,11 @@ namespace Ui {
 class ImageViewer:public QWidget
 {
     Q_OBJECT
-
 public:
-
+    /**
+     * @brief 默认样式
+     */
+    const static   QString DEFAULT_QSS;
     const static int DEFAULT_HEIGHT=300;
     ImageViewer(QWidget *parent = nullptr,
                 QFileInfo fileInfo={});
@@ -51,7 +53,16 @@ private slots:
     void loadImage();
 private:
     void setImage(const QImage &newImage);
+    /**
+     * @brief 重写点击事件,支持图片点击
+     * @param event
+     */
+    void mousePressEvent(QMouseEvent *event);
 
+
+    void enterEvent(QEvent *event) override;
+
+    void leaveEvent(QEvent *event) override;
     Ui::Form* ui;
     QImage image;
     QString filePath;

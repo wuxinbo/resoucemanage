@@ -14,6 +14,7 @@ ImageViewer::ImageViewer(QWidget *parent,QFileInfo fileInfo)
     ui->fileName->setText(fileInfo.completeBaseName());
     this->filePath =fileInfo.absoluteFilePath();
     ui->imageLabel->setScaledContents(true);
+    ui->imageLabel->setStyleSheet("border-radius:20px");
     loadFile();
 }
 
@@ -53,6 +54,19 @@ void ImageViewer::loadImage(){
 
 ImageViewer::~ImageViewer(){
     delete ui;
+}
+void ImageViewer::mousePressEvent(QMouseEvent *event){
+    QString info ="lable clicked"+(ui->fileName->text());
+    qDebug(info.toUtf8());
+
+}
+void ImageViewer::enterEvent(QEvent *event){
+    qDebug("enter");
+    ui->imageLabel->setStyleSheet("border:1px solid red;");
+}
+void ImageViewer::leaveEvent(QEvent *event){
+    qDebug("leave");
+    ui->imageLabel->setStyleSheet("");
 }
 void ImageViewer::setImage(const QImage &newImage)
 {
