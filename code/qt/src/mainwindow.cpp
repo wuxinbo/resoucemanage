@@ -19,8 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     // 设置窗口最大化
     //showMaximized();
-    //setWindowFlag(Qt::WindowType::FramelessWindowHint);
+    setWindowFlag(Qt::WindowType::FramelessWindowHint);
     initInput();
+    initMaxButton();
     //获取图片网格
     imageLayout =new QVBoxLayout(this);
 
@@ -49,6 +50,39 @@ void MainWindow::resizeEvent(QResizeEvent *event){
     //qDebug(size);
     ui->scrollAreaWidgetContents->resize(newSize);
     //ui->scrollArea->resize(newSize);
+
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    //获取鼠标的位置
+    QPoint topLeft =this->geometry().topLeft();
+    leftToMouse=event->globalPos()-topLeft ;
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    QPoint topLeft =event->globalPos()-leftToMouse;
+    this->move(topLeft);
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+}
+
+void MainWindow::initMaxButton()
+{
+    connect(ui->max,&QPushButton::clicked,this,[&]{
+        if(!this->isMaximized()){
+            ui->max->setIcon(QIcon(QPixmap(":/images/max2.png")));
+            showMaximized();
+        }else{
+            ui->max->setIcon(QIcon(QPixmap(":/images/max.png")));
+            showNormal();
+
+        }
+
+    });
 }
 MainWindow::~MainWindow()
 {

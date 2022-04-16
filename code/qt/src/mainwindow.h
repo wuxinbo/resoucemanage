@@ -30,6 +30,14 @@ private:
     void initImageLayout();
 
     void resizeEvent(QResizeEvent *event)override;
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void initMaxButton();
+    /**
+     * @brief 窗口左上角到鼠标之间的距离
+     */
+    QPoint leftToMouse;
     //相册布局
     QVBoxLayout *imageLayout;
 };

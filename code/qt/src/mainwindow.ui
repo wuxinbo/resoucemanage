@@ -118,6 +118,9 @@
 border-radius:5px;
 }</string>
          </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhNone</set>
+         </property>
          <property name="plainText">
           <string/>
          </property>
@@ -153,6 +156,9 @@ border-radius:5px;
            <height>32</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>最小化</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">#min{border:none}
 #min:hover{color:red}</string>
@@ -163,6 +169,42 @@ border-radius:5px;
          <property name="icon">
           <iconset resource="../resource.qrc">
            <normaloff>:/images/min.png</normaloff>:/images/min.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="max">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>最大化</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#max{border:none}
+#max:hover{color:red}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../resource.qrc">
+           <normaloff>:/images/max.png</normaloff>:/images/max.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -186,6 +228,9 @@ border-radius:5px;
            <height>32</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>关闭</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton#close{border:none}
 QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
@@ -199,8 +244,8 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
          </property>
          <property name="iconSize">
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>30</width>
+           <height>30</height>
           </size>
          </property>
         </widget>
@@ -257,7 +302,7 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
       <widget class="QWidget" name="scrollAreaWidgetContents">
        <property name="geometry">
         <rect>
-         <x>-1000</x>
+         <x>0</x>
          <y>0</y>
          <width>2000</width>
          <height>304</height>
@@ -275,6 +320,23 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
          <height>0</height>
         </size>
        </property>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>-20</y>
+          <width>981</width>
+          <height>321</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>AcadEref</family>
+         </font>
+        </property>
+        <widget class="QWidget" name="page"/>
+        <widget class="QWidget" name="page_2"/>
+       </widget>
       </widget>
      </widget>
     </item>
