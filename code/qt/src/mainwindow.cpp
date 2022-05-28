@@ -1,4 +1,4 @@
-﻿#pragma
+﻿
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -31,8 +31,11 @@ MainWindow::MainWindow(QWidget *parent)
     for(QFileInfo file:files){
         qDebug("fileName is:"+file.absoluteFilePath().toUtf8());
     }
+
     std::shared_ptr<QLabel> title(new QLabel(QStringLiteral("2022年1月")));
-    imageLayout->addWidget(title.get());
+    PlainEdit *edit =new PlainEdit(this);
+    imageLayout->addWidget(edit);
+//    imageLayout->addWidget(title.get());
     GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
     ui->scrollAreaWidgetContents->setLayout(imageLayout);
@@ -88,6 +91,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete imageLayout;
+    delete edit;
 }
 /**
  * @brief 按钮点击事件监听

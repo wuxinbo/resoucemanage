@@ -94,7 +94,7 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout">
        <property name="rightMargin">
         <number>0</number>
        </property>
@@ -305,7 +305,7 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
          <x>0</x>
          <y>0</y>
          <width>2000</width>
-         <height>304</height>
+         <height>307</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -331,7 +331,7 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
         </property>
         <property name="font">
          <font>
-          <family>AcadEref</family>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <widget class="QWidget" name="page"/>

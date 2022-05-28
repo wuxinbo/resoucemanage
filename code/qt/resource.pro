@@ -9,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/component/plainedit.cpp \
     src/image/gridImageLayout.cpp \
     src/image/imageViewer.cpp \
     src/image/imageloadevent.cpp \
@@ -16,6 +17,7 @@ SOURCES += \
     src/mainwindow.cpp
 
 HEADERS += \
+    src/component/plainedit.h \
     src/image/GridImageLayout.h \
     src/image/imageViewer.h \
     src/image/imageloadevent.h \
@@ -30,7 +32,6 @@ TRANSLATIONS += \
     resource_zh_CN.ts
 CONFIG += lrelease
 CONFIG += embed_translations
-RC_ICONS += test.bmp
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

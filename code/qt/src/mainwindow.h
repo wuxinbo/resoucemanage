@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QVBoxLayout>
+#include "src/component/plainedit.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -40,5 +41,9 @@ private:
     QPoint leftToMouse;
     //相册布局
     QVBoxLayout *imageLayout;
+    /**
+     * 自定义控件
+     */
+    PlainEdit *edit;
 };
 #endif // MAINWINDOW_H

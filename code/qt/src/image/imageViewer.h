@@ -60,9 +60,9 @@ private:
     void mousePressEvent(QMouseEvent *event);
 
 
-    void enterEvent(QEvent *event) override;
+    void enterEvent(QEvent *event) ;
 
-    void leaveEvent(QEvent *event) override;
+    void leaveEvent(QEvent *event) ;
     Ui::Form* ui;
     QImage image;
     QString filePath;
