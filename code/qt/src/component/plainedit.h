@@ -3,8 +3,9 @@
 
 #include <QWidget>
 #include <QColor>
+#include <QPlainTextEdit>
 
-class PlainEdit : public QWidget
+class PlainEdit : public QPlainTextEdit
 {
     Q_OBJECT
 
@@ -34,8 +35,12 @@ private:
     QColor *textColor;
     QColor *backgrouodColor;
     QColor *borderColor;
-
     bool  focus;
+
+    QString text ;
+    void drawBackground(QPainter &painter);
+    void drawText(QPainter &painter);
+    void drawBorder(QPainter &painter);
 signals:
 
 };

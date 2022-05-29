@@ -2,7 +2,7 @@
 #include <QPainter>
 #include <QFocusEvent>
 PlainEdit::PlainEdit(QWidget *parent)
-    : QWidget{parent}
+    : QPlainTextEdit(parent)
 {
     resize(100,100);
     setMinimumSize(MIN_WIDTH,MIN_HEIGHT);
@@ -20,19 +20,11 @@ PlainEdit::~PlainEdit()
 
 void PlainEdit::paintEvent(QPaintEvent *event){
     QPainter painter(this);
-    qDebug("paint");
     painter.setRenderHint(QPainter::RenderHint::Antialiasing);
-    QColor backGroundColor(255,255,255);
-    painter.setPen(*textColor);
-    QFont font("华文宋体",fontSize);
-    QFontMetrics metrics(font);
-    painter.setFont(font);
-    painter.setBrush(backGroundColor);
-    painter.drawRoundedRect(QRectF(0,0,MIN_WIDTH,MIN_HEIGHT),RADIUS,RADIUS);
-    painter.drawText(10,metrics.height(),QStringLiteral("你好啊"));
+    drawBackground(painter);
+    drawText(painter);
     if(focus){ //绘制焦点效果
-       painter.setBrush(Qt::BrushStyle::NoBrush);
-       painter.drawRoundedRect(QRectF(0,0,MIN_WIDTH,MIN_HEIGHT),RADIUS,RADIUS);
+       drawBorder(painter);
     }
 }
 
@@ -43,12 +35,34 @@ void PlainEdit::focusInEvent(QFocusEvent *event)
 {
     focus = true;
     update();
-    qDebug("getFcous");
 }
 
 void PlainEdit::focusOutEvent(QFocusEvent *event)
 {
    focus=false;
    update();
-   qDebug("lostFcous");
+}
+
+void PlainEdit::drawBackground(QPainter &painter)
+{
+
+    QColor backGroundColor(255,255,255);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(backGroundColor);
+    painter.drawRoundedRect(QRectF(0,0,MIN_WIDTH,MIN_HEIGHT),RADIUS,RADIUS);
+}
+
+void PlainEdit::drawText(QPainter &painter)
+{
+    QFont font("华文宋体",fontSize);
+    QFontMetrics metrics(font);
+    painter.setFont(font);
+    painter.setPen(*textColor);
+    painter.drawText(10,metrics.height(),QStringLiteral("你好啊"));
+}
+
+void PlainEdit::drawBorder(QPainter &painter)
+{
+    painter.setBrush(Qt::BrushStyle::NoBrush);
+    painter.drawRoundedRect(QRectF(0,0,MIN_WIDTH,MIN_HEIGHT),RADIUS,RADIUS);
 }
