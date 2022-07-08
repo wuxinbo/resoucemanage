@@ -1,57 +1,62 @@
 package com.wu.resource;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.transition.AutoTransition;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
-import com.wu.resource.main.ShareListAdapter;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.wu.resource.image.PhotoListAdapter;
+import com.wu.resource.image.PhotoResponse;
+import com.wu.resource.utils.HttpUtil;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView imageView ;
-    private GridView gridView;
+    private RecyclerView gridView;
 
-    private Button button;
-
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        imageView =findViewById(R.id.imageView);
-        gridView =findViewById(R.id.imageGridView);
+        gridView = findViewById(R.id.photoGrid);
+        //查询数据
+        HttpUtil.executorService.execute(() -> {
+            HttpUtil.getJson("photo/listByPage", (result) -> {
+                Message resMsg = new Message();
+                resMsg.obj = result;
+                Handler handler = Handler.createAsync(Looper.getMainLooper());
+                handler.post(()-> {
+                    Snackbar.make(MainActivity.this, gridView,result, Snackbar.LENGTH_SHORT).show();
+                    Gson gson = new GsonBuilder().create();
+                    PhotoResponse photoResponse = gson.fromJson(result, PhotoResponse.class);
+                    gridView.setAdapter(new PhotoListAdapter(photoResponse.getContent(),MainActivity.this));
+                    gridView.setLayoutManager(new GridLayoutManager(this,4));
 
-        button =findViewById(R.id.share);
-
-//        button.setOnClickListener((v)->{
-//            if (!popupWindow.isShowing()) {
-//                popupWindow.showAtLocation(gridView, Gravity.BOTTOM,0,0);
-//
-//            }
-//        });
-        Glide.with(this).load("http://192.168.1.112:8080/photo/get?mid=2570").into(imageView);
-        imageView.setOnClickListener((v)->{
-            Intent intent =new Intent();
-            intent.putExtra("url","http://192.168.1.112:8080/photo/get?mid=2570");
-            intent.setClass(MainActivity.this,ResourceDetailActivity.class);
-            startActivity(intent);
+                });
+            });
         });
+//        imageView.setOnClickListener((v) -> {
+//            Intent intent = new Intent();
+//            intent.putExtra("url", "http://192.168.1.112:8080/photo/get?mid=2570");
+//            intent.setClass(MainActivity.this, ResourceDetailActivity.class);
+//            startActivity(intent);
+//        });
     }
-
 
 
 }

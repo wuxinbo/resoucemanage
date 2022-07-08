@@ -2,7 +2,9 @@ package com.wu.resource;
 
 public class Constant {
 
-
-    static final String URL="http://192.168.1.112:8080";
+    /**
+     * 访问地址
+     */
+    public static final String URL="http://192.168.2.3:8080/";
 
 }

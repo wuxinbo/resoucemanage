@@ -1,13 +1,11 @@
-package com.wu.resource.main;
+package com.wu.resource.image;
 
-import static com.wu.resource.main.ShareListAdapter.shareInfo.Type.WX;
+import static com.wu.resource.image.ShareListAdapter.shareInfo.Type.WX;
 
-import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 

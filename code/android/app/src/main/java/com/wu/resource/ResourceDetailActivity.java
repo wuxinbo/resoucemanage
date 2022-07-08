@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
-import com.wu.resource.main.ShareListAdapter;
+import com.wu.resource.image.ShareListAdapter;
 
 public class ResourceDetailActivity extends AppCompatActivity {
 
