@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.transition.AutoTransition;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -26,15 +27,17 @@ public class ResourceDetailActivity extends AppCompatActivity {
         popupWindow =new PopupWindow(this);
         initPopupWindow(popupWindow);
         ActionBar actionBar = getActionBar();
-        if (actionBar!=null){
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
         String url = getIntent().getStringExtra("url");
         Glide.with(this).load(url).into(imageView);
-
         RecyclerView recyclerView = (RecyclerView) popupWindow.getContentView().findViewById(R.id.shareLayout);
         recyclerView.setAdapter(new ShareListAdapter());
         recyclerView.setLayoutManager(new GridLayoutManager(this,4));
+        imageView.setOnClickListener(v->{
+            if (!popupWindow.isShowing()) {
+                popupWindow.showAtLocation(imageView, Gravity.BOTTOM,0,0);
+
+            }
+        });
     }
     /**
      *

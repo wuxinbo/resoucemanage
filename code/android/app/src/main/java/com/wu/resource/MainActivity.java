@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 resMsg.obj = result;
                 Handler handler = Handler.createAsync(Looper.getMainLooper());
                 handler.post(()-> {
-                    Snackbar.make(MainActivity.this, gridView,result, Snackbar.LENGTH_SHORT).show();
+                    //Snackbar.make(MainActivity.this, gridView,result, Snackbar.LENGTH_SHORT).show();
                     Gson gson = new GsonBuilder().create();
                     PhotoResponse photoResponse = gson.fromJson(result, PhotoResponse.class);
                     gridView.setAdapter(new PhotoListAdapter(photoResponse.getContent(),MainActivity.this));
@@ -50,12 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             });
         });
-//        imageView.setOnClickListener((v) -> {
-//            Intent intent = new Intent();
-//            intent.putExtra("url", "http://192.168.1.112:8080/photo/get?mid=2570");
-//            intent.setClass(MainActivity.this, ResourceDetailActivity.class);
-//            startActivity(intent);
-//        });
+
     }
 
 

@@ -36,8 +36,9 @@ public class HttpUtil {
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
-//            Log.i("MainActivity1", result);
-            callBack.onResponse(response.body().string());
+            String result =response.body().string();
+            Log.i("http json", result);
+            callBack.onResponse(result);
         } catch (IOException e) {
             Log.e("IOException",e.getMessage());
         }

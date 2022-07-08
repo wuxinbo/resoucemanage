@@ -9,9 +9,7 @@
     <ImageView
         android:id="@+id/largeImage"
         android:layout_width="wrap_content"
-        android:layout_height="400dp"
-        android:layout_marginTop="156dp"
-        android:layout_marginBottom="447dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

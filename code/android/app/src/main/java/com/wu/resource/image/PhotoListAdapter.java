@@ -37,9 +37,8 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
             PhotoImageViewBinding bind = PhotoImageViewBinding.bind(itemView);
             imageView = bind.photoImage;
             imageView.setOnClickListener((view )->{
-                Toast.makeText(imageView.getContext(), "hello",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                intent.putExtra("url", Constant.URL+"/photo/get?mid=");
+                intent.putExtra("url", Constant.URL+"/photo/get?mid="+photoInfo.getMid());
                 intent.setClass(context, ResourceDetailActivity.class);
                 context.startActivity(intent);
             });
