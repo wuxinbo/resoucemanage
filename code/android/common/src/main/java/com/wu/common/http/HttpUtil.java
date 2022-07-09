@@ -1,25 +1,23 @@
-package com.wu.resource.utils;
+package com.wu.common.http;
 
-import android.os.Looper;
+
 import android.util.Log;
 
-import androidx.core.os.HandlerCompat;
-
-import com.wu.resource.Constant;
-
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class HttpUtil {
 
     public static OkHttpClient httpClient =new OkHttpClient();
-//    HandlerCompat.
-//    HandlerCompat.createAsync(Looper.getMainLooper());
+
     /**
      * 默认线程池
      */
@@ -32,13 +30,31 @@ public class HttpUtil {
      */
     public static void getJson(String url,HttpCallBack<String> callBack){
         Request request = new Request.Builder()
-                .url(Constant.URL+url)
+                .url(url)
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
             String result =response.body().string();
             Log.i("http json", result);
             callBack.onResponse(result);
+        } catch (IOException e) {
+            Log.e("IOException",e.getMessage());
+        }
+    }
+
+    /**
+     * 使用http 文件下载
+     * @param url
+     * @param callBack
+     */
+    public static void  downloadFile(String url,HttpCallBack<InputStream> callBack){
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            ResponseBody body = response.body();
+            InputStream inputStream = body.byteStream();
+            callBack.onResponse(inputStream);
         } catch (IOException e) {
             Log.e("IOException",e.getMessage());
         }

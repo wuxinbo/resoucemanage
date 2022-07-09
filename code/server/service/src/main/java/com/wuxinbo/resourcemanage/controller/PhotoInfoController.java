@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,8 +54,9 @@ public class PhotoInfoController extends BaseController{
                                HttpServletResponse response){
 
         Pageable page =PageRequest.of(currentPage==null?1:currentPage,
-                pageSize==null? Constant.DEFAULT_PAGESIZE:pageSize);
-        Page<PhotoInfo> all = photoInfoReposity.findAll(page);
+                pageSize==null? Constant.DEFAULT_PAGESIZE:pageSize,Sort.by(Sort.Direction.DESC,"createTime"));
+
+        Page<PhotoInfo> all = photoInfoReposity.findBySysFileStoreItemFileType(page,"jpg");
         return all;
     }
 

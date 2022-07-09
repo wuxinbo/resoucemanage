@@ -1,4 +1,4 @@
-package com.wu.resource.utils;
+package com.wu.common.http;
 
 @FunctionalInterface
 public interface HttpCallBack<T> {

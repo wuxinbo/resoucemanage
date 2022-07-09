@@ -26,7 +26,6 @@ public class ResourceDetailActivity extends AppCompatActivity {
         imageView =findViewById(R.id.largeImage);
         popupWindow =new PopupWindow(this);
         initPopupWindow(popupWindow);
-        ActionBar actionBar = getActionBar();
         String url = getIntent().getStringExtra("url");
         Glide.with(this).load(url).into(imageView);
         RecyclerView recyclerView = (RecyclerView) popupWindow.getContentView().findViewById(R.id.shareLayout);
