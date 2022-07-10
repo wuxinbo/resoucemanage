@@ -47,7 +47,11 @@ public class FileInfoService extends BaseService{
             if (sysFileStoreItem.getFileType()==null||
                     (!sysFileStoreItem.getFileType().equals("JPG")&&
                     !sysFileStoreItem.getFileType().equals("NEF"))
+
             ){
+                continue;
+            }
+            if (!sysFileStoreItem.getRelativeUrl().contains("2022")){
                 continue;
             }
             Metadata metadata = null;
@@ -85,7 +89,9 @@ public class FileInfoService extends BaseService{
         File[] files = dir.listFiles();
         for (File file : files) {
             if (file.isDirectory()){
-                handleDir(file.getPath(),sysFileStoreNode);
+                if (file.getPath().contains("2022")){
+                    handleDir(file.getPath(),sysFileStoreNode);
+                }
             }
             SysFileStoreItem item =new SysFileStoreItem();
             item.setFileName(file.getName());

@@ -10,7 +10,6 @@ ImageViewer::ImageViewer(QWidget *parent,QFileInfo fileInfo)
 {
     ui=new Form();
     ui->setupUi(this);
-    //ui->imageLabel->setBackgroundRole(QPalette::Base);
     ui->fileName->setText(fileInfo.completeBaseName());
     this->filePath =fileInfo.absoluteFilePath();
     ui->imageLabel->setScaledContents(true);
