@@ -1,8 +1,11 @@
 package com.wu.resource.image;
 
 
+import static com.wu.resource.Constant.gson;
+
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.wu.resource.Constant;
 import com.wu.resource.MainActivity;
 import com.wu.resource.R;
@@ -26,7 +31,7 @@ import java.util.List;
  * 图片适配器
  */
 public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.ViewHolder> {
-    private  List<PhotoInfo> items=new ArrayList<>();
+    private  List<PhotoInfo> items;
     private Context context;
     class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView ;
@@ -39,6 +44,8 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
             imageView.setOnClickListener((view )->{
                 Intent intent = new Intent();
                 intent.putExtra("url", Constant.URL+"/photo/get?mid="+photoInfo.getMid());
+
+                intent.putExtra("photo",gson.toJson(photoInfo));
                 intent.setClass(context, ResourceDetailActivity.class);
                 context.startActivity(intent);
             });

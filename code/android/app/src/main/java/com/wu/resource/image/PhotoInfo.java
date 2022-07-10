@@ -1,7 +1,15 @@
 package com.wu.resource.image;
 
-import java.util.Date;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+import com.wu.resource.db.MyTypeConverter;
+
+import java.util.Date;
+@Entity
+@TypeConverters(MyTypeConverter.class)
 public class PhotoInfo {
 
 
@@ -46,7 +54,7 @@ public class PhotoInfo {
 
 
     private String lens;
-
+    @PrimaryKey
     private Integer mid;
 
     public String getFocusLength() {

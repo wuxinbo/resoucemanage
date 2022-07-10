@@ -1,7 +1,14 @@
 package com.wu.common.http;
 
 
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,11 +35,11 @@ public class HttpUtil {
      * @param url
      * @param callBack
      */
-    public static void getJson(String url,HttpCallBack<String> callBack){
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public static void getJson(String url, HttpCallBack<String> callBack){
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-
         try (Response response = httpClient.newCall(request).execute()) {
             String result =response.body().string();
             Log.i("http json", result);

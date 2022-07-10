@@ -1,5 +1,7 @@
 package com.wu.common.download;
 
+import androidx.core.app.NotificationCompat;
+
 import com.wu.common.http.HttpUtil;
 
 /**
@@ -14,7 +16,7 @@ public class DownloadTask {
     public void download(String url){
         HttpUtil.executorService.execute(()->{
             HttpUtil.downloadFile(url,inputStream->{
-                
+//                NotificationCompat.
             });
         });
     }
