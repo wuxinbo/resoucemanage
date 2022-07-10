@@ -11,7 +11,9 @@ public class ResourceApplication extends Application {
         @Override
         public void onCreate() {
                 super.onCreate();
-                db =Room.databaseBuilder(getApplicationContext(),AppDataBase.class,"resourceDb").build();
+                db =Room.databaseBuilder(getApplicationContext(),AppDataBase.class,"resourceDb").
+                        fallbackToDestructiveMigration().
+                        build();
         }
 
         public AppDataBase getDb() {
