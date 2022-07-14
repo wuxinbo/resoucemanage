@@ -55,6 +55,8 @@ public class ResourceDetailActivity extends AppCompatActivity {
         imageView.setOnClickListener(v->{
             if (!popupWindow.isShowing()) {
                 popupWindow.showAtLocation(imageView, Gravity.BOTTOM,0,0);
+            }else{
+                popupWindow.dismiss();
             }
         });
         downloadFile();
