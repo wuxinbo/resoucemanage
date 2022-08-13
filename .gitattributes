@@ -1,1 +1,3 @@
 .java linguist-language=java
+.cpp linguist-language=cpp
+.xml linguist-language=xml
