@@ -4,7 +4,9 @@ import android.util.Log;
 
 import androidx.room.TypeConverter;
 
+import com.google.gson.Gson;
 import com.wu.resource.Constant;
+import com.wu.resource.image.PhotoInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,5 +26,13 @@ public class MyTypeConverter {
             Log.e("TypeConvertor","parseException",e);
         }
         return null;
+    }
+    @TypeConverter
+    public static PhotoInfo.SysFileStoreItem jsonToItem(String value){
+        return Constant.gson.fromJson(value,PhotoInfo.SysFileStoreItem.class);
+    }
+    @TypeConverter
+    public static String fileStoreItemToJson(PhotoInfo.SysFileStoreItem fileStoreItem){
+        return Constant.gson.toJson(fileStoreItem);
     }
 }
