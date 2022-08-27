@@ -9,7 +9,9 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/component/ListView.cpp \
     src/component/plainedit.cpp \
+    src/component/leftmenu.cpp \
     src/image/gridImageLayout.cpp \
     src/image/imageViewer.cpp \
     src/image/imageloadevent.cpp \
@@ -17,6 +19,9 @@ SOURCES += \
     src/mainwindow.cpp
 
 HEADERS += \
+    src/common.h \
+    src/component/leftmenu.h \
+    src/component/ListView.h \
     src/component/plainedit.h \
     src/image/GridImageLayout.h \
     src/image/imageViewer.h \

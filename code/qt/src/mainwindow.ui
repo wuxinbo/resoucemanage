@@ -33,7 +33,7 @@
    <bool>true</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true"># background-color: rgb(255, 255, 255);</string>
   </property>
   <property name="documentMode">
    <bool>true</bool>
@@ -98,6 +98,19 @@
        <property name="rightMargin">
         <number>0</number>
        </property>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item>
         <widget class="QPlainTextEdit" name="input">
          <property name="sizePolicy">
@@ -305,7 +318,7 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
          <x>0</x>
          <y>0</y>
          <width>2000</width>
-         <height>307</height>
+         <height>304</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -320,23 +333,6 @@ QPushButton#close:hover{background-color: rgb(255, 0, 4)}</string>
          <height>0</height>
         </size>
        </property>
-       <widget class="QStackedWidget" name="stackedWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>-20</y>
-          <width>981</width>
-          <height>321</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <widget class="QWidget" name="page"/>
-        <widget class="QWidget" name="page_2"/>
-       </widget>
       </widget>
      </widget>
     </item>
