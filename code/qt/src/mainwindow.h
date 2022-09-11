@@ -9,6 +9,7 @@
 #include <qstackedwidget.h>
 #include "common.h"
 #include "./component/leftmenu.h"
+#include "./network/TcpServer.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

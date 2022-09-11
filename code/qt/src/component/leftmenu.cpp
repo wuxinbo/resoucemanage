@@ -1,6 +1,6 @@
 ﻿#include "leftmenu.h"
 #include "ListView.h"
-
+#include <QList>
 class NAME_SPACE::LeftMenuPrivate {
 private:
     ListView * listView;
@@ -14,7 +14,7 @@ public:
     ~LeftMenuPrivate(){
         delete listView;
     }
-    void addItem(ListItem *item){
+    void addItem(QListWidgetItem *item){
         listView->addItem(item);
     }
 };
@@ -22,10 +22,11 @@ public:
 NAME_SPACE::LeftMenu::LeftMenu(QWidget *parent) : QWidget(parent),
     d_ptr(new NAME_SPACE::LeftMenuPrivate(this))
 {
-    this->setMinimumHeight(parent->height());
+    this->setGeometry(frameGeometry());
+    this->setMinimumHeight(100);
     //
-    auto* photo =new NAME_SPACE::ListItem{tr("photo")};
-    auto* video =new NAME_SPACE::ListItem{tr("video")};
+    auto* photo =new QListWidgetItem{tr("photo")};
+    auto* video =new QListWidgetItem{tr("video")};
     d_ptr->addItem(photo);
     d_ptr->addItem(video);
 }

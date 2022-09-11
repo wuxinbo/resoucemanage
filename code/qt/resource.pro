@@ -12,6 +12,7 @@ SOURCES += \
     src/component/ListView.cpp \
     src/component/plainedit.cpp \
     src/component/leftmenu.cpp \
+    src/component/rightcontent.cpp \
     src/image/gridImageLayout.cpp \
     src/image/imageViewer.cpp \
     src/image/imageloadevent.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     src/component/leftmenu.h \
     src/component/ListView.h \
     src/component/plainedit.h \
+    src/component/rightcontent.h \
     src/image/GridImageLayout.h \
     src/image/imageViewer.h \
     src/image/imageloadevent.h \

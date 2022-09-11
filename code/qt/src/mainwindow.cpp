@@ -37,7 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
     GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
     ui->scrollAreaWidgetContents->setLayout(imageLayout);
-
+    //启动tcpserver
+    NAME_SPACE::TcpServer* tcpServer = new NAME_SPACE::TcpServer();
 }
 
 void MainWindow::initInput(){
@@ -111,7 +112,7 @@ void MainWindow::drawShadow(QPainter &painter,QPaintEvent *event)
 } 
 void MainWindow::initLeftList()
 {
-      leftMenu=new xbwuc::LeftMenu(ui->centralwidget);
+    leftMenu = new xbwuc::LeftMenu(this);
 }
 MainWindow::~MainWindow()
 {

@@ -18,7 +18,12 @@ class ListView :
 public:
     ListView(QWidget *parent);
     ~ListView();
-    void addItem(ListItem * item);
+    /**
+     * @brief 选项点击事件
+     * @param item
+     */
+    void itemClick(QListWidgetItem *item);
+    void itemChanged(QListWidgetItem *current,QListWidgetItem *prev);
 //    void
 protected:
 
