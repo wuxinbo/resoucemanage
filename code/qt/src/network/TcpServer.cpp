@@ -1,4 +1,4 @@
-#include "TcpServer.h"
+ï»¿#include "TcpServer.h"
 #include "event2/event.h"
 #include <signal.h>
 #include <event2/listener.h>
@@ -6,11 +6,15 @@
 #include <event2/buffer.h>
 #include <QtConcurrent/QtConcurrent>
 #include <iostream>
+
+#ifdef _WIN32
+#pragma comment(lib,"ws2_32.lib")
+#endif
 namespace NAME_SPACE {
-	const char* welcome = "ÄãºÃxbwuc";
+	const char* welcome = "ä½ å¥½xbwuc";
 
 
-	// Ğ´Êı¾İ 
+	// å†™æ•°æ® 
 	static void conn_writeData(struct bufferevent* event , void* data) {
 		struct evbuffer* output = bufferevent_get_output(event);
 		if (evbuffer_get_length(output) == 0) {
@@ -19,7 +23,7 @@ namespace NAME_SPACE {
 		}
 		//output.
 	}
-	//¶ÁÈ¡Êı¾İ
+	//è¯»å–æ•°æ®
 	static void readDatacb(struct bufferevent* event, void* data) {
 		struct evbuffer* input = bufferevent_get_input(event);
 		int length =evbuffer_get_length(input);
@@ -29,7 +33,8 @@ namespace NAME_SPACE {
 		}
 		char* readData =new char[length];
 		bufferevent_read(event, readData, length);
-		//ÊÂ¼ş´¦Àí
+		//äº‹ä»¶å¤„ç†
+
 		bufferevent_write(event, readData, length);
 		delete[] readData;
 	}
@@ -38,7 +43,7 @@ namespace NAME_SPACE {
 	}
 
 
-	//Á¬½Ó¼àÌı·½·¨
+	//è¿æ¥ç›‘å¬æ–¹æ³•
 	void listenerFc(struct evconnlistener*, evutil_socket_t fd, struct sockaddr*, int socklen,  void* data) {
 		struct event_base* base = static_cast<event_base*>(data);
 		struct bufferevent* bev;
@@ -53,7 +58,7 @@ namespace NAME_SPACE {
 		bufferevent_enable(bev, EV_READ);
 		bufferevent_write(bev,welcome,sizeof(welcome));
 	}
-	// ÖĞ¶Ï¼àÌı
+	// ä¸­æ–­ç›‘å¬
 	static void signal_cb(evutil_socket_t, short, void*) {
 	
 	}
@@ -70,7 +75,7 @@ namespace NAME_SPACE {
 			WSADATA wsa_data;
 			WSAStartup(0x0201, &wsa_data);
 #endif
-			//´´½¨ÊÂ¼ş
+			//åˆ›å»ºäº‹ä»¶
 			base =event_base_new();
 			if (!base) {
 				return;
@@ -93,20 +98,20 @@ namespace NAME_SPACE {
 				fprintf(stderr, "Could not create/add a signal event!\n");
 				return ;
 			}
-			//ÔÚÆäËûÏß³ÌÖĞ½øĞĞÊÂ¼ş·Ö·¢
+			//åœ¨å…¶ä»–çº¿ç¨‹ä¸­è¿›è¡Œäº‹ä»¶åˆ†å‘
 			QtConcurrent::run([&]{
 				event_base_dispatch(base);
 			});
 		}
 	private:
-		//ĞèÒª¼àÌıµÄ¶Ë¿Ú
-		const USHORT port = htons(8080);
+		//éœ€è¦ç›‘å¬çš„ç«¯å£
+        const USHORT port = htons(8088);
 		event_base *base;
 		struct sockaddr_in sin = { 0 };
 		struct evconnlistener* listener;
 		struct event* signal_event;
 		/*
-		*  ¼àÌı·½·¨
+		*  ç›‘å¬æ–¹æ³•
 		*/
 		evconnlistener_cb listenerCb = listenerFc;
 	
