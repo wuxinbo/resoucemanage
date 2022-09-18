@@ -4,10 +4,12 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include "src/component/plainedit.h"
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
-
+#include <QPainter>
+#include "ui_mainwindow.h"
+#include <qstackedwidget.h>
+#include "common.h"
+#include "./component/leftmenu.h"
+#include "./network/TcpServer.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -29,12 +31,19 @@ private:
     void initInput();
 
     void initImageLayout();
-
+    void paintEvent(QPaintEvent *event) ;
     void resizeEvent(QResizeEvent *event)override;
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void initMaxButton();
+    /**
+     * @brief 绘制边框阴影
+     * @param painter
+     */
+    void drawShadow(QPainter &painter,QPaintEvent *event);
+    //初始化左侧列表
+    void initLeftList();
     /**
      * @brief 窗口左上角到鼠标之间的距离
      */
@@ -42,8 +51,9 @@ private:
     //相册布局
     QVBoxLayout *imageLayout;
     /**
-     * 自定义控件
+     * 左侧菜单
      */
-    PlainEdit *edit;
+     NAME_SPACE::LeftMenu *leftMenu;
+
 };
 #endif // MAINWINDOW_H

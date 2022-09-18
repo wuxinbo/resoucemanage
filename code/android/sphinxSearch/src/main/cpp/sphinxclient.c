@@ -996,9 +996,12 @@ sphinx_result * sphinx_query ( sphinx_client * client, const char * query, const
 		return NULL;
 
 	res = sphinx_run_queries ( client ); // just a shortcut for client->results[0]
-	sphinx_dismiss_requests ( client ); // sphinx_query() is fire and forget; dismiss request in all cases
-	if ( !res )
+	sphinx_dismiss_requests ( client ); // sphinx_query() is fire and forget; dismiss request i n all cases
+	if ( !res ){
+
 		return NULL;
+
+	}
 
 	client->error = res->error;
 	client->warning = res->warning;

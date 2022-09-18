@@ -24,7 +24,7 @@ public:
      * @brief 默认样式
      */
     const static   QString DEFAULT_QSS;
-    const static int DEFAULT_HEIGHT=300;
+    const static int DEFAULT_HEIGHT=200;
     ImageViewer(QWidget *parent = nullptr,
                 QFileInfo fileInfo={});
     /**

@@ -2,7 +2,6 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <iostream>
 #include "image/GridImageLayout.h"
 #include <QDir>
 #include <QStyle>
@@ -12,6 +11,7 @@
 #include <QPixmap>
 #include <QScreen>
 #include <memory>
+#include "./component/leftmenu.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -20,32 +20,37 @@ MainWindow::MainWindow(QWidget *parent)
     // 设置窗口最大化
     //showMaximized();
     setWindowFlag(Qt::WindowType::FramelessWindowHint);
+   // setAttribute(Qt::WidgetAttribute::WA_TranslucentBackground);
     initInput();
     initMaxButton();
+    initLeftList();
     //获取图片网格
     imageLayout =new QVBoxLayout(this);
-
     QDir dir("D:\\wallerpage");
     //获取目录内容
     QFileInfoList files=dir.entryInfoList();
     for(QFileInfo file:files){
         qDebug("fileName is:"+file.absoluteFilePath().toUtf8());
     }
-
-    std::shared_ptr<QLabel> title(new QLabel(QStringLiteral("2022年1月")));
-    PlainEdit *edit =new PlainEdit(this);
-    imageLayout->addWidget(edit);
+    //std::shared_ptr<QLabel> title(new QLabel(QStringLiteral("2022年1月")));
 //    imageLayout->addWidget(title.get());
     GridImageLayout *gridLayout =new GridImageLayout(parent,files);
     imageLayout->addLayout(gridLayout->getGridLayout());
     ui->scrollAreaWidgetContents->setLayout(imageLayout);
-
+    //启动tcpserver
+    NAME_SPACE::TcpServer* tcpServer = new NAME_SPACE::TcpServer();
 }
 
 void MainWindow::initInput(){
-    QAction *searchAction =new QAction(QIcon(QPixmap(":/images/search.png")),"");
-    ui->input->addAction(searchAction);
+    
 
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this) ;
+    painter.setRenderHint(QPainter::RenderHint::Antialiasing);
+    //drawShadow(painter,event);
 }
 void MainWindow::resizeEvent(QResizeEvent *event){
     QSize newSize =event->size();
@@ -87,18 +92,38 @@ void MainWindow::initMaxButton()
 
     });
 }
+
+void MainWindow::drawShadow(QPainter &painter,QPaintEvent *event)
+{
+    QColor pathColor("#CFCFD0");
+//    painter.setBrush(pathColor);
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    const QRect border = event->rect();
+    path.addRect(border);
+    //painter.fillPath(path,QBrush(pathColor));
+
+//    path.moveTo(0,0); //原点
+//    path.lineTo(border.right(), 0); //上
+//    path.lineTo(border.right(),border.height()); //右
+//    path.lineTo(0,border.height()); //下
+//    path.lineTo()
+    //painter.drawPath(path);
+} 
+void MainWindow::initLeftList()
+{
+    leftMenu = new xbwuc::LeftMenu(this);
+}
 MainWindow::~MainWindow()
 {
     delete ui;
     delete imageLayout;
-    delete edit;
+    delete leftMenu;
 }
 /**
  * @brief 按钮点击事件监听
  */
 void MainWindow::buttonClick(){
-    QPlainTextEdit *input = ui->input;
-    input->setPlainText("hello,word");
-    qDebug("hello,world\n");
+
 }
 
