@@ -5,6 +5,7 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
+import com.wuxinbo.resourcemanage.jni.FileWatch;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -13,7 +14,9 @@ import java.util.Collection;
 
 public class FileTest {
 
-
+    static {
+        System.loadLibrary("filewatch");
+    }
 
     @Test
     public void readInfo() throws ImageProcessingException, IOException {
@@ -27,6 +30,15 @@ public class FileTest {
         }
         System.out.println(metadata.toString());
 
+    }
+
+    @Test
+    public void fileWatch(){
+        FileWatch fileWatch =new FileWatch();
+        while (true){
+            String dirName = fileWatch.watchDir("D:\\software\\");
+            System.out.println(dirName);
+        }
     }
 
 }
