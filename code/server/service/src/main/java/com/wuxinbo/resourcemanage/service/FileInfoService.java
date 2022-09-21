@@ -106,6 +106,7 @@ public class FileInfoService extends BaseService implements InitializingBean {
                 continue;
             } catch (IOException e) {
                 logger.error("IOException",e);
+                //删除照片
                 continue;
             }
             Iterable<Directory> directories = metadata.getDirectories();
