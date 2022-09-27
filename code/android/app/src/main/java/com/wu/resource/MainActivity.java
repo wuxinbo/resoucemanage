@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,6 +25,7 @@ import com.wu.resource.image.PhotoInfo;
 import com.wu.resource.image.PhotoListAdapter;
 import com.wu.resource.image.PhotoResponse;
 import com.wu.common.http.HttpUtil;
+import com.wu.sphinxsearch.NativeLib;
 
 import java.util.List;
 
@@ -36,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        NativeLib nativeLib =new NativeLib();
+        Log.i("native test",nativeLib.query("50mm","photo"));
         setContentView(R.layout.activity_main);
         gridView = findViewById(R.id.photoGrid);
         //初始化相册数据

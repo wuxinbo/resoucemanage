@@ -16,6 +16,9 @@ public class MyTypeConverter {
 
     @TypeConverter
     public static String dataToString(Date date){
+        if(date==null){
+            return "";
+        }
         return new SimpleDateFormat(Constant.DATE_FORMAT).format(date);
     }
     @TypeConverter

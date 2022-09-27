@@ -53,8 +53,8 @@ public class PhotoInfoController extends BaseController{
                                HttpServletRequest request,
                                HttpServletResponse response){
 
-        Pageable page =PageRequest.of(currentPage==null?1:currentPage,
-                pageSize==null? Constant.DEFAULT_PAGESIZE:pageSize,Sort.by(Sort.Direction.DESC,"createTime"));
+        Pageable page =PageRequest.of(currentPage==null?0:currentPage,
+                pageSize==null? Constant.DEFAULT_PAGESIZE:pageSize,Sort.by(Sort.Direction.DESC,"mid"));
 
         Page<PhotoInfo> all = photoInfoReposity.findBySysFileStoreItemFileType(page,"jpg");
         return all;

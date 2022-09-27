@@ -58,6 +58,6 @@ class SpringbootDemoApplicationTests {
 	}
 	@Test
 	public void writePhotoInfo() throws ImageProcessingException, IOException {
-		fileInfoService.readPhotoInfoMeta();
+		fileInfoService.readPhotoInfoMeta(null);
 	}
 }

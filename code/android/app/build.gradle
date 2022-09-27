@@ -41,6 +41,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation project(path: ':common')
+    implementation project(path:':sphinxSearch')
     testImplementation 'junit:junit:4.+'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:+'
     implementation 'com.google.code.gson:gson:2.9.0'
