@@ -6,6 +6,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.wuxinbo.resourcemanage.jni.FileWatch;
+import com.wuxinbo.resourcemanage.model.BarChartData;
 import com.wuxinbo.resourcemanage.model.PhotoInfo;
 import com.wuxinbo.resourcemanage.model.SysFileStoreItem;
 import com.wuxinbo.resourcemanage.model.SysFileStoreNode;
@@ -21,9 +22,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 /**
  * 本地文件管理方法
