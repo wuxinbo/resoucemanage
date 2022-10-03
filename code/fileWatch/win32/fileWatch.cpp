@@ -57,6 +57,11 @@ LPCSTR watchDirChange(LPCWSTR dirName)
                                        &lpBytesReturned,
                                        nullptr,
                                        0);
+    //判断是否是文件名称修改了，如果是重命名则需要获取最新的文件名称,根据偏移量获取最新的文件信息。
+    if (notifyInform->Action == FILE_ACTION_RENAMED_OLD_NAME) {
+        notifyInform = (FILE_NOTIFY_INFORMATION*)(notify + notifyInform->NextEntryOffset);
+        return wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR));
+    }
     return wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR));
 }
 //文件目录监控
