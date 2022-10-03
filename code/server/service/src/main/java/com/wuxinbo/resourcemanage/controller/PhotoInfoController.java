@@ -90,6 +90,8 @@ public class PhotoInfoController extends BaseController {
                 case FOUCUS_LENGTH:
                     list = photoInfoReposity.queryPhotoGroupByFoucus();
                     break;
+                case SHOT_TIME:
+                    list =photoInfoReposity.queryPhotoGroupByShotTime();
             }
         }
         BarChartData data = new BarChartData();

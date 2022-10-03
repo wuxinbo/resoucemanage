@@ -18,7 +18,7 @@ public class FileTest {
         System.loadLibrary("filewatch");
     }
 
-    @Test
+//    @Test
     public void readInfo() throws ImageProcessingException, IOException {
         Metadata metadata = ImageMetadataReader.readMetadata(new File("D:\\seafile\\photo\\2021\\07\\10\\export\\DSC_1658.jpg"));
         Iterable<Directory> directories = metadata.getDirectories();
@@ -32,7 +32,7 @@ public class FileTest {
 
     }
 
-    @Test
+//    @Test
     public void fileWatch(){
         FileWatch fileWatch =new FileWatch();
         while (true){

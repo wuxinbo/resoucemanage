@@ -34,4 +34,7 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
      */
     @Query("select focusLength,count(1) from PhotoInfo where focusLength is not null group by focusLength order by count(1)")
     List queryPhotoGroupByFoucus();
+    @Query(value = "select date_format(shot_time,'%Y-%m-%d'),count(1) from photo_info where shot_time is not null group by date_format(shot_time,'%Y-%m-%d')\n" +
+            " order by count(1) desc limit 0,20",nativeQuery = true)
+    List queryPhotoGroupByShotTime();
 }

@@ -9,7 +9,12 @@ public enum PhotoGroupBy {
     /**
      * 焦段
      */
-    FOUCUS_LENGTH(2);
+    FOUCUS_LENGTH(2),
+    /**
+     * 拍摄时间
+     */
+    SHOT_TIME(3),
+    ;
     private Integer value;
 
     PhotoGroupBy(Integer value) {
