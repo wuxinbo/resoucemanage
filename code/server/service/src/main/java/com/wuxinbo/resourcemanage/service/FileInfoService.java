@@ -73,9 +73,15 @@ public class FileInfoService extends BaseService implements InitializingBean {
 
     public void scanPhoto(String filename,SysFileStoreNode node ){
        File file =new File( node.getLocalPath()+File.separator+filename);
+       if (file.isDirectory()){
+           logger.info("file is dir ,fileName is "+file.getPath());
+           return;
+       }
         //解析路径
         SysFileStoreItem sysFileStoreItem = saveFileInfo(file, node);
-        readPhotoInfoMeta(sysFileStoreItem);
+        if (sysFileStoreItem!=null){
+            readPhotoInfoMeta(sysFileStoreItem);
+        }
     }
 
     /**
@@ -98,8 +104,20 @@ public class FileInfoService extends BaseService implements InitializingBean {
                 continue;
             }
             Metadata metadata = null;
+            PhotoInfo photoInfo =new PhotoInfo();
+            photoInfo.setFileId(sysFileStoreItem.getMid());
+            PhotoInfo result = photoInfoReposity.findByFileId(photoInfo.getFileId());
             try {
-                metadata = ImageMetadataReader.readMetadata(new File(sysFileStoreItem.getSysFileStoreNode().getLocalPath()+sysFileStoreItem.getRelativeUrl()));
+                File photo = new File(sysFileStoreItem.getSysFileStoreNode().getLocalPath() + sysFileStoreItem.getRelativeUrl());
+                if (photo.exists()){
+                    metadata = ImageMetadataReader.readMetadata(photo);
+                }else{
+                    //删除记录
+                    if (photoInfo!=null){
+                        photoInfoReposity.delete(photoInfo);
+                        sysFileStoreItemReposity.delete(sysFileStoreItem);
+                    }
+                }
             } catch (ImageProcessingException e) {
                 logger.error("ImageProcessingException",e);
                 continue;
@@ -109,13 +127,11 @@ public class FileInfoService extends BaseService implements InitializingBean {
                 continue;
             }
             Iterable<Directory> directories = metadata.getDirectories();
-            PhotoInfo photoInfo =new PhotoInfo();
-            photoInfo.setFileId(sysFileStoreItem.getMid());
             for (Directory directory : directories) {
                 Collection<Tag> tags = directory.getTags();
                 photoInfo.parsetagInfo(tags);
             }
-            PhotoInfo result = photoInfoReposity.findByFileId(photoInfo.getFileId());
+
             if (result!=null){
                 photoInfo.setMid(result.getMid());
                 photoInfo.setUpdateTime(new Date());
@@ -136,7 +152,9 @@ public class FileInfoService extends BaseService implements InitializingBean {
         String[] names = file.getName().split("\\.");
         if (names.length>1){
             item.setFileType(names[1]);
-        }else{
+        }
+        if (file.getName().endsWith("tmp")){
+            return null;
         }
         SysFileStoreItem reuslt = sysFileStoreItemReposity.findByRelativeUrl(item.getRelativeUrl());
         if (reuslt!=null){

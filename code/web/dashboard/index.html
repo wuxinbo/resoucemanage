@@ -5,16 +5,20 @@
 </head>
 
 <body>
-    <div id="lens" style="height:500px;width:800px">
-
+    <div >
+        <div id="lens" style="float: left;height:500px;width:800px">
+        </div>
+        <div id="foucus" style="height:500px;width:800px;margin-left: 50%;">
+        </div>
+        
     </div>
-    <div id="foucus" style="height:500px;width:800px">
-
+    <div id="shotTime" style="height:500px;width:100%">
     </div>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/axios.min.js"></script>
     <script src="./js/echarts.min.js"></script>
     <script>
-        axios.get('http://localhost:8080/photo/queryPhotoGroupby?group=1')
+        var urlPreffix = "http://localhost:8080/"
+        axios.get(urlPreffix + "photo/queryPhotoGroupby?group=1")
             .then(function (response) {
                 var lens = echarts.init(document.getElementById('lens'));
                 option = {
@@ -43,7 +47,7 @@
                 console.log(error);
             });
 
-        axios.get('http://localhost:8080/photo/queryPhotoGroupby?group=2')
+        axios.get(urlPreffix + 'photo/queryPhotoGroupby?group=2')
             .then(function (response) {
                 var foucus = echarts.init(document.getElementById('foucus'));
                 option = {
@@ -71,7 +75,33 @@
             .catch(function (error) {
                 console.log(error);
             });
-
+        axios.get(urlPreffix + 'photo/queryPhotoGroupby?group=3')
+            .then(function (response) {
+                var shotTime = echarts.init(document.getElementById('shotTime'));
+                option = {
+                    xAxis: {
+                        type: 'category',
+                        data: response.data.category
+                    },
+                    title: {
+                        text: "拍摄时间统计"
+                    },
+                    tooltip: {},
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: response.data.data,
+                            type: 'bar'
+                        }
+                    ]
+                };
+                shotTime.setOption(option);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
 
     </script>
 </body>
