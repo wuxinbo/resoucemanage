@@ -10,9 +10,9 @@ extern "C" {
 /*
  * Class:     com_wuxinbo_resourcemanage_jni_FileWatch
  * Method:    watchDir
- * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;)Lcom/wuxinbo/resourcemanage/model/FileChangeNotify;
  */
-JNIEXPORT jstring JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir
+JNIEXPORT jobject JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir
   (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus

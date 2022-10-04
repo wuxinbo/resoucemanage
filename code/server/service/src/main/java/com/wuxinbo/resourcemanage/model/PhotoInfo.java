@@ -97,7 +97,7 @@ public class PhotoInfo extends BaseInfo{
             else if (tag.getTagName().equals("Image Height")){
                 height =Integer.parseInt(tag.getDescription().split(" ")[0]);
             }
-            else if (tag.getTagName().equals("Date/Time")){
+            else if (tag.getTagName().equals("Date/Time Original")){
                 try {
                     shotTime =new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(tag.getDescription());
                 } catch (ParseException e) {

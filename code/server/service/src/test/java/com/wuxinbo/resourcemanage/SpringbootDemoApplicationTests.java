@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-@SpringBootTest
+//@SpringBootTest
 class SpringbootDemoApplicationTests {
 	@Autowired
 	private PhotoInfoReposity photoInfoReposity;
@@ -30,11 +30,11 @@ class SpringbootDemoApplicationTests {
 	private SysFileStoreItemReposity sysFileStoreItemReposity;
 	@Autowired
 	private FileInfoService fileInfoService;
-	@Test
+//	@Test
 	void contextLoads() {
 	}
 
-	@Test
+//	@Test
 	public void PhotoInfo(){
 		System.out.println(photoInfoReposity.count());
 		PhotoInfo photoInfo =new PhotoInfo();
@@ -43,21 +43,21 @@ class SpringbootDemoApplicationTests {
 		photoInfo.setAperture("4");
 		photoInfoReposity.save(photoInfo);
 	}
-	@Test
+//	@Test
 	public void fileNode(){
 		SysFileStoreNode node =new SysFileStoreNode();
 		node.setFileNodeName("D盘");
 		node.setLocalPath("D:\\seafile\\photo");
 		sysFileStoreNodeReposity.save(node);
 	}
-	@Test
+//	@Test
 	public void ReadFileInfo(){
 		File dir =new File("D:\\seafile\\photo");
 		SysFileStoreNode localPath = sysFileStoreNodeReposity.findByLocalPath(dir.getPath());
 		fileInfoService.scanFile(localPath);
 	}
-	@Test
+//	@Test
 	public void writePhotoInfo() throws ImageProcessingException, IOException {
-		fileInfoService.readPhotoInfoMeta();
+		fileInfoService.readPhotoInfoMeta(null);
 	}
 }
