@@ -19,7 +19,7 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
      * @return
      */
     PhotoInfo findByFileId(Integer fileId);
-    Page<PhotoInfo> findBySysFileStoreItemFileTypeAndLike(Pageable page,String fileType);
+    Page<PhotoInfo> findBySysFileStoreItemFileType(Pageable page,String fileType);
 
     /**
      * 根据镜头统计

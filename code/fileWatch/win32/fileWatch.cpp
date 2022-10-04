@@ -32,12 +32,20 @@ LPCWSTR multiByteToWideChar(LPCSTR str)
     wdata[wsize] = 0;
     return wdata;
 }
+struct FileNotify {
+    DWORD action;
+    
+    LPCSTR filePath;
+
+
+};
+
 /**
  * @brief 使用同步的方式监听文件目录的变化
  *
  * @param dirName 目录路径
  */
-LPCSTR watchDirChange(LPCWSTR dirName)
+void watchDirChange(LPCWSTR dirName,FileNotify &fileNotify)
 {
     HANDLE dirHandle = CreateFile(dirName, GENERIC_READ | GENERIC_WRITE,
                                   FILE_SHARE_WRITE | FILE_SHARE_READ,
@@ -60,12 +68,13 @@ LPCSTR watchDirChange(LPCWSTR dirName)
     //判断是否是文件名称修改了，如果是重命名则需要获取最新的文件名称,根据偏移量获取最新的文件信息。
     if (notifyInform->Action == FILE_ACTION_RENAMED_OLD_NAME) {
         notifyInform = (FILE_NOTIFY_INFORMATION*)(notify + notifyInform->NextEntryOffset);
-        return wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR));
     }
-    return wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR));
+    fileNotify.filePath = wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR));
+    fileNotify.action = notifyInform->Action;
 }
+
 //文件目录监控
-JNIEXPORT jstring JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir(JNIEnv *env, jobject, jstring str)
+JNIEXPORT jobject JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir(JNIEnv *env, jobject, jstring str)
 {
     //从jstring 转换为wchar
     LPCSTR name = env->GetStringUTFChars(str, false);
@@ -75,10 +84,23 @@ JNIEXPORT jstring JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir
     }
 
     LPCWSTR wdirName = multiByteToWideChar(name);
-    LPCSTR fileName =watchDirChange(wdirName);
+    FileNotify fileNotify;
+    watchDirChange(wdirName,fileNotify);
     env->ReleaseStringUTFChars(str, name);
-    jstring jfileName = env->NewStringUTF(fileName);
-    std::cout << "file isChange fileName is " << fileName << std::endl;
-    delete []fileName;
-    return jfileName;
+    jclass fileNotifyClass =env->FindClass("com/wuxinbo/resourcemanage/model/FileChangeNotify");
+    if (!fileNotifyClass) {
+        return  nullptr;
+    }
+    //构造对象
+    jobject fileNotifyObj =env->AllocObject(fileNotifyClass);
+    jstring jfileName = env->NewStringUTF(fileNotify.filePath);
+    //设置文件路径
+    jmethodID  setFilePathMethod= env->GetMethodID(fileNotifyClass, "setFilePath","(Ljava/lang/String;)V");
+    env->CallVoidMethod(fileNotifyObj,setFilePathMethod,jfileName);
+
+    jmethodID setAction =env->GetMethodID(fileNotifyClass,"setAction", "(I)V");
+    env->CallVoidMethod(fileNotifyObj,setAction,fileNotify.action);
+    std::cout << "file isChange fileName is " << fileNotify.filePath << std::endl;
+    delete []fileNotify.filePath;
+    return fileNotifyObj;
 }

@@ -6,10 +6,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.wuxinbo.resourcemanage.jni.FileWatch;
-import com.wuxinbo.resourcemanage.model.BarChartData;
-import com.wuxinbo.resourcemanage.model.PhotoInfo;
-import com.wuxinbo.resourcemanage.model.SysFileStoreItem;
-import com.wuxinbo.resourcemanage.model.SysFileStoreNode;
+import com.wuxinbo.resourcemanage.model.*;
 import com.wuxinbo.resourcemanage.reposity.PhotoInfoReposity;
 import com.wuxinbo.resourcemanage.reposity.SysFileStoreItemReposity;
 import com.wuxinbo.resourcemanage.reposity.SysFileStoreNodeReposity;
@@ -55,12 +52,12 @@ public class FileInfoService extends BaseService implements InitializingBean {
                     taskExecutor.execute(()->{
                         FileWatch fileWatch =new FileWatch();
                         while (true){
-                           String fileName = fileWatch.watchDir(node.getLocalPath());
-                           if (!StringUtils.isEmpty(fileName)){
+                            FileChangeNotify fileChangeNotify = fileWatch.watchDir(node.getLocalPath());
+
+                            if (fileChangeNotify!=null&&!StringUtils.isEmpty(fileChangeNotify.getFilePath())){
                                //
-                               logger.info("file is change fileName is "+fileName);
                                try {
-                                   scanPhoto(fileName,node);
+                                   scanPhoto(fileChangeNotify,node);
                                }catch (Exception e){
                                    logger.error("scanPhoto Fail ",e);
                                }
@@ -71,8 +68,8 @@ public class FileInfoService extends BaseService implements InitializingBean {
         }
     }
 
-    public void scanPhoto(String filename,SysFileStoreNode node ){
-       File file =new File( node.getLocalPath()+File.separator+filename);
+    public void scanPhoto(FileChangeNotify notify,SysFileStoreNode node ){
+       File file =new File( node.getLocalPath()+File.separator+notify.getFilePath());
        if (file.isDirectory()){
            logger.info("file is dir ,fileName is "+file.getPath());
            return;
@@ -114,8 +111,8 @@ public class FileInfoService extends BaseService implements InitializingBean {
                 }else{
                     //删除记录
                     if (photoInfo!=null){
-                        photoInfoReposity.delete(photoInfo);
-                        sysFileStoreItemReposity.delete(sysFileStoreItem);
+                        deletePhoto(photoInfo,sysFileStoreItem);
+                        return ;
                     }
                 }
             } catch (ImageProcessingException e) {
@@ -141,7 +138,11 @@ public class FileInfoService extends BaseService implements InitializingBean {
             photoInfoReposity.save(photoInfo);
         }
     }
+    private void deletePhoto(PhotoInfo photoInfo,SysFileStoreItem sysFileStoreItem){
+        photoInfoReposity.delete(photoInfo);
+        sysFileStoreItemReposity.delete(sysFileStoreItem);
 
+    }
     private SysFileStoreItem saveFileInfo(File file,SysFileStoreNode sysFileStoreNode){
         SysFileStoreItem item =new SysFileStoreItem();
         item.setFileName(file.getName());

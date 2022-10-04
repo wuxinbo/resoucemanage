@@ -6,6 +6,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.wuxinbo.resourcemanage.jni.FileWatch;
+import com.wuxinbo.resourcemanage.model.FileChangeNotify;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -32,12 +33,14 @@ public class FileTest {
 
     }
 
-//    @Test
+    @Test
     public void fileWatch(){
         FileWatch fileWatch =new FileWatch();
         while (true){
-            String dirName = fileWatch.watchDir("D:\\software\\");
-            System.out.println(dirName);
+            FileChangeNotify fileChangeNotify = fileWatch.watchDir("D:\\seafile\\");
+            if (fileChangeNotify!=null){
+                System.out.println(fileChangeNotify.getFilePath());
+            }
         }
     }
 
