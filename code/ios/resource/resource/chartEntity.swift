@@ -9,10 +9,11 @@ import Foundation
 //柱状图
 struct lineChartData : Identifiable{
     var id = UUID();
-    var num: Int32;
-    var type: String;
+    var data: Int32;
+    var category: String;
     
 }
+
 struct lineChart{
     var title:String;
     var data: [lineChartData]

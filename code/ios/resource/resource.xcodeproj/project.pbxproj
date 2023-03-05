@@ -18,6 +18,9 @@
 		9D0126BE29AB74170037B41F /* resourceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0126BD29AB74170037B41F /* resourceUITestsLaunchTests.swift */; };
 		9DAC210729AF97F700BE20F4 /* chartEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC210629AF97F700BE20F4 /* chartEntity.swift */; };
 		9DAC210929AFA48D00BE20F4 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC210829AFA48D00BE20F4 /* ChartView.swift */; };
+		9DAC214929B453E800BE20F4 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC214829B453E800BE20F4 /* AppConfig.swift */; };
+		9DAC214C29B4969600BE20F4 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC214B29B4969600BE20F4 /* Photo.swift */; };
+		9DAC214F29B49A4700BE20F4 /* Http.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAC214E29B49A4700BE20F4 /* Http.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +55,9 @@
 		9D0126BD29AB74170037B41F /* resourceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = resourceUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9DAC210629AF97F700BE20F4 /* chartEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chartEntity.swift; sourceTree = "<group>"; };
 		9DAC210829AFA48D00BE20F4 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		9DAC214829B453E800BE20F4 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		9DAC214B29B4969600BE20F4 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		9DAC214E29B49A4700BE20F4 /* Http.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Http.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +108,8 @@
 		9D01269A29AB74150037B41F /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				9DAC214D29B49A3300BE20F4 /* http */,
+				9DAC214A29B4967F00BE20F4 /* photo */,
 				9D01269B29AB74150037B41F /* resourceApp.swift */,
 				9D01269D29AB74150037B41F /* ContentView.swift */,
 				9D01269F29AB74170037B41F /* Assets.xcassets */,
@@ -110,6 +118,7 @@
 				9D0126A129AB74170037B41F /* Preview Content */,
 				9DAC210629AF97F700BE20F4 /* chartEntity.swift */,
 				9DAC210829AFA48D00BE20F4 /* ChartView.swift */,
+				9DAC214829B453E800BE20F4 /* AppConfig.swift */,
 			);
 			path = resource;
 			sourceTree = "<group>";
@@ -137,6 +146,22 @@
 				9D0126BD29AB74170037B41F /* resourceUITestsLaunchTests.swift */,
 			);
 			path = resourceUITests;
+			sourceTree = "<group>";
+		};
+		9DAC214A29B4967F00BE20F4 /* photo */ = {
+			isa = PBXGroup;
+			children = (
+				9DAC214B29B4969600BE20F4 /* Photo.swift */,
+			);
+			path = photo;
+			sourceTree = "<group>";
+		};
+		9DAC214D29B49A3300BE20F4 /* http */ = {
+			isa = PBXGroup;
+			children = (
+				9DAC214E29B49A4700BE20F4 /* Http.swift */,
+			);
+			path = http;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,12 +294,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DAC214C29B4969600BE20F4 /* Photo.swift in Sources */,
 				9D0126A529AB74170037B41F /* Persistence.swift in Sources */,
 				9D0126A829AB74170037B41F /* resource.xcdatamodeld in Sources */,
 				9D01269E29AB74150037B41F /* ContentView.swift in Sources */,
+				9DAC214929B453E800BE20F4 /* AppConfig.swift in Sources */,
 				9DAC210729AF97F700BE20F4 /* chartEntity.swift in Sources */,
 				9D01269C29AB74150037B41F /* resourceApp.swift in Sources */,
 				9DAC210929AFA48D00BE20F4 /* ChartView.swift in Sources */,
+				9DAC214F29B49A4700BE20F4 /* Http.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +476,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wuxinbo.resource;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -477,6 +508,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wuxinbo.resource;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

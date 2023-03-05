@@ -17,26 +17,13 @@ struct ContentView: View {
         animation: .default)
     private var items: FetchedResults<Item>
     
-    var focusData = lineChart(title:"焦段数量统计",data:[
-        .init(num: 25, type: "35mm"),
-        .init(num: 42, type: "210mm"),
-        .init(num: 48, type: "70mm")
-    ])
-    var shotTimeData = lineChart(title:"日期数量统计",data:[
-        .init(num: 55, type: "2022-01-02"),
-        .init(num: 8, type: "2022-03-02"),
-        .init(num: 48, type: "2022-03-03")
-    ])
+ 
     var body: some View {
         HStack{
             VStack{
-                lineChartView(chart: focusData)
-                
+                lineChartView(url: lensStatisUrl,title: "镜头数量统计")
             }
-            VStack{
-                lineChartView(chart: shotTimeData)
-
-            }
+          
         }
         
      

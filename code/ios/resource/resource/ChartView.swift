@@ -9,23 +9,28 @@ import Foundation
 import Charts
 import SwiftUI
 struct lineChartView: View{
-    var chart:lineChart;
-    init(chart: lineChart) {
-        self.chart = chart
+    @EnvironmentObject var photo:Photo;
+    var url:String="";
+    
+    init(url: String,title:String){
+        self.url = url;
     }
     var body: some View{
         VStack{
             Chart{
-                ForEach(chart.data) { data in
+                ForEach(photo.chartData.data) { item in
                     BarMark(
-                    x: .value("焦段", data.type),
-                    y: .value("数量", data.num),
+                    x: .value("镜头", item.category),
+                    y: .value("数量", item.data),
                     width: 60
                     )
                 }
             }
-            Text(chart.title)
+            Text(photo.chartData.title)
             
+        }.task {
+            photo.getData(url: url);
+
         }
         
     }
