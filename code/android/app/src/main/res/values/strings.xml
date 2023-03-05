@@ -13,4 +13,8 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="channel_name">notification</string>
     <string name="channel_description">通知测试</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">图片</string>
+    <string name="title_dashboard">统计</string>
+    <string name="title_mine">我的</string>
 </resources>

@@ -19,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
 
 //@SpringBootTest
 class SpringbootDemoApplicationTests {
@@ -58,6 +60,41 @@ class SpringbootDemoApplicationTests {
 	}
 //	@Test
 	public void writePhotoInfo() throws ImageProcessingException, IOException {
-		fileInfoService.readPhotoInfoMeta(null);
+		Iterable<SysFileStoreItem> fileStoreItems  =sysFileStoreItemReposity.findAll();
+		Iterator<SysFileStoreItem> iterator = fileStoreItems.iterator();
+		while (iterator.hasNext()){
+			SysFileStoreItem sysFileStoreItem = iterator.next();
+			if (sysFileStoreItem.getRelativeUrl().contains("export")&&
+					sysFileStoreItem.getFileType()!=null&&
+					sysFileStoreItem.getFileType().equalsIgnoreCase("jpg")){
+				Metadata metadata = null;
+				PhotoInfo photoInfo =new PhotoInfo();
+				photoInfo.setFileId(sysFileStoreItem.getMid());
+				PhotoInfo result = photoInfoReposity.findByFileId(photoInfo.getFileId());
+				if (result!=null){
+					continue;
+				}
+				try {
+					File photo = new File(sysFileStoreItem.getSysFileStoreNode().getLocalPath() + sysFileStoreItem.getRelativeUrl());
+					if (photo.exists()){
+						metadata = ImageMetadataReader.readMetadata(photo);
+					}else{
+						continue;
+					}
+				} catch (ImageProcessingException e) {
+					continue;
+				} catch (IOException e) {
+					//删除照片
+					continue;
+				}
+				Iterable<Directory> directories = metadata.getDirectories();
+				for (Directory directory : directories) {
+					Collection<Tag> tags = directory.getTags();
+					photoInfo.parsetagInfo(tags);
+				}
+				photoInfo.setCreateTime(new Date());
+				photoInfoReposity.save(photoInfo);
+			}
+		}
 	}
 }

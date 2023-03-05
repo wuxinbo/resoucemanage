@@ -176,8 +176,12 @@ public class FileInfoService extends BaseService implements InitializingBean {
         File dir =new File(path);
         File[] files = dir.listFiles();
         for (File file : files) {
+            if (file.isDirectory()){
+                handleDir(file.getPath(),sysFileStoreNode);
+            }
             saveFileInfo(file,sysFileStoreNode);
         }
+
     }
 
     @Override
