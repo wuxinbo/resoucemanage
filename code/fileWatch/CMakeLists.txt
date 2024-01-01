@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.20.0)
+
+project(filewatch)
+set(CMAKE_CXX_STANDARD 11)
+include_directories("./include")
+if (LINUX)
+    add_subdirectory(linux)
+    include_directories("./include/linux")
+    add_executable("watch" "filewatchTest.c" linux)
+endif()
+if(WIN32)
+    add_subdirectory(win32)
+    add_executable("watch" "filewatchTest.c" win32)
+
+endif()
