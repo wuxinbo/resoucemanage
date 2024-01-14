@@ -57,7 +57,7 @@ public class FileInfoService extends BaseService implements InitializingBean {
                             if (fileChangeNotify!=null&&!StringUtils.isEmpty(fileChangeNotify.getFilePath())){
                                //
                                try {
-                                   scanPhoto(fileChangeNotify,node);
+                                 taskExecutor.execute(()->{ scanPhoto(fileChangeNotify,node);});
                                }catch (Exception e){
                                    logger.error("scanPhoto Fail ",e);
                                }
@@ -74,7 +74,9 @@ public class FileInfoService extends BaseService implements InitializingBean {
            logger.info("file is dir ,fileName is "+file.getPath());
            return;
        }
-        //解析路径
+       logger.info(notify.getFilePath()+" file is change action is "+notify.getAction());
+
+      //解析路径
         SysFileStoreItem sysFileStoreItem = saveFileInfo(file, node);
         if (sysFileStoreItem!=null){
             readPhotoInfoMeta(sysFileStoreItem);
