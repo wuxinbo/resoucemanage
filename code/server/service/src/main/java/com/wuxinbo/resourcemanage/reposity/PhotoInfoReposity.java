@@ -18,7 +18,7 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
      * @param fileId
      * @return
      */
-    PhotoInfo findByFileId(Integer fileId);
+    List<PhotoInfo> findByFileId(Integer fileId);
     Page<PhotoInfo> findBySysFileStoreItemFileType(Pageable page,String fileType);
 
     /**
@@ -34,7 +34,9 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
      */
     @Query("select focusLength,count(1) from PhotoInfo where focusLength is not null group by focusLength order by count(1)")
     List queryPhotoGroupByFoucus();
-    @Query(value = "select date_format(shot_time,'%Y-%m-%d'),count(1) from photo_info where shot_time is not null group by date_format(shot_time,'%Y-%m-%d')\n" +
+    @Query(value = "select date_format(i.shot_time,'%Y-%m-%d'),count(1) from photo_info i left join sys_file_store_item s on i.file_id=s.mid" +
+            " where i.shot_time is not null and s.relative_url like '%export%'" +
+            "group by date_format(i.shot_time,'%Y-%m-%d')\n" +
             " order by count(1) desc limit 0,20",nativeQuery = true)
     List queryPhotoGroupByShotTime();
 }
