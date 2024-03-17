@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">resource</string>
+    <string name="app_name">图片管理</string>
     <string name="share_wx_freind">朋友圈</string>
     <string name="share_wx_collect">收藏</string>
     <string name="title_activity_resource_detail">ResourceDetailActivity</string>
