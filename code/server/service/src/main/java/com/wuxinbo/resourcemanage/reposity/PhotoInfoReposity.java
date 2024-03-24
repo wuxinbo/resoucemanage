@@ -19,6 +19,14 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
      * @return
      */
     List<PhotoInfo> findByFileId(Integer fileId);
+    @Query(value = "select i.*,item.relative_url from photo_info i left join sys_file_store_item item on i.file_id =item.mid " +
+      "where item.mid is not null " +
+      "and item.file_type ='jpg'" +
+      " and relative_url like '%export%'" +
+      "order by i.shot_time desc ",nativeQuery = true,
+      countQuery = "select count(1) from photo_info i left join sys_file_store_item item on" +
+        " i.file_id =item.mid where item.mid is not null and item.file_type ='jpg' and relative_url like '%export%'"
+    )
     Page<PhotoInfo> findBySysFileStoreItemFileType(Pageable page,String fileType);
 
     /**
