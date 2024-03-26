@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -36,7 +37,6 @@ import java.util.stream.Collectors;
 public class HomeFragment extends Fragment {
 
   private FragmentPicBinding binding;
-  private RecyclerView gridView;
   private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
   private HomeViewModel homeViewModel;
 
@@ -45,10 +45,8 @@ public class HomeFragment extends Fragment {
     binding = FragmentPicBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
     homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-//    homeViewModel.
 //    NativeLib nativeLib = new NativeLib();
 //    Log.i("native test", nativeLib.query("50mm", "photo"));
-    gridView = binding.photoGrid;
 
     //初始化相册数据
     ResourceApplication application = (ResourceApplication) getActivity().getApplication();
@@ -57,30 +55,20 @@ public class HomeFragment extends Fragment {
     Observer<List<PhotoInfo>> photoObs = photoInfos -> {
         Map<String, List<PhotoInfo>> collect = photoInfos.stream().
           collect(Collectors.groupingBy(it -> dateFormat.format(it.getShotTime())));
+        binding.picLineLayout.removeAllViews();
         collect.forEach((key, value) -> {
-          binding.date.setText(key);
-          gridView.setAdapter(new PhotoListAdapter(value, getContext()));
-          gridView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+          //初始化标题
+          TextView date = new TextView(getActivity());
+          date.setPadding(10,10,0,20);
+          date.setText(key);
+          binding.picLineLayout.addView(date);
+          RecyclerView listView = new RecyclerView(getActivity());
+          listView.setAdapter(new PhotoListAdapter(value, getContext()));
+          listView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+          binding.picLineLayout.addView(listView);
         });
     };
     homeViewModel.getPhotoData().observe(getViewLifecycleOwner(), photoObs);
-//      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//        HttpUtil.getJson(Constant.URL + "photo/listByPage", (result) -> {
-//          PhotoResponse photoResponse = gson.fromJson(result, PhotoResponse.class);
-//          /**
-//           *
-//           */
-//          List<PhotoInfo> content = photoResponse.getContent();
-//          application.getDb().photoDao().insertAll(content);
-////          handler.post(() -> {
-////            gridView.setAdapter(new PhotoListAdapter(content, getContext()));
-////            gridView.setLayoutManager(new GridLayoutManager(getContext(), 4));
-////
-////          });
-//        });
-//      }
-//      ;
-//    });
     return root;
   }
 

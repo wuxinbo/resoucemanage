@@ -6,30 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/photoGrid"
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="1dp"
+    android:layout_height="match_parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/date">
+    app:layout_constraintTop_toTopOf="parent">
 
-  </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+      android:id="@+id/picLineLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"></LinearLayout>
+  </ScrollView>
 
-  <TextView
-    android:id="@+id/date"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="100dp"
-    android:layout_marginBottom="10dp"
-    android:fontFamily="monospace"
-    android:text="2023年12月12日"
-    app:layout_constraintBottom_toTopOf="@+id/photoGrid"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
