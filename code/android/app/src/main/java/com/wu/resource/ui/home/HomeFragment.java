@@ -58,13 +58,16 @@ public class HomeFragment extends Fragment {
         binding.picLineLayout.removeAllViews();
         collect.forEach((key, value) -> {
           //初始化标题
-          TextView date = new TextView(getActivity());
-          date.setPadding(10,10,0,20);
-          date.setText(key);
-          binding.picLineLayout.addView(date);
+          TextView dateTextView = new TextView(getActivity());
+          dateTextView.setText(key);
+//         设置内边距
+          dateTextView.setPadding(20,40,0,40);
+          binding.picLineLayout.addView(dateTextView);
           RecyclerView listView = new RecyclerView(getActivity());
-          listView.setAdapter(new PhotoListAdapter(value, getContext()));
-          listView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+          GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
+          PhotoListAdapter photoListAdapter = new PhotoListAdapter(value, getContext(),gridLayoutManager);
+          listView.setAdapter(photoListAdapter);
+          listView.setLayoutManager(gridLayoutManager);
           binding.picLineLayout.addView(listView);
         });
     };
