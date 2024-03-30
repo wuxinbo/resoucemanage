@@ -1,20 +1,23 @@
 <resources>
-    <string name="app_name">图片管理</string>
-    <string name="share_wx_freind">朋友圈</string>
-    <string name="share_wx_collect">收藏</string>
-    <string name="title_activity_resource_detail">ResourceDetailActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+  <string name="app_name">图片管理</string>
+  <string name="share_wx_freind">朋友圈</string>
+  <string name="share_wx_collect">收藏</string>
+  <string name="title_activity_resource_detail">ResourceDetailActivity</string>
+  <!-- Strings used for fragments for navigation -->
+  <string name="first_fragment_label">First Fragment</string>
+  <string name="second_fragment_label">Second Fragment</string>
+  <string name="next">Next</string>
+  <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="channel_name">notification</string>
-    <string name="channel_description">通知测试</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="title_home">图片</string>
-    <string name="title_dashboard">统计</string>
-    <string name="title_mine">我的</string>
+  <string name="hello_first_fragment">Hello first fragment</string>
+  <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+  <string name="channel_name">notification</string>
+  <string name="channel_description">通知测试</string>
+  <string name="title_activity_home">HomeActivity</string>
+  <string name="title_home">图片</string>
+  <string name="title_stats">统计</string>
+  <string name="title_like">最爱</string>
+  <string name="title_mine">我的</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

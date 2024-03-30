@@ -9,8 +9,11 @@
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/stats"
-        android:title="@string/title_dashboard" />
-
+        android:title="@string/title_stats" />
+    <item
+      android:id="@+id/navigation_like"
+      android:icon="@drawable/like"
+      android:title="@string/title_like" />
     <item
         android:id="@+id/navigation_mine"
         android:icon="@drawable/mine"
