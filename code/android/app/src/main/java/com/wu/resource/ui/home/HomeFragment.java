@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -29,13 +30,16 @@ import com.wu.resource.image.PhotoListAdapter;
 import com.wu.resource.image.PhotoResponse;
 import com.wu.sphinxsearch.NativeLib;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
-
+  private static final String TAG = "HomeFragment";
   private FragmentPicBinding binding;
   private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
   private HomeViewModel homeViewModel;
@@ -53,23 +57,36 @@ public class HomeFragment extends Fragment {
     homeViewModel.loadPhotoInfo(application);
     //更新页面
     Observer<List<PhotoInfo>> photoObs = photoInfos -> {
-        Map<String, List<PhotoInfo>> collect = photoInfos.stream().
-          collect(Collectors.groupingBy(it -> dateFormat.format(it.getShotTime())));
-        binding.picLineLayout.removeAllViews();
-        collect.forEach((key, value) -> {
-          //初始化标题
-          TextView dateTextView = new TextView(getActivity());
-          dateTextView.setText(key);
+      Map<String, List<PhotoInfo>> datamap = photoInfos.stream().
+        collect(Collectors.groupingBy(it -> dateFormat.format(it.getShotTime())));
+      binding.picLineLayout.removeAllViews();
+      Set<String> days = datamap.keySet();
+      //按照拍摄时间倒叙进行排序
+      days.stream().sorted(((s, t1) -> {
+        try {
+          return (dateFormat.parse(t1).compareTo(dateFormat.parse(s)));
+        } catch (ParseException e) {
+        }
+        return 0;
+      })).forEach(day -> {
+        Log.i(TAG, day);
+        //初始化标题
+        TextView dateTextView = new TextView(getActivity());
+
 //         设置内边距
-          dateTextView.setPadding(20,40,0,40);
-          binding.picLineLayout.addView(dateTextView);
-          RecyclerView listView = new RecyclerView(getActivity());
-          GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
-          PhotoListAdapter photoListAdapter = new PhotoListAdapter(value, getContext(),gridLayoutManager);
-          listView.setAdapter(photoListAdapter);
-          listView.setLayoutManager(gridLayoutManager);
-          binding.picLineLayout.addView(listView);
-        });
+        dateTextView.setPadding(20, 40, 0, 40);
+
+        RecyclerView listView = new RecyclerView(getActivity());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
+        PhotoListAdapter photoListAdapter = new PhotoListAdapter(datamap.get(day), getContext(), gridLayoutManager);
+        listView.setAdapter(photoListAdapter);
+        listView.setLayoutManager(gridLayoutManager);
+//        scrollView.addView(listView);
+        dateTextView.setText(day+"("+photoListAdapter.getItemCount()+")");
+        binding.picLineLayout.addView(dateTextView);
+        binding.picLineLayout.addView(listView);
+      });
+
     };
     homeViewModel.getPhotoData().observe(getViewLifecycleOwner(), photoObs);
     return root;
