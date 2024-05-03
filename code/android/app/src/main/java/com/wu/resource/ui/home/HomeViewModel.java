@@ -48,7 +48,6 @@ public class HomeViewModel extends ViewModel {
       HttpUtil.getJson(Constant.URL + PHOTO_LIST_BY_PAGE, (result) -> {
         PhotoResponse photoResponse = gson.fromJson(result, PhotoResponse.class);
         List<PhotoInfo> content = photoResponse.getContent();
-
         application.getDb().photoDao().insertAll(content);
         getPhotoData().postValue(content);
       });

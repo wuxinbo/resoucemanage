@@ -5,7 +5,6 @@ import static com.wu.resource.Constant.gson;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +72,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
     holder.photoInfo = items.get(position);
     ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
     layoutParams.width= gridLayoutManager.getWidth()/gridLayoutManager.getSpanCount();
-    Log.i("imageView width height",layoutParams.width+" "+ gridLayoutManager.getWidth());
+//    Log.i("imageView width height",layoutParams.width+" "+ gridLayoutManager.getWidth());
     layoutParams.height = layoutParams.width;
     Glide.with(context).load(Constant.URL + "/photo/get?mid=" + holder.photoInfo.getMid()).
       //图片裁切

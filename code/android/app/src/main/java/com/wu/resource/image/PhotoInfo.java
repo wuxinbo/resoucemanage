@@ -14,7 +14,7 @@ import java.util.Date;
 public class PhotoInfo {
 
 
-    private Integer ISO;
+    private Integer iso;
     private String speed;
     private Integer height;
     private Integer width;
@@ -170,15 +170,15 @@ public class PhotoInfo {
         this.aperture = aperture;
     }
 
-    public Integer getISO() {
-        return ISO;
-    }
+  public Integer getIso() {
+    return iso;
+  }
 
-    public void setISO(Integer ISO) {
-        this.ISO = ISO;
-    }
+  public void setIso(Integer iso) {
+    this.iso = iso;
+  }
 
-    public String getSpeed() {
+  public String getSpeed() {
         return speed;
     }
 

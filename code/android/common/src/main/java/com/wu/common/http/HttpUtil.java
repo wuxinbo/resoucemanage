@@ -42,7 +42,8 @@ public class HttpUtil {
                 .build();
         try (Response response = httpClient.newCall(request).execute()) {
             String result =response.body().string();
-            Log.i("http json", result);
+            Log.i("http request Url", url);
+            Log.i("http response json", result);
             callBack.onResponse(result);
         } catch (IOException e) {
             Log.e("IOException",e.getMessage());

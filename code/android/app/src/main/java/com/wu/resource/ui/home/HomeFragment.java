@@ -8,18 +8,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.wu.common.http.HttpUtil;
 import com.wu.resource.Constant;
 import com.wu.resource.R;
@@ -48,14 +55,28 @@ public class HomeFragment extends Fragment {
                            ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentPicBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
+    refreshPhoto();
     homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 //    NativeLib nativeLib = new NativeLib();
 //    Log.i("native test", nativeLib.query("50mm", "photo"));
+    binding.scollview.setOnScrollChangeListener((View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)->{
 
+    });
     //初始化相册数据
     ResourceApplication application = (ResourceApplication) getActivity().getApplication();
     homeViewModel.loadPhotoInfo(application);
     //更新页面
+    Observer<List<PhotoInfo>> photoObs = getListObserver();
+    homeViewModel.getPhotoData().observe(getViewLifecycleOwner(), photoObs);
+    return root;
+  }
+
+  /**
+   * 更新照片列表数据
+   * @return
+   */
+  @NonNull
+  private Observer<List<PhotoInfo>> getListObserver() {
     Observer<List<PhotoInfo>> photoObs = photoInfos -> {
       Map<String, List<PhotoInfo>> datamap = photoInfos.stream().
         collect(Collectors.groupingBy(it -> dateFormat.format(it.getShotTime())));
@@ -69,7 +90,6 @@ public class HomeFragment extends Fragment {
         }
         return 0;
       })).forEach(day -> {
-        Log.i(TAG, day);
         //初始化标题
         TextView dateTextView = new TextView(getActivity());
 
@@ -81,20 +101,31 @@ public class HomeFragment extends Fragment {
         PhotoListAdapter photoListAdapter = new PhotoListAdapter(datamap.get(day), getContext(), gridLayoutManager);
         listView.setAdapter(photoListAdapter);
         listView.setLayoutManager(gridLayoutManager);
-//        scrollView.addView(listView);
+        //增加数量显示
         dateTextView.setText(day+"("+photoListAdapter.getItemCount()+")");
+        Log.i(TAG, dateTextView.getText().toString());
+
         binding.picLineLayout.addView(dateTextView);
         binding.picLineLayout.addView(listView);
       });
 
     };
-    homeViewModel.getPhotoData().observe(getViewLifecycleOwner(), photoObs);
-    return root;
+    return photoObs;
   }
+
+  private void refreshPhoto(){
+    binding.refresh.setOnRefreshListener(()->{
+      homeViewModel.loadPhotoInfo((ResourceApplication) getActivity().getApplication());
+      binding.refresh.setRefreshing(false);
+      Toast.makeText(getActivity(),"数据已刷新",Toast.LENGTH_SHORT);
+    });
+  }
+
 
   @Override
   public void onDestroyView() {
     super.onDestroyView();
     binding = null;
   }
+
 }
