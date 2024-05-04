@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
                            ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentPicBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
+    //下拉刷新
     refreshPhoto();
     homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 //    NativeLib nativeLib = new NativeLib();
@@ -117,7 +118,8 @@ public class HomeFragment extends Fragment {
     binding.refresh.setOnRefreshListener(()->{
       homeViewModel.loadPhotoInfo((ResourceApplication) getActivity().getApplication());
       binding.refresh.setRefreshing(false);
-      Toast.makeText(getActivity(),"数据已刷新",Toast.LENGTH_SHORT);
+      Toast.makeText(getActivity(),"数据已刷新",Toast.LENGTH_LONG).show();
+
     });
   }
 

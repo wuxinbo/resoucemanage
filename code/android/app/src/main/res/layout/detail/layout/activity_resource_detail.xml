@@ -11,57 +11,66 @@
     android:id="@+id/materialToolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="1dp"
-    android:background="?attr/colorPrimary"
+    android:background="@color/blue"
     android:minHeight="?attr/actionBarSize"
     android:theme="?attr/actionBarTheme"
     app:layout_constraintEnd_toStartOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-
+  <ScrollView
+    android:id="@+id/imgScroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="1dp"
-    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
+    app:layout_constraintTop_toTopOf="@id/materialToolbar">
 
-    <ImageView
-      android:id="@+id/largeImage"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="100dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.0"
-      tools:srcCompat="@tools:sample/avatars" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/shotInfo"
-      android:layout_width="0dp"
-      android:layout_height="30dp"
-      android:background="#FFFFFF"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@id/largeImage"
-      app:layout_constraintStart_toStartOf="@id/largeImage"
-      app:layout_constraintTop_toBottomOf="@+id/largeImage" >
+
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="1dp"
+      android:orientation="vertical"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
 
       <ImageView
-        android:id="@+id/cameraLogo"
-        android:layout_width="wrap_content"
+        android:id="@+id/largeImage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/nikon" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shotInfo"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/largeImage"
+        app:layout_constraintStart_toStartOf="@id/largeImage"
+        app:layout_constraintTop_toBottomOf="@+id/largeImage">
+
+        <ImageView
+          android:id="@+id/cameraLogo"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:srcCompat="@drawable/nikon" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

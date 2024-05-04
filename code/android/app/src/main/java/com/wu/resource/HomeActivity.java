@@ -23,10 +23,10 @@ public class HomeActivity extends AppCompatActivity {
     binding = ActivityHomeBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     //系统栏后布置您的应用
-    WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
-    View decorView = getWindow().getDecorView();
-    NavController navController = Navigation.findNavController(this, R.id.nav_bottom_home);
-    NavigationUI.setupWithNavController(binding.navView, navController);
+//    WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+//    View decorView = getWindow().getDecorView();
+//    NavController navController = Navigation.findNavController(this, R.id.nav_bottom_home);
+//    NavigationUI.setupWithNavController(binding.navView, navController);
   }
 
 }
