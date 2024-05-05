@@ -10,7 +10,11 @@
     android:name="com.wu.resource.ui.home.HomeFragment"
     android:label="@string/title_home"
     tools:layout="@layout/fragment_pic" />
-
+  <fragment
+    android:id="@+id/photo_detail"
+    android:name="com.wu.resource.ui.detail.PhotoDetailFragment"
+    android:label="@string/title_home"
+    tools:layout="@layout/fragment_photo_detail" />
   <fragment
     android:id="@+id/navigation_dashboard"
     android:name="com.wu.resource.ui.dashboard.DashboardFragment"

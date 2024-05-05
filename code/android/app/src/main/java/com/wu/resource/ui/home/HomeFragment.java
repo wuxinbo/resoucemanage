@@ -31,10 +31,12 @@ import com.wu.common.http.HttpUtil;
 import com.wu.resource.Constant;
 import com.wu.resource.R;
 import com.wu.resource.ResourceApplication;
+import com.wu.resource.databinding.ActivityHomeBinding;
 import com.wu.resource.databinding.FragmentPicBinding;
 import com.wu.resource.image.PhotoInfo;
 import com.wu.resource.image.PhotoListAdapter;
 import com.wu.resource.image.PhotoResponse;
+import com.wu.resource.ui.detail.PhotoViewModel;
 import com.wu.sphinxsearch.NativeLib;
 
 import java.text.DateFormat;
@@ -49,6 +51,7 @@ public class HomeFragment extends Fragment {
   private static final String TAG = "HomeFragment";
   private FragmentPicBinding binding;
   private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+  ActivityHomeBinding homeBind;
   private HomeViewModel homeViewModel;
 
   public View onCreateView(LayoutInflater inflater,
@@ -57,18 +60,16 @@ public class HomeFragment extends Fragment {
     View root = binding.getRoot();
     //下拉刷新
     refreshPhoto();
-    homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-//    NativeLib nativeLib = new NativeLib();
-//    Log.i("native test", nativeLib.query("50mm", "photo"));
-    binding.scollview.setOnScrollChangeListener((View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)->{
-
-    });
+     homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+     //显示底部导航栏
+     homeViewModel.getShowBottomNavView().postValue(true);
     //初始化相册数据
     ResourceApplication application = (ResourceApplication) getActivity().getApplication();
     homeViewModel.loadPhotoInfo(application);
     //更新页面
     Observer<List<PhotoInfo>> photoObs = getListObserver();
     homeViewModel.getPhotoData().observe(getViewLifecycleOwner(), photoObs);
+    homeViewModel.getShowTopToolBar().postValue(false); //隐藏toolbar
     return root;
   }
 
@@ -93,13 +94,12 @@ public class HomeFragment extends Fragment {
       })).forEach(day -> {
         //初始化标题
         TextView dateTextView = new TextView(getActivity());
-
 //         设置内边距
         dateTextView.setPadding(20, 40, 0, 40);
-
         RecyclerView listView = new RecyclerView(getActivity());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
-        PhotoListAdapter photoListAdapter = new PhotoListAdapter(datamap.get(day), getContext(), gridLayoutManager);
+        PhotoListAdapter photoListAdapter = new PhotoListAdapter(datamap.get(day),getActivity(),
+                 gridLayoutManager);
         listView.setAdapter(photoListAdapter);
         listView.setLayoutManager(gridLayoutManager);
         //增加数量显示

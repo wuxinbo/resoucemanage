@@ -29,9 +29,18 @@ public class HomeViewModel extends ViewModel {
    * 照片数据
    */
   private final MutableLiveData<List<PhotoInfo>> photoData;
-
+  /**
+   * 底部导航栏隐藏显示
+   */
+  private  MutableLiveData<Boolean> showBottomNavView;
+  /**
+   * 顶部导航栏隐藏
+   */
+  private MutableLiveData<Boolean> showTopToolBar;
   public HomeViewModel() {
     this.photoData = new MutableLiveData<>();
+    this.showBottomNavView =new MutableLiveData<>();
+    this.showTopToolBar =new MutableLiveData<>(false);
   }
 
   public void loadPhotoInfoFromDb(ResourceApplication application) {
@@ -68,4 +77,10 @@ public class HomeViewModel extends ViewModel {
     return photoData;
   }
 
+  public MutableLiveData<Boolean> getShowBottomNavView(){
+    return showBottomNavView;
+  }
+  public MutableLiveData<Boolean> getShowTopToolBar(){
+    return showTopToolBar;
+  }
 }

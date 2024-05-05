@@ -3,22 +3,26 @@ package com.wu.resource.image;
 
 import static com.wu.resource.Constant.gson;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.wu.resource.Constant;
 import com.wu.resource.R;
-import com.wu.resource.ResourceDetailActivity;
 import com.wu.resource.databinding.PhotoImageViewBinding;
+import com.wu.resource.ui.detail.PhotoViewModel;
 
 import java.util.List;
 
@@ -29,8 +33,6 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
   private List<PhotoInfo> items;
   private Context context;
   private GridLayoutManager  gridLayoutManager;
-  private int imageWidth;
-
   class ViewHolder extends RecyclerView.ViewHolder {
     private ImageView imageView;
     private PhotoInfo photoInfo;
@@ -42,10 +44,14 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
       imageView = bind.photoImage;
       imageView.setOnClickListener((view) -> {
         Intent intent = new Intent();
-        intent.putExtra("url", Constant.URL + "/photo/get?mid=" + photoInfo.getMid());
-        intent.putExtra("photo", gson.toJson(photoInfo));
-        intent.setClass(context, ResourceDetailActivity.class);
-        context.startActivity(intent);
+        Bundle data =new Bundle();
+        data.putString(Constant.URL_KEY, Constant.URL + "/photo/get?mid=" + photoInfo.getMid());
+        data.putString(Constant.PHOTO_KEY, gson.toJson(photoInfo));
+//        intent.setClass(context, ResourceDetailActivity.class);
+        NavController navController = Navigation.findNavController((Activity) context, R.id.nav_bottom_home);
+        navController.navigate(R.id.photo_detail,data);
+
+//        context.startActivity(intent);
       });
     }
   }
@@ -55,6 +61,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
                           GridLayoutManager gridLayoutManager) {
     this.items = items;
     this.context = context;
+
     this.gridLayoutManager =gridLayoutManager;
   }
 
