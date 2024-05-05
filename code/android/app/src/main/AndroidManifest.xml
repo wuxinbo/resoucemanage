@@ -39,9 +39,9 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity
-            android:name=".ResourceDetailActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ResourceDetailActivity"-->
+<!--            android:exported="false" />-->
     </application>
 
 </manifest>

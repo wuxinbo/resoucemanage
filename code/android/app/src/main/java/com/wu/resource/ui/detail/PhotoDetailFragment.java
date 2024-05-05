@@ -2,32 +2,26 @@ package com.wu.resource.ui.detail;
 
 import static android.widget.LinearLayout.HORIZONTAL;
 
-import androidx.annotation.RequiresApi;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.bumptech.glide.Glide;
 import com.wu.common.download.DownloadTask;
 import com.wu.common.http.HttpUtil;
 import com.wu.resource.Constant;
-import com.wu.resource.R;
-import com.wu.resource.databinding.ActivityHomeBinding;
 import com.wu.resource.databinding.FragmentPhotoDetailBinding;
-import com.wu.resource.databinding.PhotoImageViewBinding;
 import com.wu.resource.image.PhotoInfo;
-import com.wu.resource.ui.PhotoDetailViewModel;
 import com.wu.resource.ui.home.HomeViewModel;
 
 public class PhotoDetailFragment extends Fragment {
@@ -47,8 +41,8 @@ public class PhotoDetailFragment extends Fragment {
     binding = FragmentPhotoDetailBinding.inflate(getLayoutInflater());
     photoInfo = Constant.gson.fromJson((String) getArguments().get(Constant.PHOTO_KEY), PhotoInfo.class);
     homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
-    homeViewModel.getShowBottomNavView().postValue(false);
-    homeViewModel.getShowTopToolBar().postValue(true); //隐藏toolbar
+    homeViewModel.getShowBottomNavView().postValue(false); //隐藏底部导航栏
+    homeViewModel.getShowTopToolBar().postValue(true); //显示toolbar
     //显示拍摄时间
     String url =(String) getArguments().get(Constant.URL_KEY);
     Glide.with(this).load(url).into(binding.largeImage);

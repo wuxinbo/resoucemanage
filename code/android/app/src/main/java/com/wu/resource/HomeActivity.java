@@ -26,12 +26,14 @@ public class HomeActivity extends AppCompatActivity {
     binding = ActivityHomeBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     //系统栏后布置您的应用
-//    WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
     binding.navView.setVisibility(View.VISIBLE);
     NavController navController = Navigation.findNavController(this, R.id.nav_bottom_home);
     AppBarConfiguration appBarConfiguration =
       new AppBarConfiguration.Builder(navController.getGraph()).build();
+    //头部toolbar
     NavigationUI.setupWithNavController(binding.materialToolbar, navController,appBarConfiguration);
+    //底部导航栏
+    NavigationUI.setupWithNavController(binding.navView, navController);
     homeViewModel.getShowBottomNavView().observe(this,show ->{
       if (show){
         binding.navView.setVisibility(View.VISIBLE);
