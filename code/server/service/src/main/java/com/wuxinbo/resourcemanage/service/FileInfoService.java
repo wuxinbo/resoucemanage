@@ -83,8 +83,13 @@ public class FileInfoService extends BaseService implements InitializingBean {
       return;
     }
     logger.info(notify.getFilePath() + " file is change action is " + notify.getAction());
+
     if (notify.isRemoved()) { //文件删除，数据库数据
       deletePhoto(file, node);
+      return;
+    }
+    //由于新增文件的时候windows 操作系统会通知两次，所以这里只监听文件变动
+    if (notify.isAdd()){
       return;
     }
     //解析路径
