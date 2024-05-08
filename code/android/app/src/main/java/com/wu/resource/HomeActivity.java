@@ -39,7 +39,6 @@ public class HomeActivity extends AppCompatActivity {
         binding.navView.setVisibility(View.VISIBLE);
       }else{
         binding.navView.setVisibility(View.GONE);
-
       }
     });
     //顶部工具栏
@@ -50,6 +49,8 @@ public class HomeActivity extends AppCompatActivity {
         binding.materialToolbar.setVisibility(View.GONE);
       }
     });
+    //设置标题
+    homeViewModel.getTitle().observe(this,title-> binding.materialToolbar.setTitle(title));
   }
 
 }

@@ -12,9 +12,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.wu.common.http.HttpUtil;
 import com.wu.resource.Constant;
 import com.wu.resource.ResourceApplication;
+import com.wu.resource.image.PhotoDao;
 import com.wu.resource.image.PhotoInfo;
 import com.wu.resource.image.PhotoListAdapter;
 import com.wu.resource.image.PhotoResponse;
@@ -37,10 +39,16 @@ public class HomeViewModel extends ViewModel {
    * 顶部导航栏隐藏
    */
   private MutableLiveData<Boolean> showTopToolBar;
+  /**
+   * 标题
+   */
+  private MutableLiveData<String> title;
+
   public HomeViewModel() {
     this.photoData = new MutableLiveData<>();
     this.showBottomNavView =new MutableLiveData<>();
     this.showTopToolBar =new MutableLiveData<>(false);
+    this.title =new MutableLiveData<>();
   }
 
   public void loadPhotoInfoFromDb(ResourceApplication application) {
@@ -57,7 +65,15 @@ public class HomeViewModel extends ViewModel {
       HttpUtil.getJson(Constant.URL + PHOTO_LIST_BY_PAGE, (result) -> {
         PhotoResponse photoResponse = gson.fromJson(result, PhotoResponse.class);
         List<PhotoInfo> content = photoResponse.getContent();
-        application.getDb().photoDao().insertAll(content);
+        //删除数据
+        PhotoDao photoDao = application.getDb().photoDao();
+        List<PhotoInfo> all = photoDao.getAll();
+        if (all!=null&& !all.isEmpty()){
+          //清除缓存重新加载
+          Glide.get(application).clearDiskCache();
+          all.stream().forEach(it->photoDao.delete(it));
+        }
+        photoDao.insertAll(content);
         getPhotoData().postValue(content);
       });
     }
@@ -82,5 +98,8 @@ public class HomeViewModel extends ViewModel {
   }
   public MutableLiveData<Boolean> getShowTopToolBar(){
     return showTopToolBar;
+  }
+  public MutableLiveData<String> getTitle(){
+    return title;
   }
 }
