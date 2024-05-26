@@ -1,5 +1,6 @@
 package com.wu.resource.ui.detail;
 
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,10 +42,13 @@ public class PhotoDetailFragment extends Fragment {
     homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
     homeViewModel.getShowBottomNavView().postValue(false); //隐藏底部导航栏
     homeViewModel.getShowTopToolBar().postValue(true); //显示toolbar
+//    binding.largeImage.set
     homeViewModel.getTitle().postValue(photoInfo.getSysFileStoreItem().getFileName()); //使用文件名作为标题
     //显示拍摄时间
     String url =(String) getArguments().get(Constant.URL_KEY);
-    Glide.with(this).load(url).into(binding.largeImage);
+    Glide.with(this).load(url)
+      .into(binding.largeImage);
+//    BitmapFactory.
     assmbleShotInfo();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       downloadFile(url);
@@ -108,9 +112,11 @@ public class PhotoDetailFragment extends Fragment {
       ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams
         (ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
       if (preView!=null){
-
         layoutParams.leftToRight =preView.getId();
         layoutParams.leftMargin =10; //设置左边距
+      }else{ //设置第一个元素的左边距
+        layoutParams.leftMargin =25;
+        layoutParams.leftToLeft =R.id.shotInfo;
       }
       layoutParams.topToTop =R.id.shotInfo;
       layoutParams.bottomToBottom=R.id.shotInfo;

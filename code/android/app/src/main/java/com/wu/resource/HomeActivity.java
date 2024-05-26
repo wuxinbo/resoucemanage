@@ -1,6 +1,8 @@
 package com.wu.resource;
 
+import android.app.PictureInPictureParams;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,15 +15,19 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.wu.resource.databinding.ActivityHomeBinding;
 import com.wu.resource.ui.home.HomeViewModel;
+import com.wu.sphinxsearch.NativeLib;
 
 
 public class HomeActivity extends AppCompatActivity {
 
+  private static final String TAG = "HomeActivity";
   private ActivityHomeBinding binding;
-
+  NativeLib nativeLib =new NativeLib();
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    String hostName = nativeLib.stringFromJNI();
+    Log.i(TAG, "onCreate: hostName is "+hostName);
     HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
     binding = ActivityHomeBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());

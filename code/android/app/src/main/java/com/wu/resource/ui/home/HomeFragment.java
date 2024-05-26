@@ -3,6 +3,7 @@ package com.wu.resource.ui.home;
 import static com.wu.resource.Constant.DATE_FORMAT;
 import static com.wu.resource.Constant.gson;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +55,6 @@ public class HomeFragment extends Fragment {
   private static final String TAG = "HomeFragment";
   private FragmentPicBinding binding;
   private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-  ActivityHomeBinding homeBind;
   private HomeViewModel homeViewModel;
 
   public View onCreateView(LayoutInflater inflater,
@@ -66,6 +69,12 @@ public class HomeFragment extends Fragment {
     //初始化相册数据
     ResourceApplication application = (ResourceApplication) getActivity().getApplication();
     homeViewModel.loadPhotoInfo(application);
+    binding.search.setOnFocusChangeListener((v,hasfocues) -> {
+      if (hasfocues){
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_bottom_home);
+        navController.navigate(R.id.search_fragment);
+      }
+    });
     //更新页面
     Observer<List<PhotoInfo>> photoObs = getListObserver();
     homeViewModel.getPhotoData().observe(getViewLifecycleOwner(), photoObs);

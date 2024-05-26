@@ -21,6 +21,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".HomeActivity"
+            android:supportsPictureInPicture="true"
             android:exported="true"
             >
             <intent-filter>

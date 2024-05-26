@@ -2,13 +2,16 @@
 #include <string>
 #include "searchClient.h"
 #include <iostream>
+#include "unistd.h"
 #include "android/log.h"
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_wu_sphinxsearch_NativeLib_stringFromJNI(
         JNIEnv* env,
         jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
+    char hostname[100];
+    gethostname(hostname,100);
+
+    return env->NewStringUTF(hostname);
 }
 extern "C"
 JNIEXPORT jstring JNICALL
