@@ -56,6 +56,11 @@ public class HomeViewModel extends ViewModel {
       List<PhotoInfo> list = application.getDb().photoDao().getAll();
       //从后台线程中发起消息通知
       getPhotoData().postValue(list);
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
       queryPhotoInfo(application);
     });
   }
@@ -70,7 +75,6 @@ public class HomeViewModel extends ViewModel {
         List<PhotoInfo> all = photoDao.getAll();
         if (all!=null&& !all.isEmpty()){
           //清除缓存重新加载
-          Glide.get(application).clearDiskCache();
           all.stream().forEach(it->photoDao.delete(it));
         }
         photoDao.insertAll(content);

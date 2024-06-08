@@ -37,17 +37,20 @@ public class HttpUtil {
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public static void getJson(String url, HttpCallBack<String> callBack){
+      executorService.execute(()->{
         Request request = new Request.Builder()
-                .url(url)
-                .build();
+          .url(url)
+          .build();
         try (Response response = httpClient.newCall(request).execute()) {
-            String result =response.body().string();
-            Log.i("http request Url", url);
-            Log.i("http response json", result);
-            callBack.onResponse(result);
+          String result =response.body().string();
+          Log.i("http request Url", url);
+          Log.i("http response json", result);
+          callBack.onResponse(result);
         } catch (IOException e) {
-            Log.e("IOException",e.getMessage());
+          Log.e("IOException",e.getMessage());
         }
+      });
+
     }
 
     /**
