@@ -54,7 +54,7 @@ public class PhotoInfo extends BaseInfo{
 
     }
     @OneToOne
-    @JoinColumn(name="fileId",referencedColumnName = "mid",insertable = false,updatable = false)
+    @JoinColumn(name="fileId",referencedColumnName = "mid",nullable = false,insertable = false,updatable = false)
     private SysFileStoreItem sysFileStoreItem;
 
     public Integer getFileId() {

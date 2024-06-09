@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 @Repository
@@ -29,6 +29,18 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
     )
     Page<PhotoInfo> findBySysFileStoreItemFileType(Pageable page,String fileType);
 
+  /**
+   * 通过拍摄日期查询
+   * @return
+   */
+  @Query(value = "select i.*,item.relative_url from photo_info i left join sys_file_store_item item on i.file_id =item.mid " +
+    "where item.mid is not null " +
+    "and item.file_type ='jpg'" +
+    " and item.relative_url like '%export%'" +
+    "and i.shot_time between :startDate and :endDate "+
+    "order by i.shot_time desc ",nativeQuery = true
+  )
+  List<PhotoInfo> findByshotTimeBetween(Date startDate, Date endDate);
     /**
      * 根据镜头统计
      * @return
@@ -47,4 +59,9 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
             "group by date_format(i.shot_time,'%Y-%m-%d')\n" +
             " order by count(1) desc limit 0,20",nativeQuery = true)
     List queryPhotoGroupByShotTime();
+  @Query(value = "select date_format(i.shot_time,'%Y-%m-%d'),count(1) from photo_info i left join sys_file_store_item s on i.file_id=s.mid" +
+    " where i.shot_time is not null and s.relative_url like '%export%'" +
+    "group by date_format(i.shot_time,'%Y-%m-%d')\n" +
+    " order by date_format(i.shot_time,'%Y-%m-%d') desc ",nativeQuery = true)
+  List queryPhotoGroupByShotTimeAll();
 }
