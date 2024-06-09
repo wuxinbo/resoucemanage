@@ -46,6 +46,7 @@ import com.wu.sphinxsearch.NativeLib;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,12 +64,18 @@ public class HomeFragment extends Fragment {
     View root = binding.getRoot();
     //下拉刷新
     refreshPhoto();
-     homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+    homeViewModel = new ViewModelProvider(getActivity()).get(HomeViewModel.class);
      //显示底部导航栏
      homeViewModel.getShowBottomNavView().postValue(true);
     //初始化相册数据
     ResourceApplication application = (ResourceApplication) getActivity().getApplication();
-    homeViewModel.loadPhotoInfo(application);
+    Bundle arguments = getArguments();
+    if (arguments!=null){ //加载查询条件
+      String shotDate = (String) arguments.get(Constant.SHOT_DATE);
+      homeViewModel.queryPhotoInfoByShotDate(Arrays.asList(shotDate));
+    }else{
+      homeViewModel.loadPhotoInfo(application);
+    }
     binding.search.setOnFocusChangeListener((v,hasfocues) -> {
       if (hasfocues){
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_bottom_home);

@@ -8,24 +8,42 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+  <ImageView
+    android:id="@+id/search_back"
+    android:layout_width="35dp"
+    android:layout_height="35dp"
+    android:layout_marginStart="10dp"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="21dp"
+    android:src="@drawable/back"
+    app:layout_constraintEnd_toStartOf="@+id/search"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="MissingConstraints" />
+
   <EditText
     android:id="@+id/search"
     android:layout_width="300dp"
     android:layout_height="35dp"
     android:layout_marginTop="16dp"
+    android:layout_marginEnd="24dp"
     android:layout_marginBottom="16dp"
     android:background="@drawable/search_edit_selector"
+    android:clickable="true"
     app:layout_constraintBottom_toTopOf="@+id/ShotTime"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/search_back"
     app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
     android:id="@+id/ShotTime"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
     android:layout_marginTop="16dp"
     android:fontFamily="monospace"
+    android:clickable="true"
     android:text="@string/shot_date"
     android:textSize="20sp"
     app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +55,7 @@
     android:id="@+id/shotDateInfo"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    android:layout_marginStart="8dp"
+    android:layout_marginStart="10dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="16dp"
     android:orientation="horizontal"

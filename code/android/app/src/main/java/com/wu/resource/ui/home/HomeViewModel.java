@@ -1,11 +1,14 @@
 package com.wu.resource.ui.home;
 
 import static com.wu.resource.Constant.PHOTO_LIST_BY_PAGE;
+import static com.wu.resource.Constant.PHOTO_LIST_BY_SHOTDATE;
 import static com.wu.resource.Constant.gson;
 
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,6 +16,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.reflect.TypeToken;
 import com.wu.common.http.HttpUtil;
 import com.wu.resource.Constant;
 import com.wu.resource.ResourceApplication;
@@ -21,12 +25,14 @@ import com.wu.resource.image.PhotoInfo;
 import com.wu.resource.image.PhotoListAdapter;
 import com.wu.resource.image.PhotoResponse;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HomeViewModel extends ViewModel {
 
+  private final String TAG="HomeViewModel";
   /**
    * 照片数据
    */
@@ -92,6 +98,24 @@ public class HomeViewModel extends ViewModel {
     loadPhotoInfoFromDb(application);
   }
 
+  /**
+   * 按天查询照片
+   * @param shotDates
+   */
+  public void queryPhotoInfoByShotDate(List<String> shotDates){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      HttpUtil.getJson(Constant.URL + PHOTO_LIST_BY_SHOTDATE+"?shotDate="+shotDates.get(0),result->{
+        try {
+          List<PhotoInfo> content = gson.fromJson(result, new TypeToken<List<PhotoInfo>>(){}.getType());
+          getPhotoData().postValue(content);
+        }catch (Exception e){
+//          Toast.makeText()
+          Log.e(TAG,"json parseException",e);
+        }
+
+      });
+    }
+  }
 
   public MutableLiveData<List<PhotoInfo>> getPhotoData() {
     return photoData;

@@ -56,12 +56,10 @@ public class SearchFragment extends Fragment {
   }
   private void initShotDateInfo(SearchViewModel.ShotDateCount shotDateCount){
     binding.shotDateInfo.removeAllViews();
-    RecyclerView recyclerView =new RecyclerView(getContext());
-    int width = binding.shotDateInfo.getWidth();
-    Log.i(TAG, "shotDateInfo width:"+width);
-
+    RecyclerView recyclerView =new RecyclerView(getActivity());
     GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), defaultSpanCount);
-    ShotDateListAdapter shotDateListAdapter = new ShotDateListAdapter(shotDateCount, getContext(),gridLayoutManager);
+    ShotDateListAdapter shotDateListAdapter = new ShotDateListAdapter(shotDateCount,getActivity(),this,
+      gridLayoutManager);
     recyclerView.setAdapter(shotDateListAdapter);
     recyclerView.setLayoutManager(gridLayoutManager);
     gridLayoutManager.setSmoothScrollbarEnabled(true);

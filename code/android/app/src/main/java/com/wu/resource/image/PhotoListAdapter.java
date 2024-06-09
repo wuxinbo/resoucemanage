@@ -38,7 +38,6 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
     private PhotoInfo photoInfo;
 
     public ViewHolder(@NonNull View itemView) {
-
       super(itemView);
       PhotoImageViewBinding bind = PhotoImageViewBinding.bind(itemView);
       imageView = bind.photoImage;
@@ -47,11 +46,8 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
         Bundle data =new Bundle();
         data.putString(Constant.URL_KEY, Constant.URL + "/photo/get?mid=" + photoInfo.getMid());
         data.putString(Constant.PHOTO_KEY, gson.toJson(photoInfo));
-//        intent.setClass(context, ResourceDetailActivity.class);
         NavController navController = Navigation.findNavController((Activity) context, R.id.nav_bottom_home);
         navController.navigate(R.id.photo_detail,data);
-
-//        context.startActivity(intent);
       });
     }
   }
