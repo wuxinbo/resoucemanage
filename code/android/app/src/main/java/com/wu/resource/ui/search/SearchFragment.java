@@ -38,12 +38,10 @@ public class SearchFragment extends Fragment {
    * Use this factory method to create a new instance of
    * this fragment using the provided parameters.
    *
-   * @param param1 Parameter 1.
-   * @param param2 Parameter 2.
    * @return A new instance of fragment SearchFragment.
    */
   // TODO: Rename and change types and number of parameters
-  public static SearchFragment newInstance(String param1, String param2) {
+  public static SearchFragment newInstance() {
     SearchFragment fragment = new SearchFragment();
 
     return fragment;
@@ -67,6 +65,7 @@ public class SearchFragment extends Fragment {
       WRAP_CONTENT);
     recyclerView.setLayoutParams(layoutParams);
     recyclerView.setClipToPadding(false);
+    //绑定搜索框监听
     binding.shotDateInfo.addView(recyclerView);
   }
   @Override

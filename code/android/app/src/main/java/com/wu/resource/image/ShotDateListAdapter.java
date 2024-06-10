@@ -64,8 +64,8 @@ public class ShotDateListAdapter extends  RecyclerView.Adapter<ShotDateListAdapt
       Bundle arguments = new Bundle();
       arguments.putString(Constant.SHOT_DATE,text);
       arguments.putString(Constant.SEARCH_DATE,"true");
-      NavController navController = Navigation.findNavController(activity, R.id.nav_bottom_home);
-      navController.navigate(R.id.navigation_home,arguments);
+      NavController navController = Navigation.findNavController(activity, R.id.search_activity_fragment);
+      navController.navigate(R.id.searchResultFragment,arguments);
     });
   }
 

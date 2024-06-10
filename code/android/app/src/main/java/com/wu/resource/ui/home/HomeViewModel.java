@@ -71,6 +71,10 @@ public class HomeViewModel extends ViewModel {
     });
   }
 
+  /**
+   * 查询首页照片信息
+   * @param application
+   */
   private void queryPhotoInfo(ResourceApplication application) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
       HttpUtil.getJson(Constant.URL + PHOTO_LIST_BY_PAGE, (result) -> {
@@ -98,24 +102,7 @@ public class HomeViewModel extends ViewModel {
     loadPhotoInfoFromDb(application);
   }
 
-  /**
-   * 按天查询照片
-   * @param shotDates
-   */
-  public void queryPhotoInfoByShotDate(List<String> shotDates){
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-      HttpUtil.getJson(Constant.URL + PHOTO_LIST_BY_SHOTDATE+"?shotDate="+shotDates.get(0),result->{
-        try {
-          List<PhotoInfo> content = gson.fromJson(result, new TypeToken<List<PhotoInfo>>(){}.getType());
-          getPhotoData().postValue(content);
-        }catch (Exception e){
-//          Toast.makeText()
-          Log.e(TAG,"json parseException",e);
-        }
 
-      });
-    }
-  }
 
   public MutableLiveData<List<PhotoInfo>> getPhotoData() {
     return photoData;

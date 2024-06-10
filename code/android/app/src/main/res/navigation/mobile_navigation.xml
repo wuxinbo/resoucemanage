@@ -6,11 +6,6 @@
   app:startDestination="@+id/navigation_home">
 
   <fragment
-    android:id="@+id/search_fragment"
-    android:name="com.wu.resource.ui.search.SearchFragment"
-    android:label="@string/title_search"
-    tools:layout="@layout/fragment_search" />
-  <fragment
     android:id="@+id/navigation_home"
     android:name="com.wu.resource.ui.home.HomeFragment"
     android:label="@string/title_home"

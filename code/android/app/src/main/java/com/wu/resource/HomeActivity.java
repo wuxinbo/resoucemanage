@@ -1,6 +1,5 @@
 package com.wu.resource;
 
-import android.app.PictureInPictureParams;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

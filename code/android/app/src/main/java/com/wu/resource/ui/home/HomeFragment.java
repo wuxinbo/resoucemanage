@@ -4,6 +4,7 @@ import static com.wu.resource.Constant.DATE_FORMAT;
 import static com.wu.resource.Constant.gson;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,7 @@ import com.wu.common.http.HttpUtil;
 import com.wu.resource.Constant;
 import com.wu.resource.R;
 import com.wu.resource.ResourceApplication;
+import com.wu.resource.SearchActivity;
 import com.wu.resource.databinding.ActivityHomeBinding;
 import com.wu.resource.databinding.FragmentPicBinding;
 import com.wu.resource.image.PhotoInfo;
@@ -69,19 +71,14 @@ public class HomeFragment extends Fragment {
      homeViewModel.getShowBottomNavView().postValue(true);
     //初始化相册数据
     ResourceApplication application = (ResourceApplication) getActivity().getApplication();
-    Bundle arguments = getArguments();
-    if (arguments!=null){ //加载查询条件
-      String shotDate = (String) arguments.get(Constant.SHOT_DATE);
-      homeViewModel.queryPhotoInfoByShotDate(Arrays.asList(shotDate));
-    }else{
-      homeViewModel.loadPhotoInfo(application);
-    }
-    binding.search.setOnFocusChangeListener((v,hasfocues) -> {
-      if (hasfocues){
-        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_bottom_home);
-        navController.navigate(R.id.search_fragment);
+    homeViewModel.loadPhotoInfo(application);
+    binding.search.setFocusable(false);
+    binding.search.setOnClickListener(v -> {
+        Intent intent = new Intent();
+        intent.setClass(getContext(), SearchActivity.class);
+        startActivity(intent);
       }
-    });
+    );
     //更新页面
     Observer<List<PhotoInfo>> photoObs = getListObserver();
     homeViewModel.getPhotoData().observe(getViewLifecycleOwner(), photoObs);
