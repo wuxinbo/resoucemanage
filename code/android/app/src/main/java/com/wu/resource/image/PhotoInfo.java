@@ -8,6 +8,7 @@ import androidx.room.TypeConverters;
 import com.wu.resource.db.MyTypeConverter;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @TypeConverters(MyTypeConverter.class)
@@ -128,6 +129,18 @@ public class PhotoInfo {
         this.fileId = fileId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhotoInfo photoInfo = (PhotoInfo) o;
+        return Objects.equals(mid, photoInfo.mid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mid);
+    }
 
     public PhotoInfo() {
 

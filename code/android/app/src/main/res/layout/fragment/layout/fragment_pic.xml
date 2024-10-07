@@ -4,44 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".ui.home.HomeFragment">
 
   <EditText
-    android:id="@+id/search"
-    android:background="@drawable/search_edit_selector"
-    android:layout_width="300dp"
-    android:layout_height="35dp"
-    android:layout_marginTop="10dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+      android:id="@+id/search"
+      android:layout_width="300dp"
+      android:layout_height="35dp"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/search_edit_selector"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/refresh"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_marginTop="8dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/search">
-
-
-    <ScrollView
-      android:id="@+id/scollview"
+      android:id="@+id/refresh"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginTop="8dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+      app:layout_constraintTop_toBottomOf="@+id/search">
 
-      <LinearLayout
-        android:id="@+id/picLineLayout"
+
+    <ScrollView
+        android:id="@+id/scollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical"></LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <LinearLayout
+          android:id="@+id/picLineLayout"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:animateLayoutChanges="true"
+          android:orientation="vertical"></LinearLayout>
     </ScrollView>
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/select_layout"
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:visibility="invisible"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:layout_editor_absoluteX="47dp">
+
+    <ImageView
+        android:id="@+id/cancle"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="25dp"
+        android:src="@drawable/close"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/selectCount"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/selectCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="300dp"
+        android:fontFamily="@font/alata"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="0" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

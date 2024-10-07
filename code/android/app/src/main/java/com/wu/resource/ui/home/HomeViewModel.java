@@ -26,6 +26,7 @@ import com.wu.resource.image.PhotoListAdapter;
 import com.wu.resource.image.PhotoResponse;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,8 +49,13 @@ public class HomeViewModel extends ViewModel {
   /**
    * 标题
    */
-  private MutableLiveData<String> title;
+  private MutableLiveData<String> title ;
 
+  private MutableLiveData<List<PhotoInfo>> selectPhotoInfos =new MutableLiveData(new ArrayList<>());
+  /**
+   * 启用选择模式，该模式下会出现选择框
+   */
+  private MutableLiveData<Boolean> enableSelect=new MutableLiveData<>(false);
   public HomeViewModel() {
     this.photoData = new MutableLiveData<>();
     this.showBottomNavView =new MutableLiveData<>();
@@ -93,6 +99,10 @@ public class HomeViewModel extends ViewModel {
     }
   }
 
+  public MutableLiveData<List<PhotoInfo>> getSelectPhotoInfos() {
+    return selectPhotoInfos;
+  }
+
   /**
    * 加载照片数据。
    *
@@ -116,5 +126,9 @@ public class HomeViewModel extends ViewModel {
   }
   public MutableLiveData<String> getTitle(){
     return title;
+  }
+
+  public MutableLiveData<Boolean> getEnableSelect(){
+    return enableSelect;
   }
 }

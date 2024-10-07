@@ -19,6 +19,7 @@ import com.wu.resource.Constant;
 import com.wu.resource.databinding.FragmentSearchResultBinding;
 import com.wu.resource.image.PhotoInfo;
 import com.wu.resource.image.PhotoListAdapter;
+import com.wu.resource.ui.home.HomeViewModel;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -31,12 +32,13 @@ import java.util.stream.Collectors;
 public class SearchResultFragment extends Fragment {
 
   private FragmentSearchResultBinding binding;
-
+  private HomeViewModel homeViewModel;
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     binding =  FragmentSearchResultBinding.inflate(inflater,container,false);
     SearchResultViewModel searchResultViewModel = new ViewModelProvider(this).get(SearchResultViewModel.class);
+    homeViewModel =new ViewModelProvider(this).get(HomeViewModel.class);
     String shotDate = (String) getArguments().get(Constant.SHOT_DATE);
     searchResultViewModel.queryPhotoInfoByShotDate(Arrays.asList(shotDate));
     //数据页面绑定
@@ -56,6 +58,7 @@ public class SearchResultFragment extends Fragment {
       RecyclerView listView = new RecyclerView(getActivity());
       GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
       PhotoListAdapter photoListAdapter = new PhotoListAdapter(photoInfos,getActivity(),
+        homeViewModel,
         gridLayoutManager);
       listView.setAdapter(photoListAdapter);
       listView.setLayoutManager(gridLayoutManager);
