@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -58,15 +59,16 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
             //禁用点击事件，使用图片的点击
             bind.check.setClickable(false);
             binds.add(bind);
+            MutableLiveData<List<PhotoInfo>> selectPhotoInfos = homeViewModel.getSelectPhotoInfos();
             imageView.setOnClickListener((view) -> {
                 if (homeViewModel.getEnableSelect().getValue()){
-                    List<PhotoInfo> selectPhotos = homeViewModel.getSelectPhotoInfos().getValue();
+                    List<PhotoInfo> selectPhotos = selectPhotoInfos.getValue();
                     if (!bind.check.isChecked()){ //如果是选中则取消选中
                         selectPhotos.add(photoInfo);
                     }else{
                         selectPhotos.remove(photoInfo);
                     }
-                    homeViewModel.getSelectPhotoInfos().postValue(selectPhotos);
+                    selectPhotoInfos.postValue(selectPhotos);
                     bind.check.toggle();
                     Log.i(TAG, "select photo size : "+ selectPhotos.size());
                 }else{
@@ -76,12 +78,15 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
                     NavController navController = Navigation.findNavController((Activity) context, R.id.nav_bottom_home);
                     navController.navigate(R.id.photo_detail, data);
                 }
-//                Intent intent = new Intent();
 
             });
             imageView.setLongClickable(true);
             imageView.setOnLongClickListener((v) -> {
                 Log.i(TAG, "imageClick: ");
+                bind.check.toggle();
+                //默认选中当前的图片
+                selectPhotoInfos.getValue().add(photoInfo);
+                selectPhotoInfos.postValue(selectPhotoInfos.getValue());
                 homeViewModel.getEnableSelect().postValue(true);
                 return true;
             });

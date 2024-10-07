@@ -78,7 +78,6 @@ public class HomeFragment extends Fragment {
         //监听是否启用选择全部
         homeViewModel.getEnableSelect().observe(getViewLifecycleOwner(), observeEnableSelect());
         homeViewModel.getSelectPhotoInfos().observe(getViewLifecycleOwner(), (list) -> {
-
             binding.selectCount.setText("已选择" + list.size()+"项");
 
         });
@@ -113,9 +112,13 @@ public class HomeFragment extends Fragment {
                 //隐藏cheeckbox
                 for (PhotoListAdapter photoListAdapter : photoListAdapters) {
                     for (PhotoImageViewBinding bind : photoListAdapter.getBinds()) {
+                        if (bind.check.isChecked()){
+                            bind.check.toggle();
+                        }
                         bind.check.setVisibility(View.GONE);
                     }
                 }
+                homeViewModel.getSelectPhotoInfos().postValue(new ArrayList<>());
             }
 
         };
