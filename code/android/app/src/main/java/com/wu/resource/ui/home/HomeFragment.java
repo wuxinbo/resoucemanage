@@ -81,6 +81,12 @@ public class HomeFragment extends Fragment {
             binding.selectCount.setText("已选择" + list.size()+"项");
 
         });
+        //标记最爱的图片
+
+        binding.like.setClickable(true);
+        binding.like.setOnClickListener(v->{
+            homeViewModel.like(getActivity());
+        });
         //取消选中
         binding.cancle.setOnClickListener((v) -> {
             homeViewModel.getEnableSelect().postValue(false);

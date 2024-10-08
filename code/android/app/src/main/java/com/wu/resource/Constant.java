@@ -17,6 +17,11 @@ public class Constant {
    * 根据拍摄时间查询
    */
   public static final String PHOTO_LIST_BY_SHOTDATE = "photo/listByShotDate";
+
+  /**
+   * 更新照片信息
+   */
+  public static final String UPDATE = "photo/update";
   /**
    * 按照拍摄时间排序
    */

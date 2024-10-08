@@ -2,8 +2,11 @@ package com.wu.resource.ui.home;
 
 import static com.wu.resource.Constant.PHOTO_LIST_BY_PAGE;
 import static com.wu.resource.Constant.PHOTO_LIST_BY_SHOTDATE;
+import static com.wu.resource.Constant.UPDATE;
 import static com.wu.resource.Constant.gson;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -130,5 +133,42 @@ public class HomeViewModel extends ViewModel {
 
   public MutableLiveData<Boolean> getEnableSelect(){
     return enableSelect;
+  }
+
+  /**
+   * 更新最爱
+   */
+  public void like(Context context) {
+    List<PhotoInfo> list = getSelectPhotoInfos().getValue();
+    if (!list.isEmpty()){
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        list =list.stream().map(it->{
+          PhotoInfo photoInfo =new PhotoInfo();
+          photoInfo.setMid(it.getMid());
+          photoInfo.updateLike();
+          return photoInfo;
+        }).collect(Collectors.toList());
+        HttpUtil.postJSON(Constant.URL + UPDATE,list, (result) -> {
+          if (!result.isSuccess()){
+            ((Activity)context).runOnUiThread(()->{
+              Toast.makeText(context,"更新失败",Toast.LENGTH_SHORT).show();
+            });
+          }else{
+            ((Activity)context).runOnUiThread(()->{
+              Toast.makeText(context,"更新成功",Toast.LENGTH_SHORT).show();
+//              get
+            });
+          }
+//          List<PhotoInfo> all = photoDao.getAll();
+//          if (all!=null&& !all.isEmpty()){
+//            //清除缓存重新加载
+//            all.stream().forEach(it->photoDao.delete(it));
+//          }
+//          photoDao.insertAll(content);
+//          getPhotoData().postValue(content);
+        });
+      }
+    }
+
   }
 }

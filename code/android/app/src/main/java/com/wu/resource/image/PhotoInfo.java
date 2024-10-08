@@ -39,6 +39,21 @@ public class PhotoInfo {
      */
     private String fileName;
     private SysFileStoreItem sysFileStoreItem;
+    /**
+     *  1- 是，null不是
+     */
+    private Integer like ;
+
+    public void updateLike(){
+        like =Integer.valueOf(1);
+    }
+    public Integer getLike() {
+        return like;
+    }
+
+    public void setLike(Integer like) {
+        this.like = like;
+    }
 
     public SysFileStoreItem getSysFileStoreItem() {
         return sysFileStoreItem;
