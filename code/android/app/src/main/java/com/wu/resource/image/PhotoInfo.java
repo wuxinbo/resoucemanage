@@ -8,13 +8,14 @@ import androidx.room.TypeConverters;
 import com.wu.resource.db.MyTypeConverter;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @TypeConverters(MyTypeConverter.class)
 public class PhotoInfo {
 
 
-    private Integer ISO;
+    private Integer iso;
     private String speed;
     private Integer height;
     private Integer width;
@@ -38,6 +39,21 @@ public class PhotoInfo {
      */
     private String fileName;
     private SysFileStoreItem sysFileStoreItem;
+    /**
+     *  1- 是，null不是
+     */
+    private Integer like ;
+
+    public void updateLike(){
+        like =Integer.valueOf(1);
+    }
+    public Integer getLike() {
+        return like;
+    }
+
+    public void setLike(Integer like) {
+        this.like = like;
+    }
 
     public SysFileStoreItem getSysFileStoreItem() {
         return sysFileStoreItem;
@@ -128,6 +144,18 @@ public class PhotoInfo {
         this.fileId = fileId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhotoInfo photoInfo = (PhotoInfo) o;
+        return Objects.equals(mid, photoInfo.mid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mid);
+    }
 
     public PhotoInfo() {
 
@@ -170,15 +198,15 @@ public class PhotoInfo {
         this.aperture = aperture;
     }
 
-    public Integer getISO() {
-        return ISO;
-    }
+  public Integer getIso() {
+    return iso;
+  }
 
-    public void setISO(Integer ISO) {
-        this.ISO = ISO;
-    }
+  public void setIso(Integer iso) {
+    this.iso = iso;
+  }
 
-    public String getSpeed() {
+  public String getSpeed() {
         return speed;
     }
 

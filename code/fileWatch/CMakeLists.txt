@@ -10,6 +10,7 @@ if (LINUX)
 endif()
 if(WIN32)
     add_subdirectory(win32)
-    add_executable("watch" "filewatchTest.c" win32)
+    include_directories("./include/win32")
+    add_executable("watch"  "filewatchTest.cpp" "./win32/fileWatch.cpp" )
 
 endif()

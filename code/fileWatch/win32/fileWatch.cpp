@@ -1,7 +1,7 @@
-#include "com_wuxinbo_resourcemanage_jni_FileWatch.h"
-#include <Windows.h>
-#include <iostream>
+﻿#include <Windows.h>
 
+#include "com_wuxinbo_resourcemanage_jni_FileWatch.h"
+#include <iostream>
 
 /**
  * wchar 转换为 char
@@ -9,7 +9,7 @@
 char *wchartoChar(LPCWCH wstr, size_t wstrLen)
 {
     size_t length = wstrLen == 0 ? wcslen(wstr) : wstrLen;
-    //计算多字节转换为单字节需要的字节数
+    //计算宽字符串转换为多字节需要的字节数
     int size = WideCharToMultiByte(CP_UTF8, 0, wstr, length, nullptr, 0, 0, 0);
     char *data = new char[size + 1];
     WideCharToMultiByte(CP_UTF8, 0, wstr, length, data, size, 0, 0);
@@ -32,22 +32,16 @@ LPCWSTR multiByteToWideChar(LPCSTR str)
     wdata[wsize] = 0;
     return wdata;
 }
-struct FileNotify {
-    DWORD action;
-    
-    LPCSTR filePath;
 
-
-};
 
 /**
  * @brief 使用同步的方式监听文件目录的变化
  *
  * @param dirName 目录路径
  */
-void watchDirChange(LPCWSTR dirName,FileNotify &fileNotify)
+JNIEXPORT void watchDirChange(const char * dirName,FileNotify &fileNotify)
 {
-    HANDLE dirHandle = CreateFile(dirName, GENERIC_READ | GENERIC_WRITE,
+    HANDLE dirHandle = CreateFileA(dirName, GENERIC_READ | GENERIC_WRITE,
                                   FILE_SHARE_WRITE | FILE_SHARE_READ,
                                   NULL,
                                   OPEN_EXISTING,              // dwCreationDisposition
@@ -76,16 +70,17 @@ void watchDirChange(LPCWSTR dirName,FileNotify &fileNotify)
 //文件目录监控
 JNIEXPORT jobject JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir(JNIEnv *env, jobject, jstring str)
 {
+    jboolean iscopy =0;
     //从jstring 转换为wchar
-    LPCSTR name = env->GetStringUTFChars(str, false);
+    LPCSTR name = env->GetStringUTFChars(str, &iscopy);
     if (!name)
     {
         return 0;
     }
 
-    LPCWSTR wdirName = multiByteToWideChar(name);
+    // LPCWSTR wdirName = multiByteToWideChar(name);
     FileNotify fileNotify;
-    watchDirChange(wdirName,fileNotify);
+    watchDirChange(name,fileNotify);
     env->ReleaseStringUTFChars(str, name);
     jclass fileNotifyClass =env->FindClass("com/wuxinbo/resourcemanage/model/FileChangeNotify");
     if (!fileNotifyClass) {

@@ -7,6 +7,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+struct FileNotify {
+    unsigned long action;
+    const char * filePath;
+};
 /*
  * Class:     com_wuxinbo_resourcemanage_jni_FileWatch
  * Method:    watchDir
@@ -15,7 +19,10 @@ extern "C" {
 JNIEXPORT jobject JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir
   (JNIEnv *, jobject, jstring);
 
+JNIEXPORT void watchDirChange(const char * dirName,FileNotify &fileNotify);
+
 #ifdef __cplusplus
 }
+
 #endif
 #endif

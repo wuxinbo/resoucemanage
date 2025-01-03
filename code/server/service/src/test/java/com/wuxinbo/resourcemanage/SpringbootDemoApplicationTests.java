@@ -70,10 +70,8 @@ class SpringbootDemoApplicationTests {
 				Metadata metadata = null;
 				PhotoInfo photoInfo =new PhotoInfo();
 				photoInfo.setFileId(sysFileStoreItem.getMid());
-				PhotoInfo result = photoInfoReposity.findByFileId(photoInfo.getFileId());
-				if (result!=null){
-					continue;
-				}
+				 photoInfoReposity.findByFileId(photoInfo.getFileId());
+
 				try {
 					File photo = new File(sysFileStoreItem.getSysFileStoreNode().getLocalPath() + sysFileStoreItem.getRelativeUrl());
 					if (photo.exists()){

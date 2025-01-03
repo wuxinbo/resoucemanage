@@ -4,6 +4,7 @@ import antlr.StringUtils;
 import com.drew.metadata.Tag;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -28,13 +29,38 @@ public class PhotoInfo extends BaseInfo{
     /**
      * 拍摄时间
      */
+
     private Date shotTime ;
     /**
      * 焦距
      */
     private String focusLength;
-
+    /**
+     * 收藏
+     */
+    private Integer like;
+    /**
+     * 照片评级
+     */
+    private BigDecimal rate;
     private String model ;
+
+    public Integer getLike() {
+        return like;
+    }
+
+    public void setLike(Integer like) {
+        this.like = like;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
+    }
+
     public Date getShotTime() {
         return shotTime;
     }
@@ -54,7 +80,7 @@ public class PhotoInfo extends BaseInfo{
 
     }
     @OneToOne
-    @JoinColumn(name="fileId",referencedColumnName = "mid",insertable = false,updatable = false)
+    @JoinColumn(name="fileId",referencedColumnName = "mid",nullable = false,insertable = false,updatable = false)
     private SysFileStoreItem sysFileStoreItem;
 
     public Integer getFileId() {

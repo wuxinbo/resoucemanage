@@ -4,6 +4,8 @@ import com.wuxinbo.resourcemanage.model.SysFileStoreItem;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SysFileStoreItemReposity extends PagingAndSortingRepository<SysFileStoreItem,Integer> {
 
@@ -12,5 +14,5 @@ public interface SysFileStoreItemReposity extends PagingAndSortingRepository<Sys
      * @param relativeUrl
      * @return
      */
-    SysFileStoreItem findByRelativeUrl(String relativeUrl);
+  Iterable<SysFileStoreItem> findByRelativeUrl(String relativeUrl);
 }

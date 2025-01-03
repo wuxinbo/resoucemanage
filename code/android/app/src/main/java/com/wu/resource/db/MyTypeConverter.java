@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.room.TypeConverter;
 
-import com.google.gson.Gson;
 import com.wu.resource.Constant;
 import com.wu.resource.image.PhotoInfo;
 
@@ -19,12 +18,12 @@ public class MyTypeConverter {
         if(date==null){
             return "";
         }
-        return new SimpleDateFormat(Constant.DATE_FORMAT).format(date);
+        return new SimpleDateFormat(Constant.TIME_FORMAT).format(date);
     }
     @TypeConverter
     public static Date StringtoDate(String value){
         try {
-            return new SimpleDateFormat(Constant.DATE_FORMAT).parse(value);
+            return new SimpleDateFormat(Constant.TIME_FORMAT).parse(value);
         } catch (ParseException e) {
             Log.e("TypeConvertor","parseException",e);
         }
