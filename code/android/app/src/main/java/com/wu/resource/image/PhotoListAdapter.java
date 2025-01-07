@@ -6,6 +6,7 @@ import static com.wu.resource.Constant.gson;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
             super(itemView);
             PhotoImageViewBinding bind =PhotoImageViewBinding.bind(itemView);
             imageView = bind.photoImage;
+
             //不显示checkbox
             bind.check.setVisibility(View.GONE);
             //禁用点击事件，使用图片的点击
@@ -61,6 +63,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
             binds.add(bind);
             MutableLiveData<List<PhotoInfo>> selectPhotoInfos = homeViewModel.getSelectPhotoInfos();
             imageView.setOnClickListener((view) -> {
+                //判断是进入详情还是进入多选模式
                 if (homeViewModel.getEnableSelect().getValue()){
                     List<PhotoInfo> selectPhotos = selectPhotoInfos.getValue();
                     if (!bind.check.isChecked()){ //如果是选中则取消选中
@@ -73,13 +76,14 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
                     Log.i(TAG, "select photo size : "+ selectPhotos.size());
                 }else{
                     Bundle data = new Bundle();
-                    data.putString(Constant.URL_KEY, Constant.URL + "/photo/get?mid=" + photoInfo.getMid());
+                    data.putString(Constant.URL_KEY, Constant.URL + "photo/get?mid=" + photoInfo.getMid());
                     data.putString(Constant.PHOTO_KEY, gson.toJson(photoInfo));
                     NavController navController = Navigation.findNavController((Activity) context, R.id.nav_bottom_home);
                     navController.navigate(R.id.photo_detail, data);
                 }
 
             });
+            //添加长按事件，长按弹出
             imageView.setLongClickable(true);
             imageView.setOnLongClickListener((v) -> {
                 Log.i(TAG, "imageClick: ");
@@ -116,10 +120,13 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.photoInfo = items.get(position);
         ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
-
+        // 标记是否喜欢
+        if (holder.photoInfo.getLike()==null){ //为空表示不喜欢
+            binds.get(position).likeButton.setImageResource(R.drawable.like);
+        }
         layoutParams.width = gridLayoutManager.getWidth() / gridLayoutManager.getSpanCount();
         layoutParams.height = layoutParams.width;
-        Glide.with(context).load(Constant.URL + "/photo/get?mid=" + holder.photoInfo.getMid()).
+        Glide.with(context).load(Constant.URL + "photo/get?mid=" + holder.photoInfo.getMid()).
                 //图片裁切
                         centerCrop().
                 override(holder.imageView.getWidth(), holder.imageView.getHeight()).

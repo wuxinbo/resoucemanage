@@ -26,6 +26,8 @@ public class Constant {
    * 按照拍摄时间排序
    */
   public static final String PHOTO_GROUP_BY_SHOT_TIME = "photo/queryPhotoGroupby";
+
+
   public static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
   public static final String DATE_FORMAT = "yyyy年M月dd日";
   public static final String FILE_PROVIDER = "com.wu.resource.file_provider";
