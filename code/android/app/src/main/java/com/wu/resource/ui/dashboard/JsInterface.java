@@ -2,6 +2,8 @@ package com.wu.resource.ui.dashboard;
 
 import static com.wu.resource.Constant.PHOTO_GROUP_BY_SHOT_TIME;
 import static com.wu.resource.Constant.URL;
+import static com.wu.resource.dashboard.ChartData.LENS_KEY;
+import static com.wu.resource.dashboard.ChartData.SHOT_TIME_KEY;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,16 +12,24 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import androidx.room.util.StringUtil;
+
 import com.wu.common.http.HttpUtil;
+import com.wu.resource.ResourceApplication;
+import com.wu.resource.dashboard.ChartData;
+import com.wu.resource.db.ChartDao;
 
 public class JsInterface {
 
 
     private WebView webView;
     private Context context;
+    private ChartDao chartDao;
     public JsInterface(WebView webView,Context context) {
         this.webView = webView;
         this.context =context;
+        ResourceApplication application = (ResourceApplication) ((Activity)context).getApplication();
+        chartDao=application.getDb().chartDao();
     }
 
     /**
@@ -27,284 +37,34 @@ public class JsInterface {
      */
     @JavascriptInterface
     public void loadShotTime(){
-        String defualtRes="{" +
-                "    \"category\": [" +
-                "        \"2024-10-03\"," +
-                "        \"2024-08-04\"," +
-                "        \"2024-06-30\"," +
-                "        \"2024-06-10\"," +
-                "        \"2024-05-22\"," +
-                "        \"2024-05-05\"," +
-                "        \"2024-05-04\"," +
-                "        \"2024-05-02\"," +
-                "        \"2024-05-01\"," +
-                "        \"2024-04-14\"," +
-                "        \"2024-03-24\"," +
-                "        \"2024-02-17\"," +
-                "        \"2023-12-17\"," +
-                "        \"2023-12-10\"," +
-                "        \"2023-10-29\"," +
-                "        \"2023-10-22\"," +
-                "        \"2023-10-15\"," +
-                "        \"2023-10-14\"," +
-                "        \"2023-10-05\"," +
-                "        \"2023-07-09\"," +
-                "        \"2023-07-02\"," +
-                "        \"2023-06-24\"," +
-                "        \"2023-02-26\"," +
-                "        \"2023-02-05\"," +
-                "        \"2022-10-05\"," +
-                "        \"2022-10-02\"," +
-                "        \"2022-08-21\"," +
-                "        \"2022-07-03\"," +
-                "        \"2022-05-03\"," +
-                "        \"2022-04-10\"," +
-                "        \"2022-04-03\"," +
-                "        \"2022-03-13\"," +
-                "        \"2022-02-27\"," +
-                "        \"2022-02-13\"," +
-                "        \"2022-02-07\"," +
-                "        \"2022-02-01\"," +
-                "        \"2022-01-03\"," +
-                "        \"2021-12-19\"," +
-                "        \"2021-12-05\"," +
-                "        \"2021-09-21\"," +
-                "        \"2021-08-15\"," +
-                "        \"2021-07-14\"," +
-                "        \"2021-07-13\"," +
-                "        \"2021-07-10\"," +
-                "        \"2021-07-03\"," +
-                "        \"2021-06-12\"," +
-                "        \"2021-06-05\"," +
-                "        \"2021-05-09\"," +
-                "        \"2021-05-02\"," +
-                "        \"2021-04-29\"," +
-                "        \"2021-03-28\"," +
-                "        \"2021-02-21\"," +
-                "        \"2021-02-16\"," +
-                "        \"2021-02-14\"," +
-                "        \"2021-02-12\"," +
-                "        \"2021-01-02\"," +
-                "        \"2020-12-05\"," +
-                "        \"2020-11-29\"," +
-                "        \"2020-11-15\"," +
-                "        \"2020-10-04\"," +
-                "        \"2020-09-20\"," +
-                "        \"2020-08-29\"," +
-                "        \"2020-07-19\"," +
-                "        \"2020-07-18\"," +
-                "        \"2020-06-26\"," +
-                "        \"2020-06-25\"," +
-                "        \"2020-06-21\"," +
-                "        \"2020-05-03\"," +
-                "        \"2020-05-01\"," +
-                "        \"2020-04-25\"," +
-                "        \"2020-04-11\"," +
-                "        \"2020-03-22\"," +
-                "        \"2020-03-15\"," +
-                "        \"2020-02-28\"," +
-                "        \"2020-01-27\"," +
-                "        \"2020-01-25\"," +
-                "        \"2020-01-22\"," +
-                "        \"2020-01-18\"," +
-                "        \"2019-12-22\"," +
-                "        \"2019-10-27\"," +
-                "        \"2019-10-24\"," +
-                "        \"2019-10-13\"," +
-                "        \"2019-10-05\"," +
-                "        \"2019-10-02\"," +
-                "        \"2019-09-22\"," +
-                "        \"2019-09-14\"," +
-                "        \"2019-09-13\"," +
-                "        \"2019-09-08\"," +
-                "        \"2019-09-01\"," +
-                "        \"2019-08-24\"," +
-                "        \"2019-07-13\"," +
-                "        \"2019-07-07\"," +
-                "        \"2019-06-07\"," +
-                "        \"2019-06-02\"," +
-                "        \"2019-05-26\"," +
-                "        \"2019-05-19\"," +
-                "        \"2019-05-12\"," +
-                "        \"2019-05-04\"," +
-                "        \"2019-05-03\"," +
-                "        \"2019-05-02\"," +
-                "        \"2019-05-01\"," +
-                "        \"2019-04-27\"," +
-                "        \"2019-04-21\"," +
-                "        \"2019-04-14\"," +
-                "        \"2019-04-07\"," +
-                "        \"2019-04-06\"," +
-                "        \"2019-03-03\"," +
-                "        \"2018-05-23\"" +
-                "    ]," +
-                "    \"data\": [" +
-                "        1," +
-                "        2," +
-                "        6," +
-                "        3," +
-                "        1," +
-                "        5," +
-                "        12," +
-                "        10," +
-                "        1," +
-                "        7," +
-                "        7," +
-                "        2," +
-                "        38," +
-                "        1," +
-                "        75," +
-                "        72," +
-                "        14," +
-                "        1," +
-                "        5," +
-                "        2," +
-                "        10," +
-                "        5," +
-                "        16," +
-                "        6," +
-                "        12," +
-                "        11," +
-                "        1," +
-                "        6," +
-                "        7," +
-                "        1," +
-                "        1," +
-                "        2," +
-                "        1," +
-                "        4," +
-                "        2," +
-                "        2," +
-                "        1," +
-                "        7," +
-                "        102," +
-                "        6," +
-                "        10," +
-                "        58," +
-                "        1," +
-                "        3," +
-                "        2," +
-                "        3," +
-                "        2," +
-                "        1," +
-                "        2," +
-                "        1," +
-                "        3," +
-                "        7," +
-                "        3," +
-                "        7," +
-                "        27," +
-                "        3," +
-                "        52," +
-                "        1," +
-                "        3," +
-                "        5," +
-                "        2," +
-                "        1," +
-                "        4," +
-                "        2," +
-                "        8," +
-                "        1," +
-                "        2," +
-                "        11," +
-                "        6," +
-                "        4," +
-                "        4," +
-                "        10," +
-                "        4," +
-                "        7," +
-                "        2," +
-                "        1," +
-                "        4," +
-                "        7," +
-                "        6," +
-                "        5," +
-                "        1," +
-                "        6," +
-                "        5," +
-                "        5," +
-                "        5," +
-                "        8," +
-                "        5," +
-                "        4," +
-                "        2," +
-                "        4," +
-                "        11," +
-                "        41," +
-                "        3," +
-                "        2," +
-                "        95," +
-                "        2," +
-                "        1," +
-                "        164," +
-                "        1," +
-                "        3," +
-                "        5," +
-                "        7," +
-                "        7," +
-                "        8," +
-                "        4," +
-                "        2," +
-                "        1," +
-                "        1" +
-                "    ]" +
-                "}";
+        queryChartData("loadShotTime",SHOT_TIME_KEY,"3");
+    }
+    private void queryChartData(String method,String key,String group){
         //初始化数据
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            HttpUtil.getJson(URL+PHOTO_GROUP_BY_SHOT_TIME+"?group=3",(res)->{
+            HttpUtil.getJson(URL+PHOTO_GROUP_BY_SHOT_TIME+"?group="+group,(res)->{
+                //保存数据
+                ChartData data =new ChartData();
+                data.setKey(key);
+                data.setValue(res);
+                chartDao.insert(data);
                 ((Activity)context).runOnUiThread(()->{
-                    webView.evaluateJavascript("receiveData('loadShotTime','"+res+"')",null);
+                    webView.evaluateJavascript("receiveData('"+method+"','"+res+"')",null);
                 });
             });
         }
-        ((Activity)context).runOnUiThread(()->{
-            webView.evaluateJavascript("receiveData('loadShotTime','"+defualtRes+"')",null);
-        });
-
+        ChartData data = chartDao.query(key);
+        if(data!=null){
+            ((Activity)context).runOnUiThread(()->{
+                webView.evaluateJavascript("receiveData('"+method+"','"+ data.getValue() +"')",null);
+            });
+        }
     }
     /**
      * 镜头拍摄数据
      */
     @JavascriptInterface
     public void loadLens(){
-        String defualtRes="{" +
-                "    \"category\": [" +
-                "        \"17-50mm f/2.8\"," +
-                "        \"18-55mm f/3.5-5.6\"," +
-                "        \"24-70mm f/2.8\"," +
-                "        \"15-30mm f/2.8\"," +
-                "        \"16-50mm f/3.5-5.6\"," +
-                "        \"20.7mm\"," +
-                "        \"17-35mm f/2.8-4.0\"," +
-                "        \"70-210mm f/4.0\"," +
-                "        \"50mm f/1.8\"," +
-                "        \"35mm f/2.0\"" +
-                "    ]," +
-                "    \"data\": [" +
-                "        1," +
-                "        1," +
-                "        1," +
-                "        1," +
-                "        1," +
-                "        9," +
-                "        28," +
-                "        474," +
-                "        506," +
-                "        990" +
-                "    ]" +
-                "}";
-        //初始化数据
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            HttpUtil.getJson(URL+PHOTO_GROUP_BY_SHOT_TIME+"?group=1",(res)->{
-                ((Activity)context).runOnUiThread(()->{
-                    webView.evaluateJavascript("receiveData('loadLens','"+res+"')",null);
-                });
-
-            });
-        }
-        //没有网络加载数据
-        ((Activity)context).runOnUiThread(()->{
-            webView.evaluateJavascript("receiveData('loadLens','"+defualtRes+"')",null);
-        });
+        queryChartData("loadLens",LENS_KEY,"1");
     }
 }
