@@ -1,6 +1,8 @@
 package com.wuxinbo.resourcemanage.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,11 +13,13 @@ public class BaseInfo {
      * 创建时间
      */
     @Column(name ="create_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date createTime;
     /**
      * 更新时间
      */
     @Column(name ="update_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date updateTime;
     @Id
     @GeneratedValue()

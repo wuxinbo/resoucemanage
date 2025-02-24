@@ -13,6 +13,8 @@ import com.wuxinbo.resourcemanage.reposity.SysFileStoreNodeReposity;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.nativex.hint.AotProxyHint;
+import org.springframework.nativex.hint.ProxyBits;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -24,6 +26,7 @@ import java.util.*;
 /**
  * 本地文件管理方法
  */
+@AotProxyHint(targetClass=com.wuxinbo.resourcemanage.service.FileInfoService.class, proxyFeatures = ProxyBits.IS_STATIC)
 @Service
 public class FileInfoService extends BaseService implements InitializingBean {
   @Autowired
@@ -38,7 +41,7 @@ public class FileInfoService extends BaseService implements InitializingBean {
   /**
    * 扫描文件并保存到数据库
    */
-  @Transactional(rollbackFor = Exception.class)
+//  @Transactional(rollbackFor = Exception.class)
   public void scanFile(SysFileStoreNode sysFileStoreNode) {
     File dir = new File(sysFileStoreNode.getLocalPath());
     handleDir(dir.getPath(), sysFileStoreNode);

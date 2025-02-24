@@ -2,6 +2,7 @@ package com.wuxinbo.resourcemanage.model;
 
 import antlr.StringUtils;
 import com.drew.metadata.Tag;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -29,7 +30,7 @@ public class PhotoInfo extends BaseInfo{
     /**
      * 拍摄时间
      */
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date shotTime ;
     /**
      * 焦距
@@ -38,6 +39,7 @@ public class PhotoInfo extends BaseInfo{
     /**
      * 收藏
      */
+    @Column(name = "likes")
     private Integer like;
     /**
      * 照片评级
