@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'ui/photopage.dart';
+import 'ui/navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,34 +21,41 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   late Photopage photopage;
 
   @override
   Widget build(BuildContext context) {
     photopage = Photopage();
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Center(
-        child: Column(
+        child: Row(
           children: <Widget>[
-            Expanded(
-              child: photopage,
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: height, maxWidth: width),
+              child: NavRail(),
             ),
+
+            // SizedBox(
+            //   width: 30,
+            // ),
+            // Expanded(
+            //   child: photopage,
+            // ),
           ],
         ),
       ),

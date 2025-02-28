@@ -38,20 +38,28 @@ class PhotoInfoDateWidget extends StatelessWidget {
       }).toList(),
     );
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      //顶部边距
+      const SizedBox(
+        height: 10,
+      ),
       // 日期信息
       Text(
-        date + ' ' + photos.length.toString() + '张',
+        '$date ${photos.length}张',
         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
-      view,
-      // Flexible(child: view),
-      // ConstrainedBox(
-      //     constraints: BoxConstraints(
-      //         minHeight: 10,
-      //         minWidth: 10,
-      //         maxHeight: imageHeight + 20,
-      //         maxWidth: screenWidth),
-      //     child: view)
+      //边距
+      const SizedBox(
+        height: 10,
+      ),
+      // 图片往右偏移20
+      Row(children: [
+        const SizedBox(
+          width: 20,
+        ), //左侧边距
+        Expanded(
+          child: view,
+        ),
+      ]),
     ]);
   }
 }
@@ -85,11 +93,11 @@ class PhotoPageState extends State<Photopage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: shotDates));
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: shotDates),
+    );
   }
 
   /**
