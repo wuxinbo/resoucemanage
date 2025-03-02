@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'ui/photopage.dart';
 import 'ui/navigation.dart';
 
 void main() {
@@ -34,11 +33,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Photopage photopage;
-
   @override
   Widget build(BuildContext context) {
-    photopage = Photopage();
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -49,18 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
               constraints: BoxConstraints(maxHeight: height, maxWidth: width),
               child: NavRail(),
             ),
-
-            // SizedBox(
-            //   width: 30,
-            // ),
-            // Expanded(
-            //   child: photopage,
-            // ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: photopage.refresh,
+        onPressed: null,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

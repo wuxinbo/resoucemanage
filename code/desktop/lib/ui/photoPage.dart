@@ -16,6 +16,44 @@ class PhotoInfoDateWidget extends StatelessWidget {
   int gridCloum = 0;
   double imageWidth = 200;
   double imageHeight = 200;
+
+  Widget bottomImageInfo(dynamic photo) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 30),
+        //光圈
+        Text(" ${photo['aperture']}",
+            style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        const SizedBox(width: 10),
+        Text(" ${photo['speed']}",
+            style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        const SizedBox(width: 10),
+        Text(" ${photo['focusLength']}",
+            style: const TextStyle(fontSize: 12, color: Colors.grey)),
+      ],
+    );
+  }
+
+  /**
+   * 封装图片控件
+   */
+  Widget imageView(dynamic photo) {
+    var image = CachedNetworkImage(
+      imageUrl: Request.PHOTO_IMAGE_URL + photo['mid'].toString(),
+      fit: BoxFit.cover,
+      height: imageHeight,
+      width: imageWidth,
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+    );
+    return Column(
+      children: [
+        Expanded(child: image, flex: 1),
+        bottomImageInfo(photo),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // 构建图片网格
@@ -25,22 +63,17 @@ class PhotoInfoDateWidget extends StatelessWidget {
     var view = GridView.count(
       crossAxisCount: gridCloum,
       crossAxisSpacing: 5,
-      mainAxisSpacing: 5,
+      mainAxisSpacing: 8,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: photos.map<Widget>((photo) {
-        return CachedNetworkImage(
-          imageUrl: Request.PHOTO_IMAGE_URL + photo['mid'].toString(),
-          fit: BoxFit.cover,
-          // height: imageHeight,
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        );
+        return imageView(photo);
       }).toList(),
     );
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       //顶部边距
       const SizedBox(
-        height: 10,
+        height: 0,
       ),
       // 日期信息
       Text(
@@ -49,7 +82,7 @@ class PhotoInfoDateWidget extends StatelessWidget {
       ),
       //边距
       const SizedBox(
-        height: 10,
+        height: 20,
       ),
       // 图片往右偏移20
       Row(children: [
