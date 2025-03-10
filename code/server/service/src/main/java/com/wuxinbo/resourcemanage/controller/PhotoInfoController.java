@@ -1,5 +1,6 @@
 package com.wuxinbo.resourcemanage.controller;
 
+import com.wuxinbo.resourcemanage.jni.ImageMagick;
 import com.wuxinbo.resourcemanage.model.*;
 import com.wuxinbo.resourcemanage.reposity.PhotoInfoReposity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,17 +35,35 @@ public class PhotoInfoController extends BaseController {
         Optional<PhotoInfo> photo = photoInfoReposity.findById(mid);
         photo.ifPresent(it -> {
             try {
-                try (
-                        FileInputStream fis = new FileInputStream(it.getSysFileStoreItem().getSysFileStoreNode().getLocalPath() + it.getSysFileStoreItem().getRelativeUrl())
-                ) {
-                    ServletOutputStream outputStream = response.getOutputStream();
-                    byte[] data = new byte[2048];
-                    int length = 0;
-                    while ((length = fis.read(data)) != -1) {
-                        outputStream.write(data, 0, length);
+                //生成缩略图
+                String filepath = it.getSysFileStoreItem().getSysFileStoreNode().getLocalPath() +
+                        it.getSysFileStoreItem().getRelativeUrl();
+                File originFile = new File(filepath);
+                String fileNames[] = it.getSysFileStoreItem().getFileName().split("\\.");
+                if (fileNames[1].equalsIgnoreCase("jpg")) {
+                    String thumbFilePath = originFile.getParent() +File.separator+ fileNames[0] + "_compress." + fileNames[1];
+
+                    if (!new File(thumbFilePath).exists()) {
+                        int code = ImageMagick.resize(filepath, thumbFilePath, 10);
+                        if (code != 0) {
+                            return;
+                        }
                     }
-                    outputStream.close();
+                    try (
+
+                            FileInputStream fis = new FileInputStream(thumbFilePath)
+                    ) {
+                        ServletOutputStream outputStream = response.getOutputStream();
+                        byte[] data = new byte[2048];
+                        int length = 0;
+                        while ((length = fis.read(data)) != -1) {
+                            outputStream.write(data, 0, length);
+                        }
+                        outputStream.close();
+                    }
+
                 }
+
             } catch (FileNotFoundException e) {
                 logger.error("FileNotFoundException", e);
             } catch (IOException e) {
@@ -66,6 +86,7 @@ public class PhotoInfoController extends BaseController {
 
     /**
      * 更新
+     *
      * @param photoInfoList
      * @return
      */
@@ -73,7 +94,7 @@ public class PhotoInfoController extends BaseController {
     protected Result update(@RequestBody List<PhotoInfo> photoInfoList) {
         if (photoInfoList != null && !photoInfoList.isEmpty()) {
             for (PhotoInfo photoInfo : photoInfoList) {
-                photoInfoReposity.updateLike(photoInfo.getLike(),photoInfo.getMid());
+                photoInfoReposity.updateLike(photoInfo.getLike(), photoInfo.getMid());
             }
         }
         return Result.success();

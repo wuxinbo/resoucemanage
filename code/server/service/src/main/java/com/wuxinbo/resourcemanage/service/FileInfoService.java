@@ -85,6 +85,13 @@ public class FileInfoService extends BaseService implements InitializingBean {
       logger.info("file is dir ,fileName is " + file.getPath());
       return;
     }
+    String fileNames[] =file.getName().split("\\.");
+    if(fileNames.length==2){
+        if (fileNames[0].contains("_compress")) {
+            logger.info(notify.getFilePath() + " 是缩略图，跳过处理 ");
+            return;
+        }
+    }
     logger.info(notify.getFilePath() + " file is change action is " + notify.getAction());
 
     if (notify.isRemoved()) { //文件删除，数据库数据

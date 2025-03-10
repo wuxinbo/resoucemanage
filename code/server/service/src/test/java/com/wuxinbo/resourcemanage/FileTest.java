@@ -23,10 +23,10 @@ public class FileTest {
         System.loadLibrary("core");
     }
 
-//    @Test
+    @Test
     public void resizeImage(){
-        ImageMagick.resize("D:\\wallerpage\\DSC_3422.jpg",
-                "D:\\wallerpage\\DSC_3422_10.jpg",10);
+        ImageMagick.resize("D:\\seafile\\photo\\2025\\01\\29\\export\\DJI_0075.jpg",
+                "D:\\seafile\\photo\\2025\\01\\29\\export\\DJI_0075_10.jpg",10);
     }
 
     //    @Test

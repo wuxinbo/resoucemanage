@@ -7,8 +7,6 @@ public class ImageMagick {
 
 
     static {
-        System.loadLibrary("core");
-
         init();
     }
 
