@@ -38,32 +38,22 @@ public class PhotoInfoController extends BaseController {
                 //生成缩略图
                 String filepath = it.getSysFileStoreItem().getSysFileStoreNode().getLocalPath() +
                         it.getSysFileStoreItem().getRelativeUrl();
-                File originFile = new File(filepath);
-                String fileNames[] = it.getSysFileStoreItem().getFileName().split("\\.");
-                if (fileNames[1].equalsIgnoreCase("jpg")) {
-                    String thumbFilePath = originFile.getParent() +File.separator+ fileNames[0] + "_compress." + fileNames[1];
-
-                    if (!new File(thumbFilePath).exists()) {
-                        int code = ImageMagick.resize(filepath, thumbFilePath, 10);
-                        if (code != 0) {
-                            return;
-                        }
-                    }
-                    try (
-
-                            FileInputStream fis = new FileInputStream(thumbFilePath)
-                    ) {
-                        ServletOutputStream outputStream = response.getOutputStream();
-                        byte[] data = new byte[2048];
-                        int length = 0;
-                        while ((length = fis.read(data)) != -1) {
-                            outputStream.write(data, 0, length);
-                        }
-                        outputStream.close();
-                    }
-
+                ImageMagick.compressImage(it);
+                File thumbFile = new File(it.getThumbFilePath());
+                if (thumbFile.exists()){
+                    filepath =thumbFile.getPath();
                 }
-
+                try (
+                        FileInputStream fis = new FileInputStream(filepath)
+                ) {
+                    ServletOutputStream outputStream = response.getOutputStream();
+                    byte[] data = new byte[2048];
+                    int length = 0;
+                    while ((length = fis.read(data)) != -1) {
+                        outputStream.write(data, 0, length);
+                    }
+                    outputStream.close();
+                }
             } catch (FileNotFoundException e) {
                 logger.error("FileNotFoundException", e);
             } catch (IOException e) {

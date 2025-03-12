@@ -3,8 +3,10 @@ package com.wuxinbo.resourcemanage.model;
 import antlr.StringUtils;
 import com.drew.metadata.Tag;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wuxinbo.resourcemanage.jni.ImageMagick;
 
 import javax.persistence.*;
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,6 +49,30 @@ public class PhotoInfo extends BaseInfo{
     private BigDecimal rate;
     private String model ;
 
+    /**
+     * 获取原始文件路径
+     * @return
+     */
+    public String getOriginFilePath(){
+        if (getSysFileStoreItem()!=null){
+            return getSysFileStoreItem().getSysFileStoreNode().getLocalPath() +
+                    getSysFileStoreItem().getRelativeUrl();
+        }
+        return "";
+    }
+
+    /**
+     * 获取压缩文件路径
+     * @return
+     */
+    public String getThumbFilePath(){
+        File originFile = new File(getOriginFilePath());
+        String fileNames[] = getSysFileStoreItem().getFileName().split("\\.");
+        if (fileNames[1].equalsIgnoreCase("jpg")) {
+            return originFile.getParent() + File.separator + fileNames[0] + "_compress." + fileNames[1];
+        }
+        return "";
+    }
     public Integer getLike() {
         return like;
     }

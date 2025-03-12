@@ -1,5 +1,9 @@
 package com.wuxinbo.resourcemanage.jni;
 
+import com.wuxinbo.resourcemanage.model.PhotoInfo;
+
+import java.io.File;
+
 /**
  * imageMagick 图片处理 jni 接口
  */
@@ -25,6 +29,18 @@ public class ImageMagick {
      */
     public static native int resize(String src, String dest, int scale);
 
+    /**
+     * 图片压缩
+     * @param photoInfo
+     */
+    public static void compressImage(PhotoInfo photoInfo){
+        String filepath = photoInfo.getOriginFilePath();
+        File thumbFile = new File(photoInfo.getThumbFilePath());
+        if (!thumbFile.exists()) {
+            int code = ImageMagick.resize(filepath, thumbFile.getPath(), 10);
+        }
+
+    }
     /**
      * 资源销毁
      */

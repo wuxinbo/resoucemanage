@@ -1,3 +1,3 @@
-set JAVA_OPTS=-Xmx50m -Djava.library.path=./target
+set JAVA_OPTS=-Xmx50m 
 
 java  %JAVA_OPTS% -jar ./target/resourcemanage.jar
