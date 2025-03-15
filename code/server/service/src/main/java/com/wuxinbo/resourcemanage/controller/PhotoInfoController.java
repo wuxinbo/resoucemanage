@@ -1,5 +1,6 @@
 package com.wuxinbo.resourcemanage.controller;
 
+import com.wuxinbo.resourcemanage.jni.ImageMagick;
 import com.wuxinbo.resourcemanage.model.*;
 import com.wuxinbo.resourcemanage.reposity.PhotoInfoReposity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,8 +35,16 @@ public class PhotoInfoController extends BaseController {
         Optional<PhotoInfo> photo = photoInfoReposity.findById(mid);
         photo.ifPresent(it -> {
             try {
+                //生成缩略图
+                String filepath = it.getSysFileStoreItem().getSysFileStoreNode().getLocalPath() +
+                        it.getSysFileStoreItem().getRelativeUrl();
+                ImageMagick.compressImage(it);
+                File thumbFile = new File(it.getThumbFilePath());
+                if (thumbFile.exists()){
+                    filepath =thumbFile.getPath();
+                }
                 try (
-                        FileInputStream fis = new FileInputStream(it.getSysFileStoreItem().getSysFileStoreNode().getLocalPath() + it.getSysFileStoreItem().getRelativeUrl())
+                        FileInputStream fis = new FileInputStream(filepath)
                 ) {
                     ServletOutputStream outputStream = response.getOutputStream();
                     byte[] data = new byte[2048];
@@ -66,6 +76,7 @@ public class PhotoInfoController extends BaseController {
 
     /**
      * 更新
+     *
      * @param photoInfoList
      * @return
      */
@@ -73,7 +84,7 @@ public class PhotoInfoController extends BaseController {
     protected Result update(@RequestBody List<PhotoInfo> photoInfoList) {
         if (photoInfoList != null && !photoInfoList.isEmpty()) {
             for (PhotoInfo photoInfo : photoInfoList) {
-                photoInfoReposity.updateLike(photoInfo.getLike(),photoInfo.getMid());
+                photoInfoReposity.updateLike(photoInfo.getLike(), photoInfo.getMid());
             }
         }
         return Result.success();

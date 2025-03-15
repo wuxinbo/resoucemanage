@@ -1,0 +1,180 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="lens" style="height:50%;width:100%">
+        </div>
+        <!--        <div id="foucus" style="height:500px;width:100%;margin-left: 50%;">-->
+        <!--        </div>-->
+
+    </div>
+    <div id="shotTime" style="height:50%;width:100%">
+    </div>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script>
+        var lens = echarts.init(document.getElementById('lens'));
+        lens.showLoading();
+        var shotTime = echarts.init(document.getElementById('shotTime'));
+        shotTime.showLoading();
+        //处理拍摄时间数据
+        function handleShotTime(response) {
+            shotTime.hideLoading();
+            option = {
+                dataZoom: [
+                    {
+                        id: 'dataZoomX',
+                        type: 'slider',
+                        xAxisIndex: [0],
+                        filterMode: 'filter'
+                    },
+                    {
+                        id: 'dataZoomY',
+                        type: 'slider',
+                        yAxisIndex: [0],
+                        filterMode: 'empty'
+                    }
+                ],
+                xAxis: {
+                    type: 'category',
+                    data: response.category
+                },
+                title: {
+                    text: "拍摄时间统计"
+                },
+                tooltip: {},
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: response.data,
+                        type: 'bar'
+                    }
+                ]
+            };
+            shotTime.setOption(option);
+        }
+        function receiveData(method, res) {
+            console.log("res :" + res)
+            var response = JSON.parse(res);
+            if (method == 'loadLens') {
+                handleLens(response);
+            } else if (method == "loadShotTime") {
+                handleShotTime(response);
+            }
+        }
+        android.loadLens();
+        // 异步加载拍摄时间数据
+        android.loadShotTime();
+        //处理镜头数据
+        function handleLens(response) {
+            lens.hideLoading();
+            option = {
+                dataZoom: [
+                    {
+                        id: 'dataZoomX',
+                        type: 'slider',
+                        xAxisIndex: [0],
+                        filterMode: 'filter'
+                    },
+                    {
+                        id: 'dataZoomY',
+                        type: 'slider',
+                        yAxisIndex: [0],
+                        filterMode: 'empty'
+                    }
+                ],
+                xAxis: {
+                    type: 'category',
+                    data: response.category
+                },
+                title: {
+                    text: "镜头拍摄数量"
+                },
+                tooltip: {},
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: response.data,
+                        type: 'bar'
+                    }
+                ]
+            };
+            lens.setOption(option);
+        }
+        // <!--        axios.get(urlPreffix + 'photo/queryPhotoGroupby?group=2')-->
+        // < !--            .then(function (response) {
+        //             -->
+        // < !--                var foucus = echarts.init(document.getElementById('foucus')); -->
+        // < !--option = {
+        //                 -->
+        // < !--xAxis: {
+        //                     -->
+        // < !--type: 'category', -->
+        // < !--data: response.data.category-- >
+        // < !--                    }, -->
+        // < !--title: {
+        //                     -->
+        // < !--text: "焦段拍摄数量"-- >
+        // < !--                    }, -->
+        // < !--tooltip: { }, -->
+        // < !--yAxis: {
+        //                     -->
+        // < !--type: 'value'-- >
+        // < !--                    }, -->
+        // < !--series: [-->
+        // < !--{-->
+        // < !--data: response.data.data, -->
+        // < !--type: 'bar'-- >
+        // < !--                        } -->
+        // < !--                    ]-->
+        // < !--                }; -->
+        // < !--foucus.setOption(option); -->
+        // < !--console.log(response); -->
+        // < !--            })-->
+        // < !--            .catch(function (error) {
+        //                         -->
+        // < !--console.log(error); -->
+        // < !--            }); -->
+
+
+
+        // axios.get(urlPreffix + 'photo/queryPhotoGroupby?group=3')
+        //     .then(function (response) {
+        //         shotTime.hideLoading();
+        //         option = {
+        //             xAxis: {
+        //                 type: 'category',
+        //                 data: response.data.category
+        //             },
+        //             title: {
+        //                 text: "拍摄时间统计"
+        //             },
+        //             tooltip: {},
+        //             yAxis: {
+        //                 type: 'value'
+        //             },
+        //             series: [
+        //                 {
+        //                     data: response.data.data,
+        //                     type: 'bar'
+        //                 }
+        //             ]
+        //         };
+        //         shotTime.setOption(option);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+
+    </script>
+</body>
+
+</html>

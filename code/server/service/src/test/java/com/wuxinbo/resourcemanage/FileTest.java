@@ -6,6 +6,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.wuxinbo.resourcemanage.jni.FileWatch;
+import com.wuxinbo.resourcemanage.jni.ImageMagick;
 import com.wuxinbo.resourcemanage.model.FileChangeNotify;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,13 @@ import java.util.Collection;
 public class FileTest {
 
     static {
-        System.loadLibrary("filewatch");
+        System.loadLibrary("core");
+    }
+
+    @Test
+    public void resizeImage(){
+        ImageMagick.resize("D:\\seafile\\photo\\2025\\01\\29\\export\\DJI_0075.jpg",
+                "D:\\seafile\\photo\\2025\\01\\29\\export\\DJI_0075_10.jpg",10);
     }
 
     //    @Test

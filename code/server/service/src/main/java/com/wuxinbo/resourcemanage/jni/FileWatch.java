@@ -9,9 +9,6 @@ import com.wuxinbo.resourcemanage.model.FileChangeNotify;
 public class FileWatch {
 
 
-    static {
-        System.loadLibrary("filewatch");
-    }
     /**
      * 监控文件的变化
      * @param dir 需要监控的目录
