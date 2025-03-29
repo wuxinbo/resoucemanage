@@ -1,3 +1,4 @@
+#ifdef WIN32
 #include <Windows.h>
 #include <memory>
 #include <iostream> 
@@ -41,3 +42,4 @@ std::shared_ptr<WCHAR[]> multiByteToWideChar(LPCSTR str)
     ptr.get()[wsize] = 0;
     return ptr;
 }
+#endif

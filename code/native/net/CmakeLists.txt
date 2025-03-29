@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.20.0)
+set(projectName "net" )
+project(${projectName} C CXX)
+set(CMAKE_CXX_STANDARD 17)
+find_package("Poco"  REQUIRED Net)
+# target_link_libraries("server"  PRIVATE
+#     Poco::Net
+# )
+# target_link_libraries("client"  PRIVATE
+#     Poco::Net
+# )

@@ -1,32 +1,32 @@
 
-
+#pragma once
 #include <stdint.h>
 // 取消内存对齐
-#pragma pack(1)
+#pragma pack(push,1)
 
 /**
  * 数据类型
  */
-enum class DataType: uint8_t
+ struct DataType
 {
     /**
      * UTF-8 字符串
      */
-    STRING =0,
+    static const uint8_t STRING =1;
     /**
      * 文件
      */
-    FILE=1,
+    static const uint8_t FILE=2;
     /**
      * 二进制数据
      */
-    BINARY=2
+    static const uint8_t BINARY=3;
 
 };
 /**
  * 协议头
  */
-struct Header
+struct Message
 {
     // 魔数
     uint32_t  magicNumber=0xBEBEBEBE;
@@ -35,5 +35,19 @@ struct Header
     /**
      * 数据类型 
      * */ 
-    DataType type= DataType::STRING;
+    uint8_t type=DataType::STRING;
+    // body 长度
+    uint32_t length = 0;
+    /**
+     * 数据
+     */
+    char data[0];
 };
+#pragma pack(pop)
+#define NET xbwuc_net
+#define NET_NAMESPACE_START namespace xbwuc_net {
+
+#define NET_NAMESPACE_END };
+
+
+
