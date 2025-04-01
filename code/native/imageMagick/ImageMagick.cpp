@@ -3,10 +3,12 @@
 #include <iostream>
 #include "MagickWand/MagickWand.h"
 #include <string.h>
+#ifdef WIN32
 #include <windows.h>
+#endif
 #include <mutex>
 #include <vector>
-
+#include "jni/comon.h"
 std::mutex magick_wands_mutex;
 const int MAX_SIZE = 10;
 std::vector<MagickWand *> magick_wands;
@@ -23,18 +25,7 @@ JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_ImageMagick_init(JNIE
         magick_wands.emplace_back(NewMagickWand());
     }
 }
-/**
- * jni 字符串检查
- */
-inline int jstringNullCheck(JNIEnv *env, jstring jstr)
-{
-    if (jstr == NULL || env->GetStringLength(jstr) == 0)
-    {
-        std::cout << "srcPath is null" << std::endl;
-        return -1;
-    }
-    return 0;
-}
+
 // 参数检查
 inline int checkParam(JNIEnv *env, jstring srcPath,
                       jstring destPath)

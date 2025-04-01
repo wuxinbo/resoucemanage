@@ -2,9 +2,27 @@ cmake_minimum_required(VERSION 3.20.0)
 set(projectName "core" )
 set(filewatch "filewatch")
 set(imageMagick "imageMagick")
+set(net "net")
 project(${projectName} C CXX)
 set(CMAKE_CXX_STANDARD 11)
 include_directories("./include")
+add_subdirectory(net)
+# include_directories("./include" "/usr/local/include/java" "/usr/local/include/java/darwin")
+
+message("开始构建")
+if (APPLE)
+
+   # 设置安装后的 rpath 为相对路径（相对于库自身位置）
+   set(CMAKE_INSTALL_RPATH "@loader_path/../lib;/usr/local/lib")
+   set(CMAKE_MACOSX_RPATH ON)  # 启用 macOS 的 rpath 支持
+
+    include_directories("/usr/local/include/java" "/usr/local/include/java/darwin")
+    enable_testing()
+    add_subdirectory(test)
+    add_library(${projectName} SHARED ${net}   )
+    target_link_libraries(${projectName} PUBLIC ${net}  )
+    install(TARGETS ${projectName} DESTINATION "/Users/wuxinbo/Library/Java/Extensions")
+endif()
 if (LINUX)
     add_subdirectory(linux)
     include_directories("./include/linux")
