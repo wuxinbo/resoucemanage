@@ -6,15 +6,21 @@
 #include "Poco/NumberParser.h"
 #include "Poco/Logger.h"
 #include "Poco/Process.h"
+#include "Poco/Message.h"
 #include "Poco/NamedEvent.h"
 #include "net/common.h"
+#include "Poco/FormattingChannel.h"
+#include "Poco/ConsoleChannel.h"
+#include "Poco/PatternFormatter.h"
+
+using Poco::ConsoleChannel;
 using Poco::Event;
 using Poco::Exception;
+using Poco::FormattingChannel;
 using Poco::Logger;
 using Poco::NamedEvent;
 using Poco::NumberParser;
-using Poco::Process;
-using Poco::ProcessImpl;
+using Poco::PatternFormatter;
 using Poco::UInt16;
 using Poco::Net::StreamSocket;
 using Poco::Net::TCPServer;
@@ -25,66 +31,78 @@ using Poco::Net::TCPServerConnectionFilter;
 
 
 
-
-namespace
+FormattingChannel *pFCConsole=nullptr;
+NET_NAMESPACE_START
+class ClientConnection : public TCPServerConnection
 {
-    class ClientConnection : public TCPServerConnection
+private:
+
+public:
+    ClientConnection(const StreamSocket &s) : TCPServerConnection(s)
     {
-    public:
-        ClientConnection(const StreamSocket &s) : TCPServerConnection(s)
-        {
-        }
+   
+    }
 
-        void run()
+    void run()
+    {
+        StreamSocket &ss = socket();
+        auto address = ss.peerAddress();
+        Logger& consoleLogger = Logger::get("ConsoleLogger");
+        std::cout<< "connect address " << address.host().toString().c_str()<< ":"<< address.port()<<std::endl;
+        consoleLogger.information("address is %s", address.host().toString().c_str());
+        try
         {
-            StreamSocket &ss = socket();
-            try
+            char buffer[1024 * 20] = {0};
+            Message *message = (Message *)buffer;
+            int n = ss.receiveBytes(buffer, sizeof(buffer));
+            while (n > 0)
             {
-                char buffer[1024*20]={0};
-                Message* message =(Message* )buffer;
-                int n = ss.receiveBytes(buffer, sizeof(buffer));
-                while (n > 0)
-                {
-                    std::cout << "收到" << n << " bytes, data length is  "<< message->length << std::endl;
-                    std::string msg(buffer,n);
-                    Logger::formatDump(msg, buffer, n);
-                    std::cout << "" << msg << std::endl;
-                    n = ss.receiveBytes(buffer, sizeof(buffer));
-                }
-            }
-            catch (Exception &exc)
-            {
-                std::cerr << "ClientConnection: " << exc.displayText() << std::endl;
-            }
-        }
-    };
+                std::cout << "收到" << n << " bytes, data length is  " << message->length << std::endl;
+                std::string msg(buffer, n);
+                Logger::formatDump(msg, buffer, n);
+                consoleLogger.information("content is %s", msg);
 
-    typedef TCPServerConnectionFactoryImpl<ClientConnection> TCPFactory;
+                n = ss.receiveBytes(buffer, sizeof(buffer));
+            }
+            // ss.
+            consoleLogger.information("shutdown");
+        }
+        catch (Exception &exc)
+        {
+            std::cerr << "ClientConnection: " << exc.displayText() << std::endl;
+        }
+    }
+};
+
+typedef TCPServerConnectionFactoryImpl<ClientConnection> TCPFactory;
 #if defined(POCO_OS_FAMILY_WINDOWS)
-    NamedEvent terminator(ProcessImpl::terminationEventName(Process::id()));
+NamedEvent terminator(ProcessImpl::terminationEventName(Process::id()));
 #else
-    Event terminator;
+Event terminator;
 #endif
 }
 int main()
 {
     try
     {
+        pFCConsole = new FormattingChannel(new PatternFormatter("[%O] %s: %p: %t"));
+        pFCConsole->setChannel(new ConsoleChannel);
+        pFCConsole->open();
         Poco::UInt16 port = NumberParser::parse("8080");
-
-        TCPServer srv(new TCPFactory(), port);
+        Logger::create("ConsoleLogger", pFCConsole);
+        TCPServer srv(new NET::TCPFactory(), port);
         srv.start();
-
         std::cout << "TCP server listening on port " << port << '.'
                   << std::endl
                   << "Press Ctrl-C to quit." << std::endl;
 
-        terminator.wait();
+        NET::terminator.wait();
+        std::cout << "server shutdown" << std::endl;
+
     }
     catch (Exception &exc)
     {
         std::cerr << exc.displayText() << std::endl;
         return 1;
     }
-    std::cout << "hello,world" << std::endl;
 }

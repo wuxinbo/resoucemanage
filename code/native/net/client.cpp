@@ -35,6 +35,8 @@ JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPClient_sendUTFData
     LPCSTR data = env ->GetStringUTFChars(jdata,&iscopy);
     NET::TcpClient client;
     client.sendUTFData(addr,data);
+    env->ReleaseStringUTFChars(jaddr,addr);
+    env->ReleaseStringUTFChars(jdata,data);
 }
 
 NET_NAMESPACE_START
@@ -55,7 +57,13 @@ public:
         std::string key(addr);
         auto it = clientMap.find(key);
         if (it != clientMap.end())
-        {                      // 正确检查迭代器是否有效
+        {            
+            //判断连接是否有效
+            StreamSocket* socket =it->second.get();
+            if(socket->impl()->getError()){
+                std::cout<< "socket error"<< socket->impl()->getError()<< std::endl; 
+            }
+            // 正确检查迭代器是否有效
             return it->second; // 通过迭代器访问 shared_ptr 并获取原始指针
         }
         else
