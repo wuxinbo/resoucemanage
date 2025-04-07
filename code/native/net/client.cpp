@@ -18,7 +18,7 @@ using std::string;
 /**
  * java 数据发送接口
  */
-JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPClient_sendUTFData(
+JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_sendUTFData(
     JNIEnv * env,
     jobject object , jstring jaddr, jstring jdata)
 {

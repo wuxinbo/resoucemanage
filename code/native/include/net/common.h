@@ -28,6 +28,7 @@ NET_NAMESPACE_START
     static const uint8_t BINARY=3;
 
 };
+
 /**
  * 协议头
  */
