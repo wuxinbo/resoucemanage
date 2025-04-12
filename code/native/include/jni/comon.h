@@ -1,7 +1,9 @@
 #pragma once
+#ifndef jni_common
+#define jni_common 
 #include "jni.h"
 #include <iostream>
-
+#include <mutex>
 #define LPCSTR const char *
 /**
  * jni 字符串检查
@@ -15,3 +17,17 @@ inline int jstringNullCheck(JNIEnv *env, jstring jstr)
     }
     return 0;
 }
+#ifdef __cplusplus
+extern "C" {
+#endif
+extern JavaVM * jvm;
+extern std::mutex jniMutex;
+/**
+ * 返回jvm 指针
+ */
+JavaVM * getjvm();
+std::mutex& getJniMutex();
+#ifdef __cplusplus
+}
+#endif
+#endif

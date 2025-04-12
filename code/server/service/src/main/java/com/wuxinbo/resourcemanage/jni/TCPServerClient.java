@@ -1,9 +1,11 @@
 package com.wuxinbo.resourcemanage.jni;
 
+import java.nio.ByteBuffer;
+
 /**
  * TCP client
  */
-public class TCPClient {
+public class TCPServerClient {
 
 
     /**
@@ -14,11 +16,20 @@ public class TCPClient {
     public static native  void sendUTFData(String addr,String data);
 
     /**
-     *  启动
+     *  启动tcp server
      * @param port
      */
     public static native void startServer(int port);
+
+    /**
+     * 创建directBuffer
+     * @param allocate
+     */
+    public static native void createBuffer(ByteBuffer allocate);
+
     public static void receiveData(String data){
-        System.out.printf("receive data  "+data);
+//        ByteBuffer allocate = ByteBuffer.allocate(4096);
+
+        System.out.println("receive data  "+data);
     }
 }

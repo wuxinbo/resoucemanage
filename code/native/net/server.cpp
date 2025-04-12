@@ -16,6 +16,8 @@
 #include <sstream>
 #include "jni/TCPServerAndClient.h"
 #include "Poco/NumberFormatter.h"
+#include "jni/comon.h"
+#include <mutex>
 using Poco::ConsoleChannel;
 using Poco::Event;
 using Poco::Exception;
@@ -36,12 +38,41 @@ FormattingChannel *pFCConsole = nullptr;
 
 // 保存客户端连接
 std::map<std::string, StreamSocket> clientSocketMap;
-
 NET_NAMESPACE_START
-JNIEnv *jnienv;
 class ClientConnection : public TCPServerConnection
 {
 private:
+
+
+    /**
+     * 将数据回传给Java
+     * 
+     */
+    void invokeJavaRecive(std::string & data){
+        getJniMutex();
+        JNIEnv* jnienv =nullptr;
+        JavaVM* jvm = getjvm();
+        std::cout<< "jvm "<< jvm <<std::endl;
+        jint res =jvm->GetEnv((void**) jnienv,JNI_VERSION_1_8);
+        jvm->AttachCurrentThread((void**) jnienv,nullptr);
+        if(!jnienv){
+            std::cout<< "get env fail" <<std::endl;
+            return ;
+        }
+    
+        jclass tcpClass =jnienv->FindClass("com/wuxinbo/resourcemanage/jni/TCPServerClient");
+        jmethodID method= jnienv->GetStaticMethodID(tcpClass,"receiveData","(Ljava/lang/String;)V");
+        if (method == nullptr) {
+            std::cout<< "method is null" <<std::endl;
+            // 打印异常信息
+            jnienv->ExceptionDescribe();
+            jnienv->ExceptionClear();
+            return; // 或处理错误
+        }
+        jstring jstr = jnienv->NewStringUTF(data.c_str());
+        jnienv->CallStaticVoidMethod(tcpClass,method,jstr);
+        jnienv->DeleteGlobalRef(jstr);
+    }
     /**
      *  数据解析
      */
@@ -56,9 +87,9 @@ private:
                 Logger &consoleLogger = Logger::get("ConsoleLogger");
                 std::string str(message->data,message->length);
                 consoleLogger.information("content is %s", str);
-                if (jnienv)
+                if (getjvm())
                 {
-                    /* code */
+                    invokeJavaRecive(str);
                 }
                 
             }
@@ -94,9 +125,7 @@ public:
                 std::cout << "收到" << n << " bytes, data length is  " << message->length << std::endl;
                 std::string msg(buffer, n);
                 parseData(message);
-                Logger::formatDump(msg, buffer, n);
-                
-
+                // Logger::formatDump(msg, buffer, n);
                 n = ss.receiveBytes(buffer, sizeof(buffer));
             }
             // 移除
@@ -117,12 +146,36 @@ Event terminator;
 #endif
 }
 
-JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_startServer(JNIEnv *env, jclass, jint jport)
+void invokeJavaRecive(char * data,JNIEnv* jnienv){
+    getJniMutex();
+    // JNIEnv* jnienv =nullptr;
+    JavaVM* jvm = getjvm();
+    std::cout<< "jvm "<< jvm <<std::endl;
+
+    // jvm->AttachCurrentThread((void**) jnienv,nullptr);
+    // if(!jnienv){
+    //     std::cout<< "get env fail" <<std::endl;
+    //     return ;
+    // }
+    // getjvm()->GetEnv((void**) jnienv,JNI_VERSION_1_8);
+    // if (!jnienv)
+    // {
+    //     std::cout<< "get env fail" <<std::endl;
+    // }
+    jclass tcpClass =jnienv->FindClass("com/wuxinbo/resourcemanage/jni/TCPServerClient");
+    jmethodID method= jnienv->GetStaticMethodID(tcpClass,"receiveData","(Ljava/lang/String;)V");
+    jstring jstr = jnienv->NewStringUTF(data);
+    jnienv->CallStaticVoidMethod(tcpClass,method,jstr);
+    std::cout<< "data send " <<std::endl;
+
+}
+
+
+JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_startServer(JNIEnv *env, jclass javaclass, jint jport)
 {
 
     try
     {
-        xbwuc_net::jnienv =env;
         pFCConsole = new FormattingChannel(new PatternFormatter("[%O] %s: %p: %t"));
         pFCConsole->setChannel(new ConsoleChannel);
         pFCConsole->open();
@@ -132,8 +185,9 @@ JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_start
         srv.start();
         std::cout << "TCP server listening on port " << port << '.'
                   << std::endl;
-
+        invokeJavaRecive("started done",env);
         NET::terminator.wait();
+        
         std::cout << "server shutdown" << std::endl;
     }
     catch (Exception &exc)
