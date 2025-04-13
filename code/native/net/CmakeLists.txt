@@ -4,15 +4,15 @@ project(${projectName} C CXX)
 set(CMAKE_CXX_STANDARD 17)
 #include_directories("../include" )
 add_library(${projectName} OBJECT "../jnicommon.cpp"  "jniImpl.cpp"  "client.cpp" "server.cpp"  )
+target_compile_definitions(${projectName} PRIVATE XBWUC_NET_EXPORTS)
+
 if(APPLE)
    find_package("Poco"  REQUIRED Net)
-   include_directories("/usr/local/include/java" "/usr/local/include/java/darwin")
-   target_link_libraries(${projectName}  PRIVATE
+   target_link_libraries(${projectName}  PUBLIC
     Poco::Net 
 )
 endif(APPLE)
 if(WIN32)
-    target_compile_definitions(${projectName} PRIVATE XBWUC_NET_EXPORTS)
     set(POCO_DIR "D:/poco-1.14.1-all")
     list(APPEND CMAKE_PREFIX_PATH "${POCO_DIR}/install")
     find_package(Poco REQUIRED Foundation  Net)
