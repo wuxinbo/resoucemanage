@@ -56,17 +56,15 @@ private:
      * 
      */
     void invokeJavaRecive(std::string & data){
-        getJniMutex();
+        std::lock_guard<std::mutex> lock( getJniMutex());;
         JNIEnv* jnienv =nullptr;
         JavaVM* jvm = getjvm();
-        std::cout<< "jvm "<< jvm <<std::endl;
-        jint res =jvm->GetEnv((void**) jnienv,JNI_VERSION_1_8);
-        jvm->AttachCurrentThread((void**) jnienv,nullptr);
+        jint res  =jvm->AttachCurrentThread((void**)&jnienv,nullptr);
+        res =jvm->GetEnv((void**) &jnienv,JNI_VERSION_1_8);
         if(!jnienv){
             std::cout<< "get env fail" <<std::endl;
             return ;
         }
-    
         jclass tcpClass =jnienv->FindClass("com/wuxinbo/resourcemanage/jni/TCPServerClient");
         jmethodID method= jnienv->GetStaticMethodID(tcpClass,"receiveData","(Ljava/lang/String;)V");
         if (method == nullptr) {
@@ -78,7 +76,7 @@ private:
         }
         jstring jstr = jnienv->NewStringUTF(data.c_str());
         jnienv->CallStaticVoidMethod(tcpClass,method,jstr);
-        jnienv->DeleteGlobalRef(jstr);
+        jvm->DetachCurrentThread();
     }
     /**
      *  数据解析
@@ -140,7 +138,8 @@ public:
         }
         catch (Exception &exc)
         {
-            std::cerr << "ClientConnection: " << exc.displayText() << std::endl;
+            clientSocketMap.erase(sstream.str());
+            consoleLogger.information( "ClientConnection: %s",exc.displayText().c_str());
         }
     }
 };
@@ -166,10 +165,13 @@ XBWUC_NET_API void NET::TCPServer::start(int port)
 		std::cout << "TCP server listening on port " << port << '.'
 			<< std::endl
 			<< "Press Ctrl-C to quit." << std::endl;
+        terminator.wait();
+        std::cout << "shutdown server" << std::endl;
+    
 	}
 	catch (Exception& exc)
 	{
-		std::cerr << exc.displayText() << std::endl;
+		std::cout << exc.displayText() << std::endl;
 	}
 }
 

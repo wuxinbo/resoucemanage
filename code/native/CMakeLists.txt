@@ -15,7 +15,7 @@ include_directories(
 )
 add_subdirectory(net)
 message("开始构建")
-add_library(${projectName} SHARED  "jniImpl.cpp")
+add_library(${projectName} SHARED  )
 if (APPLE)
    # 设置安装后的 rpath 为相对路径（相对于库自身位置）
    set(CMAKE_INSTALL_RPATH "@loader_path/../lib;/usr/local/lib")
