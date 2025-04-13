@@ -13,6 +13,6 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
 std::mutex& getJniMutex(){
     return jniMutex;
 }
-JNIEXPORT JavaVM * getjvm(){
+ JavaVM * getjvm(){
     return jvm;
 }
