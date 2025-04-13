@@ -18,6 +18,7 @@
 #include "Poco/NumberFormatter.h"
 #include "jni/comon.h"
 #include <mutex>
+#include "server.h"
 using Poco::ConsoleChannel;
 using Poco::Event;
 using Poco::Exception;
@@ -28,11 +29,17 @@ using Poco::NumberParser;
 using Poco::PatternFormatter;
 using Poco::UInt16;
 using Poco::Net::StreamSocket;
-using Poco::Net::TCPServer;
 using Poco::Net::TCPServerConnection;
 using Poco::Net::TCPServerConnectionFactory;
 using Poco::Net::TCPServerConnectionFactoryImpl;
 using Poco::Net::TCPServerConnectionFilter;
+
+#ifdef WIN32
+using Poco::Process;
+using Poco::Net::SocketAddress;
+using Poco::ProcessImpl;
+#endif // 
+
 
 FormattingChannel *pFCConsole = nullptr;
 
@@ -146,6 +153,33 @@ Event terminator;
 #endif
 }
 
+XBWUC_NET_API void NET::TCPServer::start(int port)
+{
+	try
+	{
+		pFCConsole = new FormattingChannel(new PatternFormatter("[%O] %s: %p: %t"));
+		pFCConsole->setChannel(new ConsoleChannel);
+		pFCConsole->open();
+		Logger::create("ConsoleLogger", pFCConsole);
+		Poco::Net::TCPServer srv(new NET::TCPFactory(), port);
+		srv.start();
+		std::cout << "TCP server listening on port " << port << '.'
+			<< std::endl
+			<< "Press Ctrl-C to quit." << std::endl;
+	}
+	catch (Exception& exc)
+	{
+		std::cerr << exc.displayText() << std::endl;
+	}
+}
+
+XBWUC_NET_API NET::TCPServer::TCPServer()
+{
+}
+XBWUC_NET_API NET::TCPServer::~TCPServer()
+{
+}
+
 void invokeJavaRecive(char * data,JNIEnv* jnienv){
     getJniMutex();
     // JNIEnv* jnienv =nullptr;
@@ -170,54 +204,3 @@ void invokeJavaRecive(char * data,JNIEnv* jnienv){
 
 }
 
-
-JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_startServer(JNIEnv *env, jclass javaclass, jint jport)
-{
-
-    try
-    {
-        pFCConsole = new FormattingChannel(new PatternFormatter("[%O] %s: %p: %t"));
-        pFCConsole->setChannel(new ConsoleChannel);
-        pFCConsole->open();
-        Poco::UInt16 port = jport;
-        Logger::create("ConsoleLogger", pFCConsole);
-        TCPServer srv(new NET::TCPFactory(), port);
-        srv.start();
-        std::cout << "TCP server listening on port " << port << '.'
-                  << std::endl;
-        invokeJavaRecive("started done",env);
-        NET::terminator.wait();
-        
-        std::cout << "server shutdown" << std::endl;
-    }
-    catch (Exception &exc)
-    {
-        std::cerr << exc.displayText() << std::endl;
-        return;
-    }
-}
-
-int main()
-{
-    try
-    {
-        pFCConsole = new FormattingChannel(new PatternFormatter("[%O] %s: %p: %t"));
-        pFCConsole->setChannel(new ConsoleChannel);
-        pFCConsole->open();
-        Poco::UInt16 port = NumberParser::parse("8080");
-        Logger::create("ConsoleLogger", pFCConsole);
-        TCPServer srv(new NET::TCPFactory(), port);
-        srv.start();
-        std::cout << "TCP server listening on port " << port << '.'
-                  << std::endl
-                  << "Press Ctrl-C to quit." << std::endl;
-
-        NET::terminator.wait();
-        std::cout << "server shutdown" << std::endl;
-    }
-    catch (Exception &exc)
-    {
-        std::cerr << exc.displayText() << std::endl;
-        return 1;
-    }
-}

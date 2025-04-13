@@ -2,14 +2,23 @@ cmake_minimum_required(VERSION 3.20.0)
 set(projectName "net" )
 project(${projectName} C CXX)
 set(CMAKE_CXX_STANDARD 17)
-find_package("Poco"  REQUIRED Net)
-include_directories("../include" )
-
-add_library(${projectName} OBJECT "../jnicommon.cpp"  "client.cpp" "server.cpp" )
+#include_directories("../include" )
+add_library(${projectName} OBJECT "../jnicommon.cpp"  "client.cpp" "server.cpp"  )
 if(APPLE)
+   find_package("Poco"  REQUIRED Net)
    include_directories("/usr/local/include/java" "/usr/local/include/java/darwin")
-endif(APPLE)
-target_link_libraries(${projectName}  PRIVATE
+   target_link_libraries(${projectName}  PRIVATE
     Poco::Net 
 )
+endif(APPLE)
+if(WIN32)
+    target_compile_definitions(${projectName} PRIVATE XBWUC_NET_EXPORTS)
+    set(POCO_DIR "D:/poco-1.14.1-all")
+    list(APPEND CMAKE_PREFIX_PATH "${POCO_DIR}/install")
+    find_package(Poco REQUIRED Foundation  Net)
+    target_link_libraries(${projectName}  PUBLIC
+    Poco::Foundation Poco::Net
+    )
+endif(WIN32)    
+
 
