@@ -8,4 +8,3 @@ dependencyResolutionManagement {
 rootProject.name = "resource"
 include ':app'
 include ':common'
-include ':sphinxSearch'
