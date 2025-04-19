@@ -4,7 +4,7 @@
 #include <iostream>
 #include <thread>
 #include <string>
-#include "net/common.h"
+#include "net/netcommon.h"
 #include "client.h"
 #include <map>
 #include <memory>

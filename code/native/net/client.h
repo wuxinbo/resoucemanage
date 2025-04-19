@@ -1,6 +1,6 @@
 #pragma once
 
-#include "net/common.h"
+#include "net/netcommon.h"
 #include "common.h"
 NET_NAMESPACE_START
 class TcpClientImpl;

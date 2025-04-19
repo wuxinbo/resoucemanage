@@ -1,6 +1,6 @@
 
 
-#include "net/common.h"
+#include "net/netcommon.h"
 #include "common.h"
 NET_NAMESPACE_START
  class TCPServer {
@@ -9,8 +9,10 @@ XBWUC_NET_API TCPServer();
 
 XBWUC_NET_API ~TCPServer();
 
+void setTcpClass(jclass tcpClientClass);
+
 	/**
-	* 启动tcp 服务
+	* 脝么露炉tcp 路镁脦帽
 	*/
 XBWUC_NET_API void start(int port);
 

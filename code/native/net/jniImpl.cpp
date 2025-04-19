@@ -1,17 +1,18 @@
 #include "jni/comon.h"
-#include "net/common.h"
+#include "net/netcommon.h"
 #include "server.h"
 #include "client.h"
 #include <iostream>
 #include "TCPServerAndClient.h"
-
+#include "logger.h"
 // 启动tcp server
 JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_startServer(JNIEnv* env, jclass javaclass, jint jport)
 {
-	std::cout << "start server" << std::endl;
-	NET::TCPServer server;
-	server.start(jport);
-	std::cout << "server start" << std::endl;
+    xbwuc::Logger::info("startServer", "start server","");
+    int serverPort =jport==0?8080:jport;
+    NET::TCPServer server;
+    server.setTcpClass(javaclass);
+    server.start(serverPort);
     
 }
 

@@ -3,11 +3,7 @@
 #include <stdint.h>
 // 取消内存对齐
 #pragma pack(push,1)
-#define NET xbwuc_net
-#define NET_NAMESPACE_START namespace xbwuc_net {
-
-#define NET_NAMESPACE_END };
-
+#include "common.h"
 NET_NAMESPACE_START
 /**
  * 数据类型
@@ -31,7 +27,7 @@ NET_NAMESPACE_START
 
 /**
  * 协议头
- */
+*/
 struct Message
 {
     // 魔数
