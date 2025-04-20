@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.20.0)
+set(projectName "netTest" )
+project(${projectName} C CXX)
+set(CMAKE_CXX_STANDARD 17)
+find_package("Poco"  REQUIRED Net)
+# add_executable("server" "server.cpp")
+add_executable("client" "tcpClientTest.cpp" "../net/client.cpp")
+
+# target_link_libraries("server"  PRIVATE
+#     Poco::Net
+# )
+set(clientTest "clientTest")
+add_test(NAME ${clientTest} COMMAND "client" )
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    target_compile_options(${clientTest} PRIVATE --coverage)
+    target_link_libraries(${clientTest} PRIVATE --coverage)
+endif()
+target_link_libraries("client"  PRIVATE
+    Poco::Net
+)

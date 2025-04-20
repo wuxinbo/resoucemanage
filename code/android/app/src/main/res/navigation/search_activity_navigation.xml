@@ -7,12 +7,12 @@
 
   <fragment
     android:id="@+id/searchFragment"
-    android:name="com.wu.resource.ui.search.SearchFragment"
+    android:name="com.wuxinbo.resourcemanage.ui.search.SearchFragment"
     android:label="搜索页面"
     tools:layout="@layout/fragment_search" />
   <fragment
     android:id="@+id/searchResultFragment"
-    android:name="com.wu.resource.ui.search.SearchResultFragment"
+    android:name="com.wuxinbo.resourcemanage.ui.search.SearchResultFragment"
     android:label="fragment_search_result"
     tools:layout="@layout/fragment_search_result" />
 </navigation>

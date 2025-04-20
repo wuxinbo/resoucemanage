@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+  namespace ="com.wuxinbo.resourcemanage"
   compileSdk 31
   viewBinding {
     enabled = true
@@ -23,7 +24,7 @@ android {
     viewBinding true
   }
   defaultConfig {
-    applicationId "com.wu.resource"
+    applicationId "com.wuxinbo.resourcemanage"
     minSdk 26
     compileSdk 34
     targetSdk 33
@@ -54,7 +55,6 @@ dependencies {
   implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
   implementation 'androidx.navigation:navigation-ui:2.6.0'
   implementation project(path: ':common')
-  implementation project(path: ':sphinxSearch')
   testImplementation 'junit:junit:4.+'
   implementation 'com.tencent.mm.opensdk:wechat-sdk-android:+'
   implementation 'com.google.code.gson:gson:2.9.0'

@@ -1,0 +1,8 @@
+# load("@bazel_tools//tools/cpp:cc_configure.bzl", "cc_configure")
+
+# cc_configure(
+#     name = "local_config_cc",
+#     cc_path = "D:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe",  # 直接指定编译器路径
+#     # 禁用自动检测
+#     no_auto_configure = True,
+# )

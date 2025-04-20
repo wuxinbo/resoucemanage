@@ -2,37 +2,7 @@
 
 #include "com_wuxinbo_resourcemanage_jni_FileWatch.h"
 #include <iostream>
-
-/**
- * wchar 转换为 char
- */
-char *wchartoChar(LPCWCH wstr, size_t wstrLen)
-{
-    size_t length = wstrLen == 0 ? wcslen(wstr) : wstrLen;
-    //计算宽字符串转换为多字节需要的字节数
-    int size = WideCharToMultiByte(CP_UTF8, 0, wstr, length, nullptr, 0, 0, 0);
-    char *data = new char[size + 1];
-    WideCharToMultiByte(CP_UTF8, 0, wstr, length, data, size, 0, 0);
-    data[size] = 0;
-    return data;
-}
-
-/**
- * @brief 多字节转换为宽字符串
- *
- * @param str
- * @return LPCWCH
- */
-LPCWSTR multiByteToWideChar(LPCSTR str)
-{
-    //首先获取字符大小
-    int wsize = MultiByteToWideChar(CP_UTF8, 0, str, strlen(str), nullptr, 0);
-    LPWSTR wdata = new WCHAR[wsize + 1];
-    MultiByteToWideChar(CP_UTF8, 0, str, strlen(str), wdata, wsize);
-    wdata[wsize] = 0;
-    return wdata;
-}
-
+#include "common.h"
 
 /**
  * @brief 使用同步的方式监听文件目录的变化
@@ -63,7 +33,7 @@ JNIEXPORT void watchDirChange(const char * dirName,FileNotify &fileNotify)
     if (notifyInform->Action == FILE_ACTION_RENAMED_OLD_NAME) {
         notifyInform = (FILE_NOTIFY_INFORMATION*)(notify + notifyInform->NextEntryOffset);
     }
-    fileNotify.filePath = wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR));
+    fileNotify.filePath = wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR)).get();
     fileNotify.action = notifyInform->Action;
 }
 

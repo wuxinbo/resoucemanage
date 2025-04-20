@@ -1,5 +1,8 @@
 **/build/
 .vscode
+**/.vs
 **/*.exe
 *.dll
 **/Release/
+**/.vscode/
+**/bazel*/

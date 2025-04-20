@@ -14,10 +14,10 @@
         android:icon="@drawable/stats"
         android:title="@string/title_stats" />
 
-    <item
-        android:id="@+id/navigation_mine"
-        android:icon="@drawable/mine"
-        android:title="@string/title_mine" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_mine"-->
+<!--        android:icon="@drawable/mine"-->
+<!--        android:title="@string/title_mine" />-->
 
 
 </menu>
