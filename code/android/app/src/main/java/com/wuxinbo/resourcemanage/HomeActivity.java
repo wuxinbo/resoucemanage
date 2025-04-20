@@ -11,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.wuxinbo.resourcemanage.databinding.ActivityHomeBinding;
+import com.wuxinbo.resourcemanage.jni.TCPServerClient;
 import com.wuxinbo.resourcemanage.ui.home.HomeViewModel;
 
 
@@ -21,6 +22,9 @@ public class HomeActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    TCPServerClient.context =this;
+    TCPServerClient.injectClassLoader(getClassLoader());
+
     HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
     binding = ActivityHomeBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
