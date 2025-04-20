@@ -68,5 +68,10 @@ XBWUC_NET_API int TCPClient::sendUTFData(const char *addr, const char *data)
     return 0;
 }
 
+    void TCPClient::connect(const char *addr) {
+        // 建立连接
+        TcpClientImpl::get(addr);
+    }
+
 NET_NAMESPACE_END
 std::map<string, std::shared_ptr<StreamSocket>> NET::TcpClientImpl::clientMap;

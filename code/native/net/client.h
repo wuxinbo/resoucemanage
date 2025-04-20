@@ -9,6 +9,8 @@ class TCPClient
 
 public:
     int init();
+
+    void connect(const char * addr);
     /**
      * 发送utf-8 data
      */

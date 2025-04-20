@@ -36,12 +36,12 @@ using Poco::Net::SocketAddress;
 using Poco::ProcessImpl;
 #endif // 
 #include "logger.h"
+using FormatintFunc = std::string (*)(int);
 
-
+FormatintFunc  intFormat = &Poco::NumberFormatter::format ;
 // 保存客户端连接
 std::map<std::string, StreamSocket> clientSocketMap;
 
-jclass tcpClientClass ;
 
 NET_NAMESPACE_START
 class ClientConnection : public TCPServerConnection
@@ -72,12 +72,12 @@ private:
             std::cout<< "get env fail" <<std::endl;
             return ;
         }
-        jclass tcpClass =jnienv->FindClass("com/wuxinbo/common/download/DownloadTask");
+        jclass tcpClass =getTcpClass();
         if (!tcpClass) {
             xbwuc::Logger::info("invokeJavaReceive","tcpClientClass is null ","");
             return ;
         }
-        jmethodID method= jnienv->GetStaticMethodID(tcpClientClass,"receiveData","(Ljava/lang/String;)V");
+        jmethodID method= jnienv->GetStaticMethodID(tcpClass,"receiveData","(Ljava/lang/String;)V");
         if (method == nullptr) {
             std::cout<< "method is null" <<std::endl;
             // 打印异常信息
@@ -86,7 +86,7 @@ private:
             return; // 或处理错误
         }
         jstring jstr = jnienv->NewStringUTF(data.c_str());
-        jnienv->CallStaticVoidMethod(tcpClientClass,method,jstr);
+        jnienv->CallStaticVoidMethod(tcpClass,method,jstr);
         jvm->DetachCurrentThread();
     }
     /**
@@ -102,6 +102,7 @@ private:
                 //如果是jni 调用则反过来调用java 方法将收到的数据进行回传
                 std::string str(message->data,message->length);
                 xbwuc::Logger::info("parseData", "message: %s",str);
+                xbwuc::Logger::info("receiveMessage","data length is %s",intFormat(message->length) );
                 if (getjvm())
                 {
                     invokeJavaRecive(str);
@@ -122,13 +123,12 @@ public:
     {
         StreamSocket &ss = socket();
         auto address = ss.peerAddress();
-        Logger &consoleLogger = Logger::get("ConsoleLogger");
         std::ostringstream sstream;
         sstream << address.host().toString() << ":" << address.port();
         //
         clientSocketMap.insert({sstream.str(), ss});
         xbwuc::Logger::info("receiveMessage",Poco::format("address is %s create socket ,  current client is %s",sstream.str(),
-                            Poco::NumberFormatter::format(clientSocketMap.size())),"");
+                            intFormat(clientSocketMap.size())),"");
         try
         {
             char buffer[1024 * 20] = {0};
@@ -136,7 +136,7 @@ public:
             int n = ss.receiveBytes(buffer, sizeof(buffer));
             while (n > 0)
             {
-                xbwuc::Logger::info("receiveMessage","data length is %s",""+message->length );
+
                 std::string msg(buffer, n);
                 parseData(message);
                 n = ss.receiveBytes(buffer, sizeof(buffer));
@@ -147,7 +147,7 @@ public:
         catch (Exception &exc)
         {
             clientSocketMap.erase(sstream.str());
-            consoleLogger.information( "ClientConnection: %s",exc.displayText().c_str());
+            xbwuc::Logger::info( "Run","ClientConnection: %s",exc.displayText().c_str());
         }
     }
 };
@@ -158,10 +158,6 @@ NamedEvent terminator(ProcessImpl::terminationEventName(Process::id()));
 #else
 Event terminator;
 #endif
-}
-void NET::TCPServer::setTcpClass(jclass javaclass) {
-    tcpClientClass=javaclass;
-
 }
 XBWUC_NET_API void NET::TCPServer::start(int port)
 {

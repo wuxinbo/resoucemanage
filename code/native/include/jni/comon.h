@@ -26,5 +26,7 @@ extern std::mutex jniMutex;
  */
 JavaVM * getjvm();
 std::mutex& getJniMutex();
+jobject getClassLoader();
 
+jclass getTcpClass();
 #endif
