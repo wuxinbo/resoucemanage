@@ -49,7 +49,7 @@ endif(ANDROID)
 
 if(WIN32)
     message("构建 windows dll")
-    target_compile_definitions(${projectName} PRIVATE XBWUC_NET_EXPORTS)
+    add_library(${projectName} SHARED  )
     install(TARGETS ${projectName} DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/lib")
     # 在父模块的 CMakeLists.txt 中
     add_subdirectory(${imageMagick})

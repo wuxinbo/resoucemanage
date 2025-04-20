@@ -15,7 +15,11 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
 JNIEXPORT void JNICALL JNI_OnUnload (JavaVM* vm, void* reserved){
     xbwuc::Logger::info("JNI_UNLOAD","jvm unload","");
     JNIEnv*  env ;
+    #ifdef ANDROID
     vm->AttachCurrentThread(&env, nullptr);
+    #else
+    vm->AttachCurrentThread(reinterpret_cast<void**>(&env), nullptr);
+    #endif
     if (!env){
         return;
     }

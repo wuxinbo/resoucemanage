@@ -2,7 +2,9 @@
 // Created by wuxinbo on 2025/4/19.
 //
 #include "logger.h"
+#ifdef  ANDROID
 #include <android/log.h>
+#endif
 #include "Poco/Format.h"
 #include "Poco/Logger.h"
 #include "Poco/ConsoleChannel.h"

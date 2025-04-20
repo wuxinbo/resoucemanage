@@ -2,7 +2,7 @@
 
 #include "com_wuxinbo_resourcemanage_jni_FileWatch.h"
 #include <iostream>
-#include "common.h"
+#include "win32/common.h"
 
 /**
  * @brief 使用同步的方式监听文件目录的变化
