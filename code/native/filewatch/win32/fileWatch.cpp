@@ -1,9 +1,8 @@
 ﻿#include <Windows.h>
 
 #include "com_wuxinbo_resourcemanage_jni_FileWatch.h"
-#include <iostream>
 #include "win32/common.h"
-
+#include "logger.h"
 /**
  * @brief 使用同步的方式监听文件目录的变化
  *
@@ -65,7 +64,6 @@ JNIEXPORT jobject JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir
 
     jmethodID setAction =env->GetMethodID(fileNotifyClass,"setAction", "(I)V");
     env->CallVoidMethod(fileNotifyObj,setAction,fileNotify.action);
-    std::cout << "file isChange fileName is " << fileNotify.filePath << std::endl;
-    delete []fileNotify.filePath;
+    xbwuc::Logger::info(__FILE__,__LINE__,"fileWatch","file ischange name is %s",fileNotify.filePath);
     return fileNotifyObj;
 }
