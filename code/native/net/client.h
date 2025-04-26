@@ -14,7 +14,7 @@ public:
     /**
      * 发送utf-8 data
      */
-    XBWUC_NET_API int sendUTFData(const char *addr,const char *data);
+     int sendUTFData(const char *addr,const char *data);
 };
 
 NET_NAMESPACE_END

@@ -4,7 +4,7 @@
 #include "jni.h"
 #include <iostream>
 #include <mutex>
-#define LPCSTR const char *
+
 
 
 /**

@@ -3,10 +3,8 @@
 #include "Poco/Net/TCPServerConnection.h"
 #include "Poco/Net/TCPServerConnectionFactory.h"
 #include "Poco/Net/StreamSocket.h"
-#include "Poco/NumberParser.h"
 #include "Poco/Logger.h"
 #include "Poco/Process.h"
-#include "Poco/Message.h"
 #include "Poco/NamedEvent.h"
 #include "net/netcommon.h"
 #include "Poco/NumberFormatter.h"
@@ -16,19 +14,13 @@
 #include "jni/comon.h"
 #include <mutex>
 #include "server.h"
-#include <memory>
-//using Poco::ConsoleChannel;
 using Poco::Event;
 using Poco::Exception;
-using Poco::Logger;
 using Poco::NamedEvent;
-using Poco::NumberParser;
 using Poco::UInt16;
 using Poco::Net::StreamSocket;
 using Poco::Net::TCPServerConnection;
-using Poco::Net::TCPServerConnectionFactory;
 using Poco::Net::TCPServerConnectionFactoryImpl;
-using Poco::Net::TCPServerConnectionFilter;
 
 #ifdef WIN32
 using Poco::Process;
@@ -74,7 +66,7 @@ private:
         }
         jclass tcpClass =getTcpClass();
         if (!tcpClass) {
-            xbwuc::Logger::info("invokeJavaReceive","tcpClientClass is null ","");
+            xbwuc::Logger::info(__FILE__,__LINE__,"invokeJavaReceive","tcpClientClass is null ","");
             return ;
         }
         jmethodID method= jnienv->GetStaticMethodID(tcpClass,"receiveData","(Ljava/lang/String;)V");
@@ -101,8 +93,8 @@ private:
             if(message->type ==DataType::STRING){ //utf8 字符串
                 //如果是jni 调用则反过来调用java 方法将收到的数据进行回传
                 std::string str(message->data,message->length);
-                xbwuc::Logger::info("parseData", "message: %s",str);
-                xbwuc::Logger::info("receiveMessage","data length is %s",intFormat(message->length) );
+                xbwuc::Logger::info(__FILE__,__LINE__,"parseData", "message: %s",str);
+                xbwuc::Logger::info(__FILE__,__LINE__,"receiveMessage","data length is %s",intFormat(message->length) );
                 if (getjvm())
                 {
                     invokeJavaRecive(str);
@@ -127,7 +119,7 @@ public:
         sstream << address.host().toString() << ":" << address.port();
         //
         clientSocketMap.insert({sstream.str(), ss});
-        xbwuc::Logger::info("receiveMessage",Poco::format("address is %s create socket ,  current client is %s",sstream.str(),
+        xbwuc::Logger::info(__FILE__,__LINE__,"receiveMessage",Poco::format("address is %s create socket ,  current client is %s",sstream.str(),
                             intFormat(clientSocketMap.size())),"");
         try
         {
@@ -147,7 +139,7 @@ public:
         catch (Exception &exc)
         {
             clientSocketMap.erase(sstream.str());
-            xbwuc::Logger::info( "Run","ClientConnection: %s",exc.displayText().c_str());
+            xbwuc::Logger::info(__FILE__,__LINE__, "Run","ClientConnection: %s",exc.displayText().c_str());
         }
     }
 };
@@ -159,13 +151,13 @@ NamedEvent terminator(ProcessImpl::terminationEventName(Process::id()));
 Event terminator;
 #endif
 }
-XBWUC_NET_API void NET::TCPServer::start(int port)
+ void NET::TCPServer::start(int port)
 {
 	try
 	{
 		Poco::Net::TCPServer srv(new NET::TCPFactory() , port);
 		srv.start();
-        xbwuc::Logger::info("startServer","TCP server listening on port %s ",Poco::NumberFormatter::format(port));
+        xbwuc::Logger::info(__FILE__,__LINE__,"startServer","TCP server listening on port %s ",Poco::NumberFormatter::format(port));
         terminator.wait();
 
 	}
@@ -175,10 +167,10 @@ XBWUC_NET_API void NET::TCPServer::start(int port)
 	}
 }
 
-XBWUC_NET_API NET::TCPServer::TCPServer()
+ NET::TCPServer::TCPServer()
 {
 }
-XBWUC_NET_API NET::TCPServer::~TCPServer()
+ NET::TCPServer::~TCPServer()
 {
 }
 

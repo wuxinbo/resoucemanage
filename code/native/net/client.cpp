@@ -55,7 +55,7 @@ public:
     }
 };
 
-XBWUC_NET_API int TCPClient::sendUTFData(const char *addr, const char *data)
+ int TCPClient::sendUTFData(const char *addr, const char *data)
 {
     Message message;
     message.length = strlen(data);

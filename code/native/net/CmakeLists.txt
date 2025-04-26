@@ -3,12 +3,12 @@ set(projectName "net" )
 project(${projectName} C CXX)
 set(CMAKE_CXX_STANDARD 17)
 #include_directories("../include" )
-add_library(${projectName} OBJECT "../jnicommon.cpp" "../base/logger.cpp"  "jniImpl.cpp"  "client.cpp" "server.cpp"  )
+add_library(${projectName} OBJECT "jniImpl.cpp"  "client.cpp" "server.cpp"  )
 target_compile_definitions(${projectName} PRIVATE XBWUC_NET_EXPORTS)
 
 if(APPLE)
    find_package("Poco"  REQUIRED Net)
-   target_link_libraries(${projectName}  PUBLIC
+   target_link_libraries(${projectName}  PUBLIC base
     Poco::Net 
 )
 endif(APPLE)
@@ -17,16 +17,15 @@ if(ANDROID)
     target_include_directories(${projectName} PRIVATE "/usr/local/include/")
     set(POCO_DIR "/Volumes/Data/code/poco-1.14.1")
     add_subdirectory( ${POCO_DIR} poco)
-#    target_link_directories(${projectName} PUBLIC "${POCO_DIR}/build/lib/")
-    target_link_libraries(${projectName}  PUBLIC
+    target_link_libraries(${projectName}  PUBLIC base
     Poco::Net log )
 endif(ANDROID)
 if(WIN32)
-    set(POCO_DIR "D:/poco-1.14.1-all")
-    list(APPEND CMAKE_PREFIX_PATH "${POCO_DIR}/install")
-    find_package(Poco REQUIRED Foundation  Net)
-    target_link_libraries(${projectName}  PUBLIC
-    Poco::Foundation Poco::Net
+    if(MSVC)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+    endif()
+    target_link_libraries(${projectName}  PUBLIC base
+    Poco::Net
     )
 endif(WIN32)    
 
