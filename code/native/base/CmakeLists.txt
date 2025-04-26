@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20.0)
+set(projectName "base" )
+project(${projectName} C CXX)
+set(CMAKE_CXX_STANDARD 11)
+add_library(${projectName} OBJECT  "logger.cpp" "jnicommon.cpp")
+target_link_libraries(${projectName} PUBLIC   Poco::Foundation )
