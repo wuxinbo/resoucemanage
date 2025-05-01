@@ -22,7 +22,7 @@ FormattingChannel *pFCConsole;
 xbwuc::Logger::Logger() {}
 
 void xbwuc::Logger::info(const char *fileName, int linenumber, const char *tag,
-                         std::string fmt, std::string data...) {
+                         std::string fmt, std::string data,std::string data2...) {
 #ifndef ANDROID
   if (!pFCConsole) {
     pFCConsole = new FormattingChannel(
@@ -42,6 +42,6 @@ void xbwuc::Logger::info(const char *fileName, int linenumber, const char *tag,
 
   Poco::Logger &consoleLogger = Poco::Logger::get("ConsoleLogger");
   consoleLogger.information(
-      Poco::format(Poco::format("[%s]  %s", std::string(tag), fmt), data),
+      Poco::format(Poco::format("[%s]  %s", std::string(tag), fmt), data,data2),
       fileName, linenumber);
 }

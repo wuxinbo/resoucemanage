@@ -66,7 +66,7 @@ private:
         }
         jclass tcpClass =getTcpClass();
         if (!tcpClass) {
-            xbwuc::Logger::info(__FILE__,__LINE__,"invokeJavaReceive","tcpClientClass is null ","");
+            LOG_INFO("tcpClientClass is null ");
             return ;
         }
         jmethodID method= jnienv->GetStaticMethodID(tcpClass,"receiveData","(Ljava/lang/String;)V");
@@ -93,8 +93,8 @@ private:
             if(message->type ==DataType::STRING){ //utf8 字符串
                 //如果是jni 调用则反过来调用java 方法将收到的数据进行回传
                 std::string str(message->data,message->length);
-                xbwuc::Logger::info(__FILE__,__LINE__,"parseData", "message: %s",str);
-                xbwuc::Logger::info(__FILE__,__LINE__,"receiveMessage","data length is %s",intFormat(message->length) );
+                LOG_INFO_DATA( "message: %s",str);
+                LOG_INFO_DATA("data length is %s",intFormat(message->length) );
                 if (getjvm())
                 {
                     invokeJavaRecive(str);
@@ -119,8 +119,8 @@ public:
         sstream << address.host().toString() << ":" << address.port();
         //
         clientSocketMap.insert({sstream.str(), ss});
-        xbwuc::Logger::info(__FILE__,__LINE__,"receiveMessage",Poco::format("address is %s create socket ,  current client is %s",sstream.str(),
-                            intFormat(clientSocketMap.size())),"");
+        LOG_INFO(Poco::format("address is %s create socket ,  current client is %s",sstream.str(),
+                            intFormat(clientSocketMap.size())));
         try
         {
             char buffer[1024 * 20] = {0};
@@ -139,7 +139,6 @@ public:
         catch (Exception &exc)
         {
             clientSocketMap.erase(sstream.str());
-            xbwuc::Logger::info(__FILE__,__LINE__, "Run","ClientConnection: %s",exc.displayText().c_str());
         }
     }
 };
@@ -157,7 +156,7 @@ Event terminator;
 	{
 		Poco::Net::TCPServer srv(new NET::TCPFactory() , port);
 		srv.start();
-        xbwuc::Logger::info(__FILE__,__LINE__,"startServer","TCP server listening on port %s ",Poco::NumberFormatter::format(port));
+        LOG_INFO_DATA("TCP server listening on port %s ",Poco::NumberFormatter::format(port));
         terminator.wait();
 
 	}

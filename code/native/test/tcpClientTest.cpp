@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     // std::string str("hello,woeod,你好啊");
         NET::TCPClient client ; 
         // std::cout << "hello,world" << __FILE__<<__LINE__ << std::endl;
-        xbwuc::Logger::info(__FILE__,__LINE__,"tcpClient", "start client", "");
+        LOG_INFO( "start client");
         string data("aiya hello,world,hahahbuild] 1 warning generated.[build] \n");
         data+=" warning generated.[build] [100%] Linking CXX executable server[build] [100%] Built \n";
         data+=" target server[build] [ 50%] Building CXX object net/CMakeFiles/client.dir/client.cpp.o[build]\n";

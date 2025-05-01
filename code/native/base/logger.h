@@ -5,10 +5,16 @@
 #ifndef RESOURCE_LOGGER_H
 #define RESOURCE_LOGGER_H
 
-
-#define LOG_INFO_DATA2(tag,fmt,data1,data2)  xbwuc::Logger::info(__FILE__,__LINE__,tag, fmt, data1,data2);
-#define LOG_INFO_DATA(tag,fmt,data1)  xbwuc::Logger::info(__FILE__,__LINE__,tag, fmt, data1);
-#define LOG_INFO(tag,fmt)  xbwuc::Logger::info(__FILE__,__LINE__,tag, fmt, "");
+#if defined(_MSC_VER)
+    #define FUNC_NAME __FUNCSIG__
+#elif defined(__GNUC__) || defined(__clang__)
+    #define FUNC_NAME __PRETTY_FUNCTION__
+#else
+    #define FUNC_NAME __func__
+#endif
+#define LOG_INFO_DATA2(fmt,data1,data2)  xbwuc::Logger::info(__FILE__,__LINE__,FUNC_NAME, fmt, data1,data2);
+#define LOG_INFO_DATA(fmt,data1)  xbwuc::Logger::info(__FILE__,__LINE__,FUNC_NAME, fmt, data1,"");
+#define LOG_INFO(fmt) xbwuc::Logger::info(__FILE__,__LINE__,FUNC_NAME, fmt, "","");
 #include "common.h"
 #include <string>
 XBWUC_NAMESPACE_START
@@ -23,7 +29,9 @@ public:
     Logger();
     ~Logger();
     // 日志输出
-    static void info(const char *  fileName,int linenumber, const char * tag,std::string fmt,std::string data... );
+    static void info(const char *  fileName,int linenumber,
+         const char * tag,std::string fmt,
+         std::string data,std::string data2... );
 
 };
 

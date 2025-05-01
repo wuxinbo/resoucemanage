@@ -8,12 +8,12 @@ jobject classLoader;
 jclass tcpClass;
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
     jvm = vm;
-    xbwuc::Logger::info(__FILE__,__LINE__,"JNI_LOAD","jvm loaded","");
+    LOG_INFO("jvm loaded");
     return JNI_VERSION_1_8;
 }
 
 JNIEXPORT void JNICALL JNI_OnUnload (JavaVM* vm, void* reserved){
-    xbwuc::Logger::info(__FILE__,__LINE__,"JNI_UNLOAD","jvm unload","");
+    LOG_INFO("jvm unload");
     JNIEnv*  env ;
     #ifdef ANDROID
     vm->AttachCurrentThread(&env, nullptr);
@@ -49,7 +49,7 @@ Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_injectClassLoader(JNIEnv *en
     //查询 TCPClientclass
     tcpClass =env->FindClass("com/wuxinbo/resourcemanage/jni/TCPServerClient");
     if (!tcpClass){
-        xbwuc::Logger::info(__FILE__,__LINE__,"injectClassLoader","tcpClass is null ","");
+        LOG_INFO("tcpClass is null ");
         return;
     }
     tcpClass= static_cast<jclass>(env->NewGlobalRef(tcpClass));

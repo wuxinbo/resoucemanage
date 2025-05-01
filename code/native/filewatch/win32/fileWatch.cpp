@@ -64,6 +64,6 @@ JNIEXPORT jobject JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir
 
     jmethodID setAction =env->GetMethodID(fileNotifyClass,"setAction", "(I)V");
     env->CallVoidMethod(fileNotifyObj,setAction,fileNotify.action);
-    xbwuc::Logger::info(__FILE__,__LINE__,"fileWatch","file ischange name is %s",fileNotify.filePath);
+    LOG_INFO_DATA("file ischange name is %s",fileNotify.filePath);
     return fileNotifyObj;
 }

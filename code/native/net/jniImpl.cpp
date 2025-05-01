@@ -4,13 +4,10 @@
 #include "TCPServerAndClient.h"
 #include "logger.h"
 // 启动tcp server
-const char* getTag(){
-    return "TCPServerClient";
-}
 extern "C"
 JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_startServer(JNIEnv* env, jclass javaclass, jint jport)
 {
-    LOG_INFO(getTag(),"start server");
+    LOG_INFO("start server");
     int serverPort =jport==0?8080:jport;
     NET::TCPServer server;
     server.start(serverPort);
@@ -27,11 +24,11 @@ JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_sendU
 {
     jboolean iscopy = false;
     if (jstringNullCheck(env, jaddr) != 0) {
-        LOG_INFO(getTag(), "addr is null");
+        LOG_INFO("addr is null");
         return;
     }
     if (jstringNullCheck(env, jdata) != 0) {
-        LOG_INFO(getTag(), "jdata is null");
+        LOG_INFO( "jdata is null");
         return;
     }
     const char * addr = env->GetStringUTFChars(jaddr, &iscopy);
@@ -47,10 +44,9 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_connect(JNIEnv *env, jclass clazz,
                                                             jstring jaddr) {
-    // TODO: implement connect()
     jboolean iscopy = false;
     if (jstringNullCheck(env, jaddr) != 0) {
-        LOG_INFO(getTag(), "addr is null");
+        LOG_INFO( "addr is null");
         return;
     }
     const char * addr =env->GetStringUTFChars(jaddr,&iscopy);

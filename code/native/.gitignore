@@ -1,4 +1,5 @@
-/build
+/build/
+lib
 .cache
-/**/.vscode/
+.vscode
 install/
