@@ -1,5 +1,6 @@
 #include "jni.h"
 #include <iostream>
+#include <mutex>
 #include "jni/comon.h"
 #include "logger.h"
 JavaVM * jvm =nullptr;
@@ -27,7 +28,17 @@ JNIEXPORT void JNICALL JNI_OnUnload (JavaVM* vm, void* reserved){
     env->DeleteGlobalRef(tcpClass);
     vm->DetachCurrentThread();
 }
+
+void initMuetx(){
+    std::cout << "jni mutex address " << &jniMutex << std::endl;
+    LOG_INFO("获取mutex");
+    static std::once_flag flag;
+    std::call_once(flag, [](){
+
+    });
+}
 std::mutex& getJniMutex(){
+    initMuetx();
     return jniMutex;
 }
 JavaVM * getjvm(){

@@ -19,6 +19,7 @@
 std::unique_ptr<char[]> wchartoChar(LPCWCH wstr, size_t wstrLen)
 {
     size_t length = wstrLen == 0 ? wcslen(wstr) : wstrLen;
+    std::cout << "str length is " << wstrLen <<" ,wcsr length is " << wcslen(wstr)  << std::endl;
     // 计算宽字符串转换为多字节需要的字节数
     int size = WideCharToMultiByte(CP_UTF8, 0, wstr, length, nullptr, 0, 0, 0);
     auto ptr =std::make_unique<char[]>(size + 1) ;

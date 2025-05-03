@@ -1,12 +1,19 @@
+#include "jni.h"
 #include "jni/comon.h"
 #include "server.h"
 #include "client.h"
 #include "TCPServerAndClient.h"
 #include "logger.h"
+#include <iostream>
+#include <mutex>
+#include <stdexcept>
+
+
 // 启动tcp server
 extern "C"
 JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_startServer(JNIEnv* env, jclass javaclass, jint jport)
 {
+   
     LOG_INFO("start server");
     int serverPort =jport==0?8080:jport;
     NET::TCPServer server;

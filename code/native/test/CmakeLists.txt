@@ -5,13 +5,17 @@ set(CMAKE_CXX_STANDARD 17)
 # add_executable("server" "server.cpp")
 add_executable("magick" "magick.cpp" )
 add_executable(client "tcpClientTest.cpp" )
+add_executable(filewatchtest "FileWatchWin32.cpp" )
 # target_link_libraries("server"  PRIVATE
 #     Poco::Net
 # )
 set(clientTest "clientTest")
 add_test(NAME ${clientTest} COMMAND "client" )
-add_test(NAME compressImage COMMAND "magick" )
-target_link_libraries("magick"  PRIVATE base imageMagick
+# add_test(NAME compressImage COMMAND "magick" )
+add_test(NAME filewatchtest COMMAND filewatchtest )
+
+
+target_link_libraries("magick"  
 )
 target_link_libraries("client"  PRIVATE base net imageMagick
 )

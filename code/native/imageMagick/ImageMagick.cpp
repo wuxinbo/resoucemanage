@@ -1,39 +1,60 @@
 
 
-#include "Poco/NumberFormatter.h"
-#include "jni.h"
-#include "resource_manage_ImageMagick.h"
-#include <cstddef>
-#include <minwindef.h>
-#include <mutex>
-#include <string.h>
-
 #ifdef WIN32
 #include <windows.h>
 #endif
+#include "Poco/NumberFormatter.h"
+#include "jni.h"
+#include "resource_manage_ImageMagick.h"
+#include <mutex>
+
 #include "imageMagick.h"
 #include "jni/comon.h"
 #include "logger.h"
+#include <string.h>
 #include <vector>
-#define MAGICK_TAG __FUNCSIG__
 
 std::vector<MagickWand *> magick_wands;
 static const int MAX_SIZE = 10;
+std::mutex xbwuc::ImageMagick::magick_wands_mutex;
+
+XBWUC_NAMESPACE_START
+class LockGuard {
+  private:
+  std::mutex &m_mutex;
+
+public:
+  LockGuard(std::mutex& mutex): m_mutex(mutex)  {
+    LOG_INFO("lock start");
+    std::cout << "mutex address " << &mutex << std::endl;
+    if (mutex.try_lock()){
+      
+    }
+  }
+
+  ~LockGuard() { 
+    m_mutex.unlock();
+    LOG_INFO("lock end"); }
+};
+
+XBWUC_NAMESPACE_END
 
 void xbwuc::ImageMagick::initMaickWand() {
-    LOG_INFO( "开始加锁");
-    std::unique_lock<std::mutex> lock(getJniMutex());
-    LOG_INFO( "加锁完成");
-  
+  // 使用 std::call_once 确保线程安全的初始化
+  static std::once_flag flag;
+  LockGuard lockGuard(magick_wands_mutex);
+  std::call_once(flag, []() {
+    LOG_INFO("初始化ImageMagick");
+    // 进行实际的初始化操作
     MagickWandGenesis();
     for (int i = 0; i < MAX_SIZE; i++) {
       magick_wands.emplace_back(NewMagickWand());
     }
-    LOG_INFO_DATA("init magickwand size is %s",
-                  INT_FORMAT(magick_wands.size()))
-  }
+    LOG_INFO_DATA("init magickwand size is %s", INT_FORMAT(magick_wands.size()))
+  });
+}
 void xbwuc::ImageMagick::put(MagickWand *wand) {
-  std::lock_guard<std::mutex> lock(getJniMutex());
+  std::lock_guard<std::mutex> lock(magick_wands_mutex);
   if (magick_wands.size() < MAX_SIZE) {
     magick_wands.emplace_back(wand);
   } else { // 资源销毁
@@ -41,9 +62,9 @@ void xbwuc::ImageMagick::put(MagickWand *wand) {
   }
 }
 
-MagickWand* xbwuc::ImageMagick::get() {
-  char * data = nullptr;
-  std::lock_guard<std::mutex> lock(getJniMutex());
+MagickWand *xbwuc::ImageMagick::get() {
+  char *data = nullptr;
+  std::lock_guard<std::mutex> lock(magick_wands_mutex);
   if (!magick_wands.empty()) { // 不为空则获取最后一个返回
     MagickWand *wand = magick_wands.back();
     magick_wands.pop_back();
@@ -61,15 +82,15 @@ int xbwuc::ImageMagick::resize(const char *srcPathStr, const char *destPathStr,
   MagickWand *magick_wand = get();
   int status = MagickReadImage(magick_wand, srcPathStr);
   if (status == MagickFalse) {
-    LOG_INFO( "read image fail");
+    LOG_INFO("read image fail");
     return -1;
   }
   int scaleValue = scale > 0 ? scale : 10;
   int height = MagickGetImageHeight(magick_wand);
   int width = MagickGetImageWidth(magick_wand);
 
-  LOG_INFO_DATA2("width is %s height is %s",
-                 INT_FORMAT(width).c_str(), INT_FORMAT(height).c_str());
+  LOG_INFO_DATA2("width is %s height is %s", INT_FORMAT(width).c_str(),
+                 INT_FORMAT(height).c_str());
   MagickResetIterator(magick_wand);
   MagickResizeImage(magick_wand, width / scaleValue, height / scaleValue,
                     LanczosFilter);
@@ -97,17 +118,17 @@ void xbwuc::ImageMagick::destroy() {
 JNIEXPORT void JNICALL
 Java_com_wuxinbo_resourcemanage_jni_ImageMagick_init(JNIEnv *, jclass) {
   xbwuc::ImageMagick::initMaickWand();
-  LOG_INFO( "init success");
+  LOG_INFO("init success");
 }
 
 // 参数检查
 inline int checkParam(JNIEnv *env, jstring srcPath, jstring destPath) {
   if (jstringNullCheck(env, srcPath) != 0) {
-    LOG_INFO(  "srcPath is null");
+    LOG_INFO("srcPath is null");
     return -1;
   }
   if (jstringNullCheck(env, destPath) != 0) {
-    LOG_INFO(  "destPath is null");
+    LOG_INFO("destPath is null");
     return -1;
   }
 
@@ -124,7 +145,7 @@ JNIEXPORT jint JNICALL Java_com_wuxinbo_resourcemanage_jni_ImageMagick_resize(
   jboolean iscopy = false;
   MagickBooleanType status;
   if (magick_wands.size() == 0) {
-    LOG_INFO( "init fail");
+    LOG_INFO("init fail");
     return -1;
   }
 
@@ -133,18 +154,18 @@ JNIEXPORT jint JNICALL Java_com_wuxinbo_resourcemanage_jni_ImageMagick_resize(
   }
   const char *srcPathStr = env->GetStringUTFChars(srcPath, &iscopy);
   if (srcPathStr == NULL || strlen(srcPathStr) == 0) {
-    LOG_INFO( "srcPath is null");
+    LOG_INFO("srcPath is null");
     return -1;
   }
   LOG_INFO_DATA("srcPath is %s", srcPathStr);
   const char *destPathStr = env->GetStringUTFChars(destPath, &iscopy);
   if (destPathStr == NULL || strlen(destPathStr) == 0) {
-    LOG_INFO( "destoath is null");
+    LOG_INFO("destoath is null");
     return -1;
   }
   LOG_INFO_DATA("destPath is %s", destPathStr);
   xbwuc::ImageMagick::resize(srcPathStr, destPathStr, scale);
-  LOG_INFO( "完成图片压缩");
+  LOG_INFO("完成图片压缩");
   // 释放字符串
   env->ReleaseStringUTFChars(srcPath, srcPathStr);
   env->ReleaseStringUTFChars(destPath, destPathStr);

@@ -1,15 +1,13 @@
 #include <mutex>
 #include "common.h"
 #include "MagickWand/MagickWand.h"
-extern std::mutex* magick_wands_mutex;
 
 
 XBWUC_NAMESPACE_START
 class ImageMagick {
 private:
   static const int MAX_SIZE = 10;
-  static std::mutex *getMagickWandsMutex() ;
-
+  static std::mutex magick_wands_mutex;
   static void put(MagickWand *wand) ;
 
   static MagickWand *get() ;

@@ -32,7 +32,7 @@ JNIEXPORT void watchDirChange(const char * dirName,FileNotify &fileNotify)
     if (notifyInform->Action == FILE_ACTION_RENAMED_OLD_NAME) {
         notifyInform = (FILE_NOTIFY_INFORMATION*)(notify + notifyInform->NextEntryOffset);
     }
-    fileNotify.filePath = wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR)).get();
+    fileNotify.filePathPtr = wchartoChar(notifyInform->FileName, notifyInform->FileNameLength / sizeof(WCHAR));
     fileNotify.action = notifyInform->Action;
 }
 
@@ -57,13 +57,13 @@ JNIEXPORT jobject JNICALL Java_com_wuxinbo_resourcemanage_jni_FileWatch_watchDir
     }
     //构造对象
     jobject fileNotifyObj =env->AllocObject(fileNotifyClass);
-    jstring jfileName = env->NewStringUTF(fileNotify.filePath);
+    jstring jfileName = env->NewStringUTF(fileNotify.filePathPtr.get());
     //设置文件路径
     jmethodID  setFilePathMethod= env->GetMethodID(fileNotifyClass, "setFilePath","(Ljava/lang/String;)V");
     env->CallVoidMethod(fileNotifyObj,setFilePathMethod,jfileName);
 
     jmethodID setAction =env->GetMethodID(fileNotifyClass,"setAction", "(I)V");
     env->CallVoidMethod(fileNotifyObj,setAction,fileNotify.action);
-    LOG_INFO_DATA("file ischange name is %s",fileNotify.filePath);
+    LOG_INFO_DATA("file ischange name is %s",fileNotify.filePathPtr.get());
     return fileNotifyObj;
 }
