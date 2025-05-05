@@ -10,6 +10,7 @@
 #include <memory>
 #include "jni/TCPServerAndClient.h"
 #include "jni/comon.h"
+#include "logger.h"
 using Poco::Net::SocketAddress;
 using Poco::Net::StreamSocket;
 using std::string;
@@ -70,7 +71,12 @@ public:
 
     void TCPClient::connect(const char *addr) {
         // 建立连接
-        TcpClientImpl::get(addr);
+        try {
+            TcpClientImpl::get(addr);
+        }
+        catch (std::exception &e) {
+            LOG_INFO_DATA("connec server fail ",e.what());
+        }
     }
 
 NET_NAMESPACE_END

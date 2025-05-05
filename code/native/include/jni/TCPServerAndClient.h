@@ -14,8 +14,12 @@ extern "C" {
  */
 JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_sendUTFData
   (JNIEnv *, jobject, jstring, jstring);
-
-
+/**
+* 发送数据到客户端
+* @param address 客户端地址 ip:port
+*/
+  JNIEXPORT void JNICALL Java_com_wuxinbo_resourcemanage_jni_TCPServerClient_sendUTFDataToClient
+  (JNIEnv *, jobject, jstring, jstring);
  /*
    启动tcp server
  * Class:     com_wuxinbo_resourcemanage_jni_TCPServerClient

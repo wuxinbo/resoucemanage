@@ -18,7 +18,7 @@
 #ifndef MAGICKCORE_CHANNEL_H
 #define MAGICKCORE_CHANNEL_H
 
-#include <MagickCore/image.h>
+#include "image.h"
 
 #if defined(__cplusplus) || defined(c_plusplus)
 extern "C" {

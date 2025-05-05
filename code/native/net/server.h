@@ -8,8 +8,14 @@ public:
 
  ~TCPServer();
 
-void setTcpClass(jclass tcpClientClass);
-
+ /**
+ * 
+ * 发送数据
+  * @param adress 地址
+ * @param data 数据
+ *
+ */
+ void sendUTFData(const char * adress,const char * data);
 	/**
 	* 启动服务器
 	*/

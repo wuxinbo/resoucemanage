@@ -1,5 +1,6 @@
 /build/
 lib
+/**/target/
 .cache
 .vscode
 install/
