@@ -1,0 +1,33 @@
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+import 'core_method_channel.dart';
+
+abstract class CorePlatform extends PlatformInterface {
+  /// Constructs a CorePlatform.
+  CorePlatform() : super(token: _token);
+
+  static final Object _token = Object();
+
+  static CorePlatform _instance = MethodChannelCore();
+
+  /// The default instance of [CorePlatform] to use.
+  ///
+  /// Defaults to [MethodChannelCore].
+  static CorePlatform get instance => _instance;
+
+  /// Platform-specific implementations should set this with their own
+  /// platform-specific class that extends [CorePlatform] when
+  /// they register themselves.
+  static set instance(CorePlatform instance) {
+    PlatformInterface.verifyToken(instance, _token);
+    _instance = instance;
+  }
+
+  Future<String?> getPlatformVersion() {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<void> connect(String address) {
+    throw UnimplementedError('connect() has not been implemented.');
+  }
+}
