@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'ui/navigation.dart';
+import 'package:core/core.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,6 +36,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    Core().getPlatformVersion().then((value) {
+      print("windows version is ${value}");
+    });
+    Core().connect("192.168.2.3:8082");
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(

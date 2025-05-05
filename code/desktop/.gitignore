@@ -8,6 +8,12 @@
 .buildlog/
 .history
 .svn/
+.cache/
+.vscode/
+/**/data/
+/**/include/
+/**/cmake/
+/build/
 migrate_working_dir/
 
 # IntelliJ related
@@ -29,7 +35,6 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
 
 # Symbolication related
 app.*.symbols
