@@ -4,7 +4,7 @@ project(${projectName} C CXX)
 set(CMAKE_CXX_STANDARD 17)
 find_package("Poco"  REQUIRED Net Foundation)
 #include_directories("../include" )
-add_library(${projectName} OBJECT "server.h" "jniImpl.cpp"  "client.cpp" "server.cpp"  )
+add_library(${projectName} OBJECT "server.h" "client.h" "jniImpl.cpp"  "client.cpp" "server.cpp"  )
 add_library("xbwuc::net" ALIAS ${projectName} )
 target_include_directories(${projectName} INTERFACE "." "../include")
 

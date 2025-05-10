@@ -10,6 +10,7 @@
 #include "jni/TCPServerAndClient.h"
 #include "jni/comon.h"
 #include "net/netcommon.h"
+#include <exception>
 #include <iostream>
 #include <map>
 #include <mutex>
@@ -37,50 +38,23 @@ FormatintFunc intFormat = &Poco::NumberFormatter::format;
 std::map<std::string, StreamSocket> clientSocketMap;
 
 NET_NAMESPACE_START
+/**
+* 数据处理函数
+*/
+std::function<void(std::string)> dataReceiveFunc;
+/**
+* 客户端连接
+*/
+std::function<void(std::string)> clientConnectFunc;
+
+
 class ClientConnection : public TCPServerConnection {
 private:
   /**
    * 将数据回传给Java
    *
    */
-  void invokeJavaRecive(std::string &data) {
-    std::lock_guard<std::mutex> lock(getJniMutex());
-    ;
-    JNIEnv *jnienv = nullptr;
-    JavaVM *jvm = getjvm();
-    jint version = JNI_VERSION_1_6;
-#ifdef ANDROID
-    jint res = jvm->AttachCurrentThread(&jnienv, nullptr);
-    version = JNI_VERSION_1_6;
-#else
-    jint res = jvm->AttachCurrentThread((void **)&jnienv, nullptr);
-#endif
-#ifdef WIN32
-    version = JNI_VERSION_1_8;
-#endif
-    jvm->GetEnv((void **)&jnienv, version);
-    if (!jnienv) {
-      std::cout << "get env fail" << std::endl;
-      return;
-    }
-    jclass tcpClass = getTcpClass();
-    if (!tcpClass) {
-      LOG_INFO("tcpClientClass is null ");
-      return;
-    }
-    jmethodID method = jnienv->GetStaticMethodID(tcpClass, "receiveData",
-                                                 "(Ljava/lang/String;)V");
-    if (method == nullptr) {
-      std::cout << "method is null" << std::endl;
-      // 打印异常信息
-      jnienv->ExceptionDescribe();
-      jnienv->ExceptionClear();
-      return; // 或处理错误
-    }
-    jstring jstr = jnienv->NewStringUTF(data.c_str());
-    jnienv->CallStaticVoidMethod(tcpClass, method, jstr);
-    jvm->DetachCurrentThread();
-  }
+  
   /**
    *  数据解析
    */
@@ -93,54 +67,17 @@ private:
         std::string str(message->data, message->length);
         LOG_INFO_DATA("message: %s", str);
         LOG_INFO_DATA("data length is %s", intFormat(message->length));
-        if (getjvm()) {
-          invokeJavaRecive(str);
+        if (dataReceiveFunc) {
+            dataReceiveFunc(str);
         }
+        //由于多条消息会拼接在一起，所以需要判断消息是否结束
+        char * p =(char*)message;
+        Message *newMessage =(Message*) (p+sizeof(Message)+message->length);
+        parseData(newMessage);
       }
     }
   }
-  // 转发客户端信息到jvm
-  void dispatchConnectToJvm(const char *address) {
-    JNIEnv *jnienv = nullptr;
-    JavaVM *jvm = getjvm();
-    jint version = JNI_VERSION_1_6;
-#ifdef ANDROID
-    jint res = jvm->AttachCurrentThread(&jnienv, nullptr);
-    version = JNI_VERSION_1_6;
-#else
-    jint res = jvm->AttachCurrentThread((void **)&jnienv, nullptr);
-#endif
-#ifdef WIN32
-    version = JNI_VERSION_1_8;
-#endif
-    jvm->GetEnv((void **)&jnienv, version);
-    if (!jnienv) {
-      std::cout << "get env fail" << std::endl;
-      return;
-    }
-    jclass tcpClass = getTcpClass();
-    if (!tcpClass) {
-      LOG_INFO("tcpClientClass is null ");
-      return;
-    }
-    jmethodID method = jnienv->GetStaticMethodID(tcpClass, "receiveClient",
-                                                 "(Ljava/lang/String;)V");
-    if (method == nullptr) {
-      std::cout << "method is null" << std::endl;
-      // 打印异常信息
-      jnienv->ExceptionDescribe();
-      jnienv->ExceptionClear();
-      return; // 或处理错误
-    }
-    jstring jstr = jnienv->NewStringUTF(address);
-    jnienv->CallStaticVoidMethod(tcpClass, method, jstr);
-  }
-  // 将收到的客户端信息进行广播,地址格式为ip:port
-  void dispatchConnectInfo(char *address) {
-    if (getjvm()) {
-      dispatchConnectToJvm(address);
-    }
-  }
+  
 
 public:
   ClientConnection(const StreamSocket &s) : TCPServerConnection(s) {}
@@ -154,7 +91,15 @@ public:
     clientSocketMap.insert({sstream.str(), ss});
     LOG_INFO(Poco::format("address is %s create socket ,  current client is %s",
                           sstream.str(), intFormat(clientSocketMap.size())));
-    dispatchConnectInfo((char *)sstream.str().c_str());
+    if (clientConnectFunc) {
+      try {
+        clientConnectFunc(sstream.str());  
+    
+      } catch (std::exception &e) {
+        LOG_INFO_DATA("client connect func error %s", e.what());
+      }
+      
+    }
     try {
       char buffer[1024 * 20] = {0};
       Message *message = (Message *)buffer;
@@ -192,6 +137,16 @@ void NET::TCPServer::start(int port) {
   } catch (Exception &exc) {
     std::cout << exc.displayText() << std::endl;
   }
+}
+/**
+ * 注册数据接收函数
+ * @param func 数据接收函数
+ */
+void NET::TCPServer::registerDataReceiveFunc(std::function<void(std::string)> func) {
+    dataReceiveFunc =func;
+}
+void NET::TCPServer::registerClientConnectFunc(std::function<void(std::string)> func) {
+    clientConnectFunc = func;
 }
 /**
  *  发送数据到客户端

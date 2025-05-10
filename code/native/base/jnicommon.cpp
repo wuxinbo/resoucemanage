@@ -30,8 +30,6 @@ JNIEXPORT void JNICALL JNI_OnUnload (JavaVM* vm, void* reserved){
 }
 
 void initMuetx(){
-    std::cout << "jni mutex address " << &jniMutex << std::endl;
-    LOG_INFO("获取mutex");
     static std::once_flag flag;
     std::call_once(flag, [](){
 
