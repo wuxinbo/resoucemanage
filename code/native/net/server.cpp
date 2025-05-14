@@ -50,34 +50,6 @@ std::function<void(std::string)> clientConnectFunc;
 
 class ClientConnection : public TCPServerConnection {
 private:
-  /**
-   * 将数据回传给Java
-   *
-   */
-  
-  /**
-   *  数据解析
-   */
-  void parseData(Message *message) {
-    Message defaultMessage;
-    // 如果一致在进行解析
-    if (message->magicNumber == defaultMessage.magicNumber) {
-      if (message->type == DataType::STRING) { // utf8 字符串
-        // 如果是jni 调用则反过来调用java 方法将收到的数据进行回传
-        std::string str(message->data, message->length);
-        LOG_INFO_DATA("message: %s", str);
-        LOG_INFO_DATA("data length is %s", intFormat(message->length));
-        if (dataReceiveFunc) {
-            dataReceiveFunc(str);
-        }
-        //由于多条消息会拼接在一起，所以需要判断消息是否结束
-        char * p =(char*)message;
-        Message *newMessage =(Message*) (p+sizeof(Message)+message->length);
-        parseData(newMessage);
-      }
-    }
-  }
-  
 
 public:
   ClientConnection(const StreamSocket &s) : TCPServerConnection(s) {}
@@ -94,7 +66,6 @@ public:
     if (clientConnectFunc) {
       try {
         clientConnectFunc(sstream.str());  
-    
       } catch (std::exception &e) {
         LOG_INFO_DATA("client connect func error %s", e.what());
       }
@@ -105,9 +76,8 @@ public:
       Message *message = (Message *)buffer;
       int n = ss.receiveBytes(buffer, sizeof(buffer));
       while (n > 0) {
-
         std::string msg(buffer, n);
-        parseData(message);
+        parseData(message,dataReceiveFunc);
         n = ss.receiveBytes(buffer, sizeof(buffer));
       }
       // 移除
@@ -157,7 +127,14 @@ void NET::TCPServer::sendUTFData(const char *address, const char *data) {
   auto it = clientSocketMap.find(address);
   if (it != clientSocketMap.end()) {
     StreamSocket &socket = it->second;
-    socket.sendBytes(data, strlen(data));
+    Message message;
+    message.length = strlen(data);
+    int size = sizeof(message);
+    std::unique_ptr buffer = std::make_unique<char[]>(sizeof(message) + message.length);
+    // 消息头复制
+    memcpy(buffer.get(), &message, sizeof(message));
+    _memccpy(buffer.get() + sizeof(message), data, 0, message.length);
+    socket.sendBytes(buffer.get(), sizeof(message) + message.length);
     LOG_INFO_DATA("send data to %s", address);
   } else {
     LOG_INFO_DATA("client %s not found", address);
