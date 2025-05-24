@@ -5,6 +5,7 @@
 #include <flutter/flutter_view_controller.h>
 
 #include <memory>
+#include <windef.h>
 
 #include "win32_window.h"
 
@@ -14,7 +15,10 @@ class FlutterWindow : public Win32Window {
   // Creates a new FlutterWindow hosting a Flutter view running |project|.
   explicit FlutterWindow(const flutter::DartProject& project);
   virtual ~FlutterWindow();
-
+  /**
+  * 获取顶级窗口句柄
+  **/
+  static HWND getParentWindow();
  protected:
   // Win32Window:
   bool OnCreate() override;
@@ -27,7 +31,7 @@ class FlutterWindow : public Win32Window {
   flutter::DartProject project_;
 
   // The Flutter instance hosted by this window.
-  std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
+  std::shared_ptr<flutter::FlutterViewController> flutter_controller_;
 };
 
 #endif  // RUNNER_FLUTTER_WINDOW_H_

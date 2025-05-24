@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'ui/navigation.dart';
 import 'package:core/core.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,16 +30,18 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  EventChannel eventChannel = const EventChannel("data_event");
   @override
   Widget build(BuildContext context) {
-    Core().getPlatformVersion().then((value) {
-      print("windows version is ${value}");
+    eventChannel.receiveBroadcastStream().listen((event) {
+      print("收到服务端发来的消息：${event}");
+    }, onError: (error) {
+      print("error: $error");
     });
     Core().connect("192.168.2.3:8082");
     var height = MediaQuery.of(context).size.height;

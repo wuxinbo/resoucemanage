@@ -9,6 +9,10 @@ class MethodChannelCore extends CorePlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('core');
 
+  MethodChannel getMethodChannel() {
+    return methodChannel;
+  }
+
   @override
   Future<String?> getPlatformVersion() async {
     final version =

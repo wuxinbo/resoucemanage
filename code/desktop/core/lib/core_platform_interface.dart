@@ -8,17 +8,17 @@ abstract class CorePlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static CorePlatform _instance = MethodChannelCore();
+  static MethodChannelCore _instance = MethodChannelCore();
 
   /// The default instance of [CorePlatform] to use.
   ///
   /// Defaults to [MethodChannelCore].
-  static CorePlatform get instance => _instance;
+  static MethodChannelCore get instance => _instance;
 
   /// Platform-specific implementations should set this with their own
   /// platform-specific class that extends [CorePlatform] when
   /// they register themselves.
-  static set instance(CorePlatform instance) {
+  static set instance(MethodChannelCore instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }

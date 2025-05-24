@@ -10,6 +10,7 @@
 // A class abstraction for a high DPI-aware Win32 Window. Intended to be
 // inherited from by classes that wish to specialize with custom
 // rendering and input handling
+
 class Win32Window {
  public:
   struct Point {
@@ -27,7 +28,8 @@ class Win32Window {
 
   Win32Window();
   virtual ~Win32Window();
-
+  
+  static HWND getParentWindow();
   // Creates a win32 window with |title| that is positioned and sized using
   // |origin| and |size|. New windows are created on the default monitor. Window
   // sizes are specified to the OS in physical pixels, hence to ensure a

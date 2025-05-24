@@ -63,6 +63,7 @@ int TCPClient::sendUTFData(const char *addr, const char *data) {
       std::make_unique<char[]>(sizeof(message) + message.length);
   // 消息头复制
   memcpy(buffer.get(), &message, sizeof(message));
+  // 数据复制
   _memccpy(buffer.get() + sizeof(message), data, 0, message.length);
   TcpClientImpl::get(addr).get()->sendBytes(buffer.get(),
                                             sizeof(message) + message.length);
@@ -71,6 +72,7 @@ int TCPClient::sendUTFData(const char *addr, const char *data) {
 void TCPClient::registerDataReceiveFunc(std::function<void(std::string&)> func) {
   clientDataReceiveFunc = func;
 }
+
 void TCPClient::connect(const char *addr) {
   // 建立连接
   std::string serverAddr(addr);

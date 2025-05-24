@@ -6,7 +6,9 @@
 
 void CorePluginCApiRegisterWithRegistrar(
     FlutterDesktopPluginRegistrarRef registrar) {
+        // hello
   core::CorePlugin::RegisterWithRegistrar(
       flutter::PluginRegistrarManager::GetInstance()
           ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
+          
 }

@@ -2,6 +2,7 @@
 
 #include <dwmapi.h>
 #include <flutter_windows.h>
+#include <windef.h>
 
 #include "resource.h"
 
@@ -17,7 +18,8 @@ namespace {
 #endif
 
 constexpr const wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
-
+// 顶级窗口句柄
+HWND parentWindow = nullptr;
 /// Registry key for app theme preference.
 ///
 /// A value of 0 indicates apps should use dark mode. A non-zero or missing
@@ -111,6 +113,10 @@ void WindowClassRegistrar::UnregisterWindowClass() {
   class_registered_ = false;
 }
 
+
+HWND  Win32Window::getParentWindow(){
+  return parentWindow;
+}
 Win32Window::Win32Window() {
   ++g_active_window_count;
 }
@@ -143,7 +149,7 @@ bool Win32Window::Create(const std::wstring& title,
   if (!window) {
     return false;
   }
-
+  parentWindow =window;
   UpdateTheme(window);
 
   return OnCreate();
