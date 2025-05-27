@@ -10,7 +10,12 @@ jclass tcpClass;
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
     jvm = vm;
     LOG_INFO("jvm loaded");
+    #ifdef ANDROID
+    return JNI_VERSION_1_6;
+    #else
     return JNI_VERSION_1_8;
+
+    #endif
 }
 
 JNIEXPORT void JNICALL JNI_OnUnload (JavaVM* vm, void* reserved){

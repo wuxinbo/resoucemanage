@@ -15,7 +15,8 @@ public:
  void registerDataReceiveFunc(std::function<void(std::string)> func);
  //注册客户端连接函数
  void registerClientConnectFunc(std::function<void(std::string)> func);
-
+ //注册客户端连接移除函数
+ void registerClientRemoveFunc(std::function<void(std::string)> );
  /**
  * 
  * 发送数据
