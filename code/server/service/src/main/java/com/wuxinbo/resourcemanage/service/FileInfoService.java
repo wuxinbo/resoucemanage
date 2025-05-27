@@ -1,11 +1,13 @@
 package com.wuxinbo.resourcemanage.service;
 
+import com.alibaba.fastjson.JSON;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 import com.wuxinbo.resourcemanage.jni.FileWatch;
+import com.wuxinbo.resourcemanage.jni.TCPServerClient;
 import com.wuxinbo.resourcemanage.model.*;
 import com.wuxinbo.resourcemanage.reposity.PhotoInfoReposity;
 import com.wuxinbo.resourcemanage.reposity.SysFileStoreItemReposity;
@@ -107,6 +109,10 @@ public class FileInfoService extends BaseService implements InitializingBean {
     if (sysFileStoreItem != null) {
       readPhotoInfoMeta(sysFileStoreItem);
     }
+    PhotoEvent photoEvent = new PhotoEvent();
+    photoEvent.newPhoto();
+    //通知客户端有新照片
+    TCPServerClient.sendDataToAllClient(JSON.toJSONString(photoEvent));
   }
 
   /**
@@ -167,7 +173,7 @@ public class FileInfoService extends BaseService implements InitializingBean {
     }
   }
 
-  private void deletePhoto(File file, SysFileStoreNode sysFileStoreNode) {
+  public void deletePhoto(File file, SysFileStoreNode sysFileStoreNode) {
     Iterable<SysFileStoreItem> result =
       sysFileStoreItemReposity.findByRelativeUrl(file.getPath().replace(sysFileStoreNode.getLocalPath(), ""));
     if (result != null) {

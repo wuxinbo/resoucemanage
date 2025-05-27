@@ -3,10 +3,13 @@ package com.wuxinbo.resourcemanage.controller;
 import com.wuxinbo.resourcemanage.jni.ImageMagick;
 import com.wuxinbo.resourcemanage.model.*;
 import com.wuxinbo.resourcemanage.reposity.PhotoInfoReposity;
+import com.wuxinbo.resourcemanage.service.FileInfoService;
+import com.wuxinbo.resourcemanage.service.PhotoInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,19 +32,25 @@ import java.util.*;
 public class PhotoInfoController extends BaseController {
     @Autowired
     PhotoInfoReposity photoInfoReposity;
-
+    @Autowired
+    FileInfoService fileInfoService;
     @RequestMapping("get")
     void getPhoto(Integer mid, HttpServletRequest request, HttpServletResponse response) {
         Optional<PhotoInfo> photo = photoInfoReposity.findById(mid);
+        //是否获取压缩还是未压缩的图片
+        String compress = request.getParameter("compress");
         photo.ifPresent(it -> {
             try {
                 //生成缩略图
                 String filepath = it.getSysFileStoreItem().getSysFileStoreNode().getLocalPath() +
                         it.getSysFileStoreItem().getRelativeUrl();
-                ImageMagick.compressImage(it);
-                File thumbFile = new File(it.getThumbFilePath());
-                if (thumbFile.exists()){
-                    filepath =thumbFile.getPath();
+                //判断是否需要返回压缩图片
+                if (compress==null||compress.equalsIgnoreCase("")){
+                    ImageMagick.compressImage(it);
+                    File thumbFile = new File(it.getThumbFilePath());
+                    if (thumbFile.exists()){
+                        filepath =thumbFile.getPath();
+                    }
                 }
                 try (
                         FileInputStream fis = new FileInputStream(filepath)
@@ -90,6 +99,26 @@ public class PhotoInfoController extends BaseController {
         return Result.success();
     }
 
+    @RequestMapping("/delete")
+    public Result delete(@RequestBody
+                             List<PhotoInfo> photoInfoList){
+        // 删除相册中的照片
+        if (photoInfoList!=null&& !photoInfoList.isEmpty()){
+            for (PhotoInfo photoInfo : photoInfoList) {
+                //循环删除
+                PhotoInfo deletePhoto = photoInfoReposity.getByMid(photoInfo.getMid());
+                if (deletePhoto!=null){
+                    SysFileStoreItem sysFileStoreItem = deletePhoto.getSysFileStoreItem();
+                    if (sysFileStoreItem!=null){
+                       File file = new File(sysFileStoreItem.getSysFileStoreNode().getLocalPath()+sysFileStoreItem.getRelativeUrl());
+                       if (file.exists()) file.delete();
+                        fileInfoService.deletePhoto(file, sysFileStoreItem.getSysFileStoreNode());
+                    }
+                }
+            }
+        }
+        return Result.success();
+    }
     /**
      * 根据拍摄日期查询照片
      *

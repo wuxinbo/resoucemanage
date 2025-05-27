@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ResourceManageApplication {
 
 	static {
-		System.loadLibrary("core");
+		System.loadLibrary("xbwuc_core");
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(ResourceManageApplication.class, args);

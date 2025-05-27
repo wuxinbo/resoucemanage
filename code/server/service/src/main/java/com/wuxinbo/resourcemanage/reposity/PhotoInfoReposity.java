@@ -24,6 +24,12 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
      */
     List<PhotoInfo> findByFileId(Integer fileId);
 
+    /**
+     * 获取
+     * @param mid
+     * @return
+     */
+    PhotoInfo getByMid(Integer mid);
     @Query(value = "select i.*,item.relative_url from photo_info i left join sys_file_store_item item on i.file_id =item.mid " +
             "where item.mid is not null " +
             "and item.file_type ='jpg'" +
@@ -42,7 +48,7 @@ public interface PhotoInfoReposity extends PagingAndSortingRepository<PhotoInfo,
      */
     @Transactional
     @Modifying
-    @Query(value = "update photo_info set `like` =:like,update_time=now() where mid =:mid", nativeQuery = true)
+    @Query(value = "update photo_info set `likes` =:like,update_time=now() where mid =:mid", nativeQuery = true)
     void updateLike(Integer like,Integer mid);
 
     /**
