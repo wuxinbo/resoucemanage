@@ -1,5 +1,6 @@
 package com.wuxinbo.resourcemanage.ui.home;
 
+import static com.wuxinbo.resourcemanage.Constant.DELETE;
 import static com.wuxinbo.resourcemanage.Constant.PHOTO_LIST_BY_PAGE;
 import static com.wuxinbo.resourcemanage.Constant.UPDATE;
 import static com.wuxinbo.resourcemanage.Constant.gson;
@@ -55,15 +56,17 @@ public class HomeViewModel extends ViewModel {
     this.title =new MutableLiveData<>();
   }
 
-  public void loadPhotoInfoFromDb(ResourceApplication application) {
+  public void loadPhotoInfoFromDb(ResourceApplication application,boolean firstLoad) {
     HttpUtil.executorService.execute(() -> {
-      List<PhotoInfo> list = application.getDb().photoDao().getAll();
-      //从后台线程中发起消息通知
-      getPhotoData().postValue(list);
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
+      if (firstLoad){
+        List<PhotoInfo> list = application.getDb().photoDao().getAll();
+        //从后台线程中发起消息通知
+        getPhotoData().postValue(list);
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
       }
       queryPhotoInfo(application);
     });
@@ -100,8 +103,8 @@ public class HomeViewModel extends ViewModel {
    *
    * @param application
    */
-  public void loadPhotoInfo(ResourceApplication application) {
-    loadPhotoInfoFromDb(application);
+  public void loadPhotoInfo(ResourceApplication application,boolean firstLoad) {
+    loadPhotoInfoFromDb(application,firstLoad);
   }
 
 
@@ -160,4 +163,30 @@ public class HomeViewModel extends ViewModel {
     }
 
   }
+  // 删除资源
+  public void delete(Context context){
+    List<PhotoInfo> list = getSelectPhotoInfos().getValue();
+    if (!list.isEmpty()){
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        list =list.stream().map(it->{
+          PhotoInfo photoInfo =new PhotoInfo();
+          photoInfo.setMid(it.getMid());
+          return photoInfo;
+        }).collect(Collectors.toList());
+        HttpUtil.postJSON(Constant.URL + DELETE,list, (result) -> {
+          if (!result.isSuccess()){
+            ((Activity)context).runOnUiThread(()->{
+              Toast.makeText(context,"删除失败",Toast.LENGTH_SHORT).show();
+            });
+          }else{
+            ((Activity)context).runOnUiThread(()->{
+              loadPhotoInfo((ResourceApplication) ((Activity) context).getApplication(),false);
+            });
+          }
+
+        });
+      }
+    }
+  }
+
 }

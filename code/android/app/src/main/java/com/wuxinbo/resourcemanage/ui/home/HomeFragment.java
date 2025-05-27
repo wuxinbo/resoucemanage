@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
         homeViewModel.getShowBottomNavView().postValue(true);
         //初始化相册数据
         ResourceApplication application = (ResourceApplication) getActivity().getApplication();
-        homeViewModel.loadPhotoInfo(application);
+        homeViewModel.loadPhotoInfo(application,true);
         binding.search.setFocusable(false);
         //绑定监听，进入搜索页面
         binding.search.setOnClickListener(v -> {
@@ -80,6 +80,10 @@ public class HomeFragment extends Fragment {
         binding.like.setClickable(true);
         binding.like.setOnClickListener(v->{
             homeViewModel.like(getActivity());
+        });
+        // 绑定图片删除
+        binding.delete.setOnClickListener(v->{
+            homeViewModel.delete(getActivity());
         });
         //取消选中
         binding.cancle.setOnClickListener((v) -> {
@@ -182,9 +186,9 @@ public class HomeFragment extends Fragment {
 
     private void refreshPhoto() {
         binding.refresh.setOnRefreshListener(() -> {
-            homeViewModel.loadPhotoInfo((ResourceApplication) getActivity().getApplication());
+            homeViewModel.loadPhotoInfo((ResourceApplication) getActivity().getApplication(),false);
             binding.refresh.setRefreshing(false);
-            Toast.makeText(getActivity(), "数据已刷新", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getActivity(), "数据已刷新", Toast.LENGTH_LONG).show();
 
         });
     }

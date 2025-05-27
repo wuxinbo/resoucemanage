@@ -73,7 +73,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.View
                     Log.i(TAG, "select photo size : "+ selectPhotos.size());
                 }else{
                     Bundle data = new Bundle();
-                    data.putString(Constant.URL_KEY, Constant.URL + "photo/get?mid=" + photoInfo.getMid());
+                    data.putString(Constant.URL_KEY, Constant.URL + "photo/get?compress=true&mid=" + photoInfo.getMid());
                     data.putString(Constant.PHOTO_KEY, gson.toJson(photoInfo));
                     NavController navController = Navigation.findNavController((Activity) context, R.id.nav_bottom_home);
                     navController.navigate(R.id.photo_detail, data);

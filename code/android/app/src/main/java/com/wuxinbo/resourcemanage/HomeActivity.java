@@ -1,5 +1,6 @@
 package com.wuxinbo.resourcemanage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.wuxinbo.resourcemanage.databinding.ActivityHomeBinding;
 import com.wuxinbo.resourcemanage.jni.TCPServerClient;
+import com.wuxinbo.resourcemanage.service.ManageService;
 import com.wuxinbo.resourcemanage.ui.home.HomeViewModel;
 
 
@@ -24,7 +26,10 @@ public class HomeActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     TCPServerClient.context =this;
     TCPServerClient.injectClassLoader(getClassLoader());
-
+    // 启动service
+    Intent intentService =new Intent();
+    intentService.setClass(this, ManageService.class);
+    startService(intentService);
     HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
     binding = ActivityHomeBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());

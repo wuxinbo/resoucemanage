@@ -34,11 +34,13 @@ public class TCPServerClient {
      * @param data
      */
     public  static void receiveData(String data){
+
+
+    }
+    public static void receiveServerMessage(String data){
         ((Activity)context).runOnUiThread(()->{
             Notification.ShowTextNotification(context,"收到消息",data);
             Toast.makeText(context,data,Toast.LENGTH_SHORT).show();
         });
-
     }
-
 }
